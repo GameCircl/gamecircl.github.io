@@ -43,7 +43,7 @@ body { background:var(--bg); color:var(--text); }
   padding:14px; gap:12px; transition: transform 0.3s ease;
 }
 .logo-row { display:flex; align-items:center; gap:10px; }
-.hamburger { display:none; border:0; background:transparent; font-size:20px; cursor:pointer; }
+.hamburger { display:none; border:0; background:transparent; font-size:20px; cursor:pointer; z-index:210; position:relative; }
 .logo { display:flex; gap:10px; align-items:center; }
 .logo-mark{
   width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));
@@ -59,7 +59,7 @@ body { background:var(--bg); color:var(--text); }
   transition:all .16s;
 }
 .nav-link.active, .nav-link:hover { 
-  background: rgba(0,0,0,0.08); /* stärkerer Kontrast */
+  background: rgba(0,0,0,0.08);
   color: var(--text); 
   transform:translateY(-2px); 
 }
@@ -139,7 +139,7 @@ body { background:var(--bg); color:var(--text); }
 
 /* MODAL */
 .modal.hidden { display:none; }
-.modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.4); z-index:1000; }
+.modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.4); z-index:3000; }
 .modal.show .modal-panel {
   transform: translateY(0);
   opacity: 1;
@@ -170,9 +170,31 @@ input[type="text"]{ width:100%; padding:10px; border-radius:8px; border:1px soli
 }
 @media (max-width:720px){
   .app { flex-direction:column; }
-  .sidebar { width:100%; order:0; display:flex; flex-direction:row; align-items:center; padding:8px 12px; gap:8px; transform:translateX(-100%); position:fixed; top:0; left:0; height:100vh; z-index:100; transition:transform .3s ease; }
+  .sidebar { 
+    width:240px; 
+    position:fixed; 
+    top:0; left:0; 
+    height:100vh; 
+    transform:translateX(-100%);
+    z-index:200;
+    transition:transform .3s ease; 
+    flex-direction:column; 
+    padding:12px; 
+    background:var(--surface);
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .nav { 
+    display:flex; position:absolute; top:56px; left:0; flex-direction:column; width:240px; background:var(--surface); 
+    box-shadow:0 12px 28px rgba(0,0,0,0.25); padding:12px; border-radius:0 0 12px 12px; 
+  }
+
+  #sidebarOverlay {
+    position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.35); z-index:150; display:block;
+  }
+  #sidebarOverlay.hidden { display:none; }
+
   .hamburger { display:inline-block; }
-  .nav { display:flex; position:absolute; top:56px; left:0; flex-direction:column; width:200px; background:var(--surface); box-shadow:0 12px 28px rgba(0,0,0,0.25); padding:12px; border-radius:0 0 12px 12px; }
   .main { padding:14px; }
   .card-grid, .games-grid { grid-template-columns: 1fr; }
   .why-grid { flex-direction:column; align-items:center; }
