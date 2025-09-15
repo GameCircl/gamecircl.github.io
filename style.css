@@ -26,6 +26,19 @@
 }
 
 /* -------------------------
+   DARK MODE FIXES
+------------------------- */
+[data-theme="dark"] .modal-close {
+  color: #fff; /* Close-Button weiß */
+}
+
+[data-theme="dark"] .nav-link.active,
+[data-theme="dark"] .nav-link:hover {
+  background: rgba(255,255,255,0.15); /* stärkerer Kontrast */
+  color: #fff;
+}
+
+/* -------------------------
    BASIC LAYOUT
 ------------------------- */
 html,body { height:100%; font-family:"Inter",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
