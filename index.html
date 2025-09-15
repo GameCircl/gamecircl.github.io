@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GameCircle — Gesellschaftsspiele</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <!-- SIDEBAR / TOPBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo-row">
+        <button id="sidebarToggle" class="hamburger" aria-label="Toggle Sidebar">☰</button>
+        <div class="logo">
+          <div class="logo-mark">GC</div>
+          <div class="logo-text">GameCircle <small>Gesellschaftsspiele</small></div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html" class="nav-link active">🏠 Home</a>
+        <a href="games.html" class="nav-link">🎮 Spiele</a>
+        <a href="stats.html" class="nav-link">📊 Statistiken</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="theme-row" id="themeRow">
+          <div class="theme-points">
+            <span data-mode="auto">Auto</span>
+            <span data-mode="light">Hell</span>
+            <span data-mode="dark">Dunkel</span>
+            <div class="theme-marker" id="themeMarker"></div>
+          </div>
+        </div>
+        <div class="status-mini" id="miniStatus" title="Bereit zum Spielen">
+          <div class="avatar">G</div>
+          <div class="status-text">
+            <div class="name" id="miniName">GameCircle</div>
+            <div class="sub">Bereit zum Spielen!</div>
+          </div>
+          <button class="settings-btn" id="openLogin" title="Login / Statistiken">⚙️</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- OVERLAY FÜR MOBILE SIDEBAR -->
+    <div id="sidebarOverlay" class="overlay hidden"></div>
+
+    <!-- MAIN -->
+    <main class="main">
+      <!-- HOME PAGE -->
+      <section id="page-home" class="page">
+        <header class="hero">
+          <p class="badge">Bereit für unvergessliche Momente?</p>
+          <h1 class="title"><span class="gradient">GameCircle</span></h1>
+          <p class="subtitle">
+            Die ultimative Sammlung von Gesellschaftsspielen für unvergessliche Abende mit Freunden und Familie.
+          </p>
+          <div class="hero-cta">
+            <button class="btn primary" id="startBtn">Spiele starten →</button>
+            <button class="btn secondary" id="learnMore">Mehr erfahren</button>
+          </div>
+        </header>
+
+        <section class="games">
+          <h2>Wähle dein Lieblingsspiel</h2>
+          <p class="hint">Vier verschiedene Spielmodi für jeden Anlass und jede Stimmung</p>
+
+          <div class="card-grid" id="game-list">
+            <!-- dynamische Karten -->
+          </div>
+        </section>
+
+        <section class="why">
+          <h2>Warum GameCircle?</h2>
+          <p class="why-sub">Kurz, smart und für jede Runde — Darum lohnt sich GameCircle.</p>
+          <div class="why-grid">
+            <div class="why-card">
+              <div class="why-icon">🔒</div>
+              <h3>Privat & sicher</h3>
+              <p>Optionales Login & sichere Speicherung deiner Statistiken — oder lokal, wenn du das willst.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-icon">⚡</div>
+              <h3>Schnell starten</h3>
+              <p>Fertige Spielmodi, One-Click-Start und anpassbare Runden — ideal für spontane Abende.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-icon">🤝</div>
+              <h3>Für Gruppen gemacht</h3>
+              <p>Flexible Spieleranzahl, Gender-Filter, Gruppentexte und dynamische Fragen.</p>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- SPIELE PAGE -->
+      <section id="page-games" class="page hidden">
+        <h2>Unsere Spiele</h2>
+        <div class="games-grid" id="games-grid">
+          <!-- dynamische Karten für Spiele -->
+        </div>
+      </section>
+
+      <footer class="footer">
+        <small>© <span id="year"></span> GameCircle — made with ❤️</small>
+      </footer>
+    </main>
+  </div>
+
+  <!-- LOGIN / STATISTICS MODAL -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h3 id="modalTitle">Login & Statistiken</h3>
+
+      <div id="loginArea">
+        <label>
+          Benutzername
+          <input type="text" id="username" placeholder="Dein Name" />
+        </label>
+        <div class="login-actions">
+          <button id="saveUser" class="btn primary">Speichern</button>
+          <button id="logoutBtn" class="btn secondary">Ausloggen (lokal)</button>
+        </div>
+        <p class="muted">Das ist eine einfache Demo — deine Daten bleiben lokal in diesem Browser.</p>
+      </div>
+
+      <hr />
+
+      <div id="statsArea">
+        <h4>Deine Statistiken (Demo)</h4>
+        <div id="statsList">
+          <!-- dynamisch -->
+        </div>
+        <div class="stat-actions">
+          <button id="exportStats" class="btn">Export (JSON)</button>
+          <button id="importStats" class="btn">Import (JSON)</button>
+          <input id="importFile" type="file" accept="application/json" class="hidden" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

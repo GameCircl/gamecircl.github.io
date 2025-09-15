@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Wahrheit oder Pflicht",
+    "desc": "Klassiker für mutige Runden",
+    "players": "2-12 Spieler",
+    "color": "#ff7675",
+    "tags": ["Mut & Grenzen", "Party", "Spaß"]
+  },
+  {
+    "title": "Wer würde eher",
+    "desc": "Lustige Vermutungen über Freunde",
+    "players": "3-10 Spieler",
+    "color": "#0984e3",
+    "tags": ["Lustig", "Freunde", "Kurzweilig"]
+  },
+  {
+    "title": "Ich hab noch nie",
+    "desc": "Erfahrt mehr übereinander",
+    "players": "3-15 Spieler",
+    "color": "#a29bfe",
+    "tags": ["Party", "Geständnisse", "Spaß"]
+  },
+  {
+    "title": "Entweder/Oder",
+    "desc": "Schnelle Entscheidungen",
+    "players": "2-8 Spieler",
+    "color": "#00b894",
+    "tags": ["Schnell", "Party", "Entscheidungen"]
+  },
+  {
+    "title": "Team-Duelle",
+    "desc": "Zwei Teams treten gegeneinander an",
+    "players": "4-20 Spieler",
+    "color": "#fdcb6e",
+    "tags": ["Team", "Competition", "Spaß"]
+  },
+  {
+    "title": "Quiz-Show",
+    "desc": "Wer sammelt am meisten Punkte?",
+    "players": "2-8 Spieler",
+    "color": "#e17055",
+    "tags": ["Wissen", "Raten", "Challenge"]
+  },
+  {
+    "title": "Melodien-Raten",
+    "desc": "Errate den Song in 10 Sekunden",
+    "players": "2-12 Spieler",
+    "color": "#6c5ce7",
+    "tags": ["Musik", "Schnell", "Spaß"]
+  },
+  {
+    "title": "Foto-Challenge",
+    "desc": "Kreative Fotoaufgaben für Punkte",
+    "players": "2-20 Spieler",
+    "color": "#00a8ff",
+    "tags": ["Kreativ", "Challenge", "Gruppen"]
+  }
+]
