@@ -14,6 +14,7 @@ const saveUser = document.getElementById('saveUser');
 const logoutBtn = document.getElementById('logoutBtn');
 const usernameInput = document.getElementById('username');
 const startBtn = document.getElementById('startBtn');
+const sidebarOverlayEl = document.getElementById('sidebarOverlay');
 
 /* -------------------------
    DATEN LADEN
@@ -83,18 +84,14 @@ function renderGamesPage() {
 /* -------------------------
    SIDEBAR MOBILE TOGGLE & OVERLAY
 ------------------------- */
-const sidebarOverlayEl = document.createElement('div');
-sidebarOverlayEl.classList.add('sidebar-overlay');
-document.body.appendChild(sidebarOverlayEl);
-
 if(sidebarToggle){
   sidebarToggle.addEventListener('click', ()=>{
     sidebar.classList.add('open');
-    sidebarOverlayEl.classList.add('active');
+    sidebarOverlayEl.classList.remove('hidden');
   });
   sidebarOverlayEl.addEventListener('click', ()=>{
     sidebar.classList.remove('open');
-    sidebarOverlayEl.classList.remove('active');
+    sidebarOverlayEl.classList.add('hidden');
   });
 }
 
@@ -105,7 +102,7 @@ sidebar.addEventListener('touchmove', e => {
   let diff = e.touches[0].clientX - startX;
   if(diff < -50){ // swipe left
     sidebar.classList.remove('open');
-    sidebarOverlayEl.classList.remove('active');
+    sidebarOverlayEl.classList.add('hidden');
   }
 });
 
@@ -170,23 +167,12 @@ saveUser.addEventListener('click', ()=>{
 
 logoutBtn.addEventListener('click', ()=>{
   localStorage.removeItem('gc_user');
-  miniName.textContent='GameCircle';
+  miniName.textContent = 'Gast';
 });
 
 /* -------------------------
-   USER INIT
+   START BUTTON (Beispiel)
 ------------------------- */
-const savedUser = localStorage.getItem('gc_user');
-if(savedUser) miniName.textContent = savedUser;
-
-/* -------------------------
-   FOOTER YEAR
-------------------------- */
-document.getElementById('year').textContent = new Date().getFullYear();
-
-/* -------------------------
-   START BUTTON
-------------------------- */
-startBtn.addEventListener('click', ()=>{
-  alert('Hier würde das Spiel starten!');
+startBtn?.addEventListener('click', ()=>{
+  alert('Spiel starten...');
 });
