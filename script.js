@@ -6,7 +6,6 @@ const gamesGrid = document.getElementById('games-grid');
 const root = document.documentElement;
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebarToggle');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
 const miniName = document.getElementById('miniName');
 const openLogin = document.getElementById('openLogin');
 const modal = document.getElementById('modal');
@@ -14,10 +13,6 @@ const modalClose = document.getElementById('modalClose');
 const saveUser = document.getElementById('saveUser');
 const logoutBtn = document.getElementById('logoutBtn');
 const usernameInput = document.getElementById('username');
-const statsList = document.getElementById('statsList');
-const exportStats = document.getElementById('exportStats');
-const importStats = document.getElementById('importStats');
-const importFile = document.getElementById('importFile');
 const startBtn = document.getElementById('startBtn');
 
 /* -------------------------
@@ -86,27 +81,39 @@ function renderGamesPage() {
 }
 
 /* -------------------------
-   SIDEBAR MOBILE TOGGLE
+   SIDEBAR MOBILE TOGGLE & OVERLAY
 ------------------------- */
-if(sidebarToggle && sidebarOverlay){
+const sidebarOverlayEl = document.createElement('div');
+sidebarOverlayEl.classList.add('sidebar-overlay');
+document.body.appendChild(sidebarOverlayEl);
+
+if(sidebarToggle){
   sidebarToggle.addEventListener('click', ()=>{
-    sidebar.style.transform = 'translateX(0)';
-    sidebarOverlay.classList.remove('hidden');
+    sidebar.classList.add('open');
+    sidebarOverlayEl.classList.add('active');
   });
-  sidebarOverlay.addEventListener('click', ()=>{
-    sidebar.style.transform = 'translateX(-100%)';
-    sidebarOverlay.classList.add('hidden');
+  sidebarOverlayEl.addEventListener('click', ()=>{
+    sidebar.classList.remove('open');
+    sidebarOverlayEl.classList.remove('active');
   });
 }
+
+/* optional: swipe to close */
+let startX = 0;
+sidebar.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+sidebar.addEventListener('touchmove', e => {
+  let diff = e.touches[0].clientX - startX;
+  if(diff < -50){ // swipe left
+    sidebar.classList.remove('open');
+    sidebarOverlayEl.classList.remove('active');
+  }
+});
 
 /* -------------------------
    THEME SLIDER MIT SMOOTH TRANSITION
 ------------------------- */
 const themePoints = document.querySelectorAll('.theme-points span');
 const themeMarker = document.getElementById('themeMarker');
-const themeCycle = ['auto','light','dark'];
-
-if(themeMarker) themeMarker.style.transition = 'left 0.3s ease';
 
 function setMarker(point){
   const rect = point.getBoundingClientRect();
@@ -130,31 +137,37 @@ function applyTheme(mode){
 }
 
 themePoints.forEach(p => p.addEventListener('click', ()=>applyTheme(p.dataset.mode)));
-
-// initial theme
 let savedTheme = localStorage.getItem('gc-theme') || 'auto';
 applyTheme(savedTheme);
-
-// auto update on system change
 if(savedTheme==='auto'){
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>applyTheme('auto'));
 }
-
-// optional: beim Resize Marker neu setzen
 window.addEventListener('resize', ()=>applyTheme(localStorage.getItem('gc-theme') || 'auto'));
 
 /* -------------------------
    LOGIN MODAL
 ------------------------- */
-openLogin.addEventListener('click', ()=>{ modal.classList.remove('hidden'); modal.setAttribute('aria-hidden','false'); });
-modalClose.addEventListener('click', ()=>{ modal.classList.add('hidden'); modal.setAttribute('aria-hidden','true'); });
+openLogin.addEventListener('click', ()=>{
+  modal.classList.remove('hidden');
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+});
+
+modalClose.addEventListener('click', ()=>{
+  modal.classList.remove('show');
+  setTimeout(()=> modal.classList.add('hidden'), 250);
+  modal.setAttribute('aria-hidden','true');
+});
+
 saveUser.addEventListener('click', ()=>{
   const name = usernameInput.value.trim();
   if(!name) return alert('Bitte Name eingeben');
   localStorage.setItem('gc_user', name);
   miniName.textContent = name;
-  modal.classList.add('hidden');
+  modal.classList.remove('show');
+  setTimeout(()=> modal.classList.add('hidden'), 250);
 });
+
 logoutBtn.addEventListener('click', ()=>{
   localStorage.removeItem('gc_user');
   miniName.textContent='GameCircle';
