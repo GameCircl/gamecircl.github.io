@@ -100,12 +100,20 @@ if(sidebarToggle && sidebarOverlay){
 }
 
 /* -------------------------
-   THEME SLIDER
+   THEME SLIDER MIT SMOOTH TRANSITION
 ------------------------- */
 const themePoints = document.querySelectorAll('.theme-points span');
 const themeMarker = document.getElementById('themeMarker');
 const themeCycle = ['auto','light','dark'];
-const themePositions = [0, 36, 72]; // px
+
+if(themeMarker) themeMarker.style.transition = 'left 0.3s ease';
+
+function setMarker(point){
+  const rect = point.getBoundingClientRect();
+  const parentRect = point.parentElement.getBoundingClientRect();
+  const left = rect.left - parentRect.left + rect.width/2 - themeMarker.offsetWidth/2;
+  themeMarker.style.left = left + 'px';
+}
 
 function applyTheme(mode){
   if(mode==='auto'){
@@ -114,14 +122,14 @@ function applyTheme(mode){
   } else {
     root.setAttribute('data-theme', mode);
   }
-  themePoints.forEach(p => p.classList.toggle('active', p.dataset.mode === mode));
-  if(themeMarker) themeMarker.style.left = themePositions[themeCycle.indexOf(mode)]+'px';
+  themePoints.forEach(p=>{
+    p.classList.toggle('active', p.dataset.mode===mode);
+    if(p.dataset.mode===mode) setMarker(p);
+  });
   localStorage.setItem('gc-theme', mode);
 }
 
-themePoints.forEach(p => {
-  p.addEventListener('click', ()=>applyTheme(p.dataset.mode));
-});
+themePoints.forEach(p => p.addEventListener('click', ()=>applyTheme(p.dataset.mode)));
 
 // initial theme
 let savedTheme = localStorage.getItem('gc-theme') || 'auto';
@@ -131,6 +139,9 @@ applyTheme(savedTheme);
 if(savedTheme==='auto'){
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>applyTheme('auto'));
 }
+
+// optional: beim Resize Marker neu setzen
+window.addEventListener('resize', ()=>applyTheme(localStorage.getItem('gc-theme') || 'auto'));
 
 /* -------------------------
    LOGIN MODAL
