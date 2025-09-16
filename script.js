@@ -173,9 +173,15 @@ logoutBtn.addEventListener('click', ()=>{
   miniName.textContent = 'Gast';
 });
 
+
+
 /* -------------------------
-   START BUTTON (Beispiel)
+   ÜBER- und START BUTTON (LINKS)
 ------------------------- */
-startBtn?.addEventListener('click', ()=>{
-  alert('Spiel starten...');
+document.getElementById("startBtn").addEventListener("click", () => {
+  window.location.href = "spiele.html";
+});
+
+document.getElementById("learnMore").addEventListener("click", () => {
+  window.location.href = "über.html";
 });
