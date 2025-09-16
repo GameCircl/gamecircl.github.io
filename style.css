@@ -79,12 +79,19 @@ body { background:var(--bg); color:var(--text); }
 
 /* SIDEBAR BOTTOM */
 .sidebar-bottom { display:flex; flex-direction:column; gap:10px; }
-.theme-row { margin-bottom:1rem; }
-.theme-points { position:relative; display:flex; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
-.theme-points span { flex:1; text-align:center; padding:.5rem; cursor:pointer; font-size:.85rem; }
+.theme-row { display:flex; align-items:center; justify-content:center; margin-bottom:10px; cursor:pointer; }
+.theme-points { position:relative; display:flex; gap:24px; font-size:12px; color:var(--muted); font-weight:600; }
+.theme-points span { cursor:pointer; transition: color 0.2s; }
+.theme-points span.active { color:var(--accent); }
+
 .theme-marker {
-  position:absolute; bottom:0; left:0; height:3px; width:33.33%; background:var(--primary);
-  transition:transform 0.3s ease;
+  position:absolute;
+  bottom:-6px;
+  width:8px; height:8px;
+  border-radius:50%;
+  background:var(--accent);
+  transition: left 0.25s ease;
+  left:0;
 }
 
 /* Status mini unten */
