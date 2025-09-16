@@ -43,11 +43,7 @@
 ------------------------- */
 html,body { height:100%; font-family:"Inter",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
 body { background:var(--bg); color:var(--text); }
-.app {
-  display: flex;
-  flex-direction: column; /* Hauptachse vertikal */
-  min-height: 100vh;      /* volle Höhe des Viewports */
-}
+.app { display:flex; min-height:100vh; }
 
 /* -------------------------
    SIDEBAR
@@ -135,10 +131,7 @@ body { background:var(--bg); color:var(--text); }
 /* -------------------------
    MAIN
 ------------------------- */
-.main {
-  flex: 1;                /* nimmt den restlichen Platz ein */
-  padding: 2rem;
-}
+.main { flex:1; padding:28px; overflow:auto; min-height:100vh; }
 
 /* HERO */
 .hero { text-align:center; padding-top:14px; padding-bottom:26px; }
