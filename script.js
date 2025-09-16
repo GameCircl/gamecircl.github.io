@@ -106,40 +106,43 @@ sidebar.addEventListener('touchmove', e => {
   }
 });
 
-/* -------------------------
-   THEME SLIDER MIT SMOOTH TRANSITION
-------------------------- */
-const themePoints = document.querySelectorAll('.theme-points span');
-const themeMarker = document.getElementById('themeMarker');
+// ===== THEME SWITCHER =====
+const themePoints = document.querySelectorAll(".theme-points span");
+const themeMarker = document.getElementById("themeMarker");
 
-function setMarker(point){
-  const rect = point.getBoundingClientRect();
-  const parentRect = point.parentElement.getBoundingClientRect();
-  const left = rect.left - parentRect.left + rect.width/2 - themeMarker.offsetWidth/2;
-  themeMarker.style.left = left + 'px';
-}
-
-function applyTheme(mode){
-  if(mode==='auto'){
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    root.setAttribute('data-theme', prefersDark?'dark':'light');
+// Setzt Theme und Marker
+function setTheme(mode) {
+  if (mode === "auto") {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
   } else {
-    root.setAttribute('data-theme', mode);
+    document.documentElement.setAttribute("data-theme", mode);
   }
-  themePoints.forEach(p=>{
-    p.classList.toggle('active', p.dataset.mode===mode);
-    if(p.dataset.mode===mode) setMarker(p);
-  });
-  localStorage.setItem('gc-theme', mode);
+  localStorage.setItem("gc-theme", mode);
+
+  const indexMap = { auto: 0, light: 1, dark: 2 };
+  const index = indexMap[mode] ?? 0;
+  themeMarker.style.transform = `translateX(${index * 100}%)`;
 }
 
-themePoints.forEach(p => p.addEventListener('click', ()=>applyTheme(p.dataset.mode)));
-let savedTheme = localStorage.getItem('gc-theme') || 'auto';
-applyTheme(savedTheme);
-if(savedTheme==='auto'){
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>applyTheme('auto'));
-}
-window.addEventListener('resize', ()=>applyTheme(localStorage.getItem('gc-theme') || 'auto'));
+// Klicks auf die Theme-Buttons
+themePoints.forEach(span => {
+  span.addEventListener("click", () => {
+    const mode = span.dataset.mode;
+    setTheme(mode);
+  });
+});
+
+// Lade gespeichertes Theme
+let savedTheme = localStorage.getItem("gc-theme") || "auto";
+setTheme(savedTheme);
+
+// Reagiert auf System-Theme-Änderung, wenn Auto aktiv ist
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+  if (localStorage.getItem("gc-theme") === "auto") {
+    setTheme("auto");
+  }
+});
 
 /* -------------------------
    LOGIN MODAL
