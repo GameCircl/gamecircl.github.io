@@ -178,14 +178,15 @@ logoutBtn.addEventListener('click', ()=>{
 /* -------------------------
    ÜBER- und START BUTTON (LINKS)
 ------------------------- */
-document.getElementById("startBtn").addEventListener("click", () => {
+
+startBtn?.addEventListener('click', ()=>{
   window.location.href = "spiele.html";
 });
 
-document.getElementById("learnMore").addEventListener("click", () => {
+learnMore?.addEventListener('click', ()=>{
   window.location.href = "über.html";
 });
 
-document.getElementById("homeBtn").addEventListener("click", () => {
+homeBtn?.addEventListener('click', ()=>{
   window.location.href = "index.html";
 });
