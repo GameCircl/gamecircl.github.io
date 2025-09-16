@@ -185,3 +185,7 @@ document.getElementById("startBtn").addEventListener("click", () => {
 document.getElementById("learnMore").addEventListener("click", () => {
   window.location.href = "über.html";
 });
+
+document.getElementById("homeBtn").addEventListener("click", () => {
+  window.location.href = "index.html";
+});
