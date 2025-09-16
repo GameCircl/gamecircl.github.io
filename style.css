@@ -42,8 +42,13 @@
    BASIC LAYOUT
 ------------------------- */
 html,body { height:100%; font-family:"Inter",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
-body { background:var(--bg); color:var(--text); }
-.app { display:flex; min-height:100vh; }
+body { background:var(--bg); color:var(--text); margin:0; padding:0; }
+
+.app {
+  display: flex;
+  flex-direction: column; /* vertikal */
+  min-height: 100vh;      /* volle Höhe */
+}
 
 /* -------------------------
    SIDEBAR
@@ -79,7 +84,6 @@ body { background:var(--bg); color:var(--text); }
 
 /* SIDEBAR BOTTOM */
 .sidebar-bottom { display:flex; flex-direction:column; gap:10px; }
-
 
 /* -------------------------
    THEME SWITCHER
@@ -131,7 +135,11 @@ body { background:var(--bg); color:var(--text); }
 /* -------------------------
    MAIN
 ------------------------- */
-.main { flex:1; padding:28px; overflow:auto; min-height:100vh; }
+.main { 
+  flex: 1;           /* Füllt den verfügbaren Platz */
+  padding:28px; 
+  overflow:auto;
+}
 
 /* HERO */
 .hero { text-align:center; padding-top:14px; padding-bottom:26px; }
@@ -169,7 +177,12 @@ body { background:var(--bg); color:var(--text); }
 .why-sub { color:var(--muted); }
 
 /* FOOTER */
-.footer { margin-top:28px; text-align:center; color:var(--muted); }
+.footer { 
+  margin-top: auto;  /* sorgt dafür, dass Footer am unteren Rand bleibt */
+  text-align: center; 
+  color: var(--muted); 
+  padding: 18px 0;
+}
 
 /* MODAL */
 .modal.hidden { display:none; }
