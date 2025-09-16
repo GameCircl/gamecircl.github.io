@@ -43,7 +43,11 @@
 ------------------------- */
 html,body { height:100%; font-family:"Inter",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
 body { background:var(--bg); color:var(--text); }
-.app { display:flex; min-height:100vh; }
+.app {
+  display: flex;
+  flex-direction: column; /* Hauptachse vertikal */
+  min-height: 100vh;      /* volle Höhe des Viewports */
+}
 
 /* -------------------------
    SIDEBAR
@@ -229,7 +233,10 @@ input[type="text"]{ width:100%; padding:10px; border-radius:8px; border:1px soli
   #sidebarOverlay.hidden { display:none; }
 
   .hamburger { display:inline-block; }
-  .main { padding:14px; }
+  .main {
+  flex: 1;                /* nimmt den restlichen Platz ein */
+  padding: 2rem;
+}
   .card-grid, .games-grid { grid-template-columns: 1fr; }
   .why-grid { flex-direction:column; align-items:center; }
 }
