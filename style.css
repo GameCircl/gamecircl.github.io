@@ -135,7 +135,10 @@ body { background:var(--bg); color:var(--text); }
 /* -------------------------
    MAIN
 ------------------------- */
-.main { flex:1; padding:28px; overflow:auto; min-height:100vh; }
+.main {
+  flex: 1;                /* nimmt den restlichen Platz ein */
+  padding: 2rem;
+}
 
 /* HERO */
 .hero { text-align:center; padding-top:14px; padding-bottom:26px; }
@@ -233,10 +236,7 @@ input[type="text"]{ width:100%; padding:10px; border-radius:8px; border:1px soli
   #sidebarOverlay.hidden { display:none; }
 
   .hamburger { display:inline-block; }
-  .main {
-  flex: 1;                /* nimmt den restlichen Platz ein */
-  padding: 2rem;
-}
+  .main { padding:14px; }
   .card-grid, .games-grid { grid-template-columns: 1fr; }
   .why-grid { flex-direction:column; align-items:center; }
 }
