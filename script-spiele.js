@@ -132,15 +132,15 @@ openWhy && openWhy.addEventListener('click', () => {
 });
 
 /* -------------------------
-   LOAD MODES (modes.json)
+   LOAD MODES (modes-spiele.json)
 ------------------------- */
 async function loadModes() {
   try {
-    const res = await fetch('modes.json', {cache: "no-store"});
+    const res = await fetch('modes-spiele.json', {cache: "no-store"});
     const data = await res.json();
     renderModes(data.modes || []);
   } catch (err) {
-    console.error('Fehler beim Laden der modes.json', err);
+    console.error('Fehler beim Laden der modes-spiele.json', err);
     gamesGrid.innerHTML = '<p style="color:var(--muted)">Fehler beim Laden der Spielmodi.</p>';
   }
 }
