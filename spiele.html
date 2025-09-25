@@ -39,13 +39,13 @@
           </div>
         </div>
 
-      <nav class="nav">
-        <a href="index.html" class="nav-link">🏠 Home</a>
-        <a href="spiele.html" class="nav-link active">🎮 Spiele</a>
-        <a href="stats.html" class="nav-link">❗ Updates & News</a>
-        <a href="über.html" class="nav-link">ℹ️ Über GameCircl</a>
-        <a href="impressum.html" class="nav-link">📜 Impressum</a>
-      </nav>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">🏠 Home</a>
+          <a href="spiele.html" class="nav-link active">🎮 Spiele</a>
+          <a href="stats.html" class="nav-link">❗ Updates & News</a>
+          <a href="über.html" class="nav-link">ℹ️ Über GameCircl</a>
+          <a href="impressum.html" class="nav-link">📜 Impressum</a>
+        </nav>
       </div>
 
       <div class="sidebar-bottom">
@@ -56,7 +56,6 @@
             <span data-mode="dark">Dunkel</span>
             <div class="theme-marker" id="themeMarker"></div>
           </div>
-          <div style="font-size:12px;color:var(--muted);margin-top:6px">Theme: <span id="themeLabel">Auto</span></div>
         </div>
 
         <div class="status-mini" id="statusMini">
@@ -72,24 +71,20 @@
 
     <!-- MAIN -->
     <main class="main" id="main">
-      <header class="hero">
-        <div style="display:flex;align-items:center; gap:12px; justify-content:flex-start;">
-          <button class="back-btn" id="backBtn" aria-label="Zurück">←</button>
-          <div>
-            <h1 class="title">Wähle dein Spiel</h1>
-            <p class="subtitle">Sieben verschiedene Spielmodi für jeden Anlass</p>
-          </div>
+      <header class="hero hero-games">
+        <div class="hero-text">
+          <h1 class="title">Wähle dein Spiel</h1>
+          <p class="subtitle">Sieben verschiedene Spielmodi für jeden Anlass</p>
         </div>
-
-          <div class="hero-cta">
-            <button class="btn primary" id="startBtn">Home →</button>
-            <button class="btn secondary" id="learnMore">Mehr erfahren</button>
-          </div>
+        <div class="hero-cta">
+          <button class="btn primary" id="startBtn">Home →</button>
+          <button class="btn secondary" id="learnMore">Mehr erfahren</button>
+        </div>
       </header>
 
       <!-- GAMES GRID -->
       <section class="games-grid" id="gamesGrid">
-        <!-- Karten werden per script.js eingefügt -->
+        <!-- Karten werden per script eingefügt -->
       </section>
 
       <footer class="footer">
@@ -101,6 +96,7 @@
   <!-- SIDEBAR OVERLAY for mobile -->
   <div id="sidebarOverlay" class="hidden" aria-hidden="true"></div>
 
+  <!-- LOGIN / STATISTICS MODAL -->
   <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-panel">
       <button class="modal-close" id="modalClose">✕</button>
@@ -138,6 +134,6 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script-spiele.js"></script>
 </body>
 </html>
