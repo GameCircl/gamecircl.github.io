@@ -5,16 +5,12 @@ const hamburger = document.getElementById('hamburger');
 const sidebarOverlay = document.getElementById('sidebarOverlay');
 const themePoints = document.getElementById('themePoints');
 const themeMarker = document.getElementById('themeMarker');
-const themeLabel = document.getElementById('themeLabel');
 const statusMini = document.getElementById('statusMini');
 const miniName = document.getElementById('miniName');
 const miniAvatar = document.getElementById('miniAvatar');
 const openProfile = document.getElementById('openProfile');
 const modal = document.getElementById('modal');
 const modalClose = document.getElementById('modalClose');
-const profileName = document.getElementById('profileName');
-const saveProfile = document.getElementById('saveProfile');
-const clearProfile = document.getElementById('clearProfile');
 
 yearEl.textContent = new Date().getFullYear();
 
@@ -65,53 +61,19 @@ function loadProfile(){
     miniName.textContent=user.name;
     miniAvatar.textContent=user.name.charAt(0).toUpperCase();
   } else {
-    miniName.textContent='GameCircle';
+    miniName.textContent='GameCircl';
     miniAvatar.textContent='G';
   }
 }
 openProfile.addEventListener('click',()=>{
   modal.classList.remove('hidden');
   modal.setAttribute('aria-hidden','false');
-  const user = JSON.parse(localStorage.getItem('gc-user')||'null');
-  profileName.value = user?user.name:'';
 });
 modalClose.addEventListener('click',()=>{
   modal.classList.add('hidden');
   modal.setAttribute('aria-hidden','true');
 });
-saveProfile.addEventListener('click',()=>{
-  const name = profileName.value.trim();
-  if(!name){ alert('Bitte gib einen Namen ein'); return; }
-  const user = { name, id:'u_'+Date.now() };
-  localStorage.setItem('gc-user',JSON.stringify(user));
-  loadProfile();
-  modal.classList.add('hidden');
-});
-clearProfile.addEventListener('click',()=>{
-  if(confirm('Lokales Profil wirklich entfernen?')){
-    localStorage.removeItem('gc-user');
-    loadProfile();
-    modal.classList.add('hidden');
-  }
-});
 loadProfile();
-
-
-/* -------------------------
-   SCROLL ANIMATION UND FADE-IN
-------------------------- */
-const cards = document.querySelectorAll('.card');
-const observer = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
-    }
-  });
-},{threshold:0.1});
-cards.forEach(c=>observer.observe(c));
-
-
 
 /* -------------------------
    LOAD MODES
@@ -142,17 +104,30 @@ function renderModes(list){
     card.style.animationDelay=(i*80)+'ms';
     card.innerHTML=`
       <div class="card-img">
-        <img src="${m.image}" alt="${m.name}" />
+        <img src="bilder/${m.id}.png" alt="${m.title}" />
       </div>
       <div class="card-body">
-        <h3>${m.name}</h3>
+        <h3>${m.title}</h3>
         <p>${m.desc}</p>
         <div class="stars">${starsHTML(m.rating)}</div>
         <button class="btn primary start-game">▶ Spiel starten</button>
       </div>
     `;
-    card.querySelector('.start-game')?.addEventListener('click',()=>alert(`Starte ${m.name}!`));
+    card.querySelector('.start-game')?.addEventListener('click',()=>alert(`Starte ${m.title}!`));
     gamesGrid.appendChild(card);
   });
+
+  /* IntersectionObserver für fade-in */
+  const cards = document.querySelectorAll('.card');
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.1});
+  cards.forEach(c=>observer.observe(c));
 }
+
 loadModes();
