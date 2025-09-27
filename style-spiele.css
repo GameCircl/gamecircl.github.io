@@ -25,6 +25,20 @@
   --card-shadow:0 12px 40px rgba(0,0,0,0.45);
 }
 
+
+/* -------------------------
+   DARK MODE FIXES
+------------------------- */
+[data-theme="dark"] .modal-close {
+  color: #fff;
+}
+[data-theme="dark"] .nav-link.active,
+[data-theme="dark"] .nav-link:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+
 /* -------------------------
    BASIC LAYOUT
 ------------------------- */
@@ -39,6 +53,7 @@ body { background:var(--bg); color:var(--text); }
   flex-direction:row; 
   height:100vh;
 }
+
 
 /* -------------------------
    SIDEBAR
