@@ -69,12 +69,6 @@ body { background:var(--bg); color:var(--text); }
   padding:14px; 
   gap:12px; 
 }
-.sidebar > div:first-child {
-  display:flex; 
-  flex-direction:column; 
-  justify-content:center; /* zentriert die Hauptlinks */
-  flex:1;
-}
 .logo-row { display:flex; align-items:center; gap:10px; }
 .hamburger { display:none; border:0; background:transparent; font-size:20px; cursor:pointer; z-index:210; position:relative; }
 .logo { display:flex; gap:10px; align-items:center; }
