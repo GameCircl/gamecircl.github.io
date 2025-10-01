@@ -25,8 +25,8 @@
   justify-content: space-between;
   background: var(--surface);
   border-radius: 14px;
-  padding: 0; /* Padding verschoben in inner wrapper */
-  min-height: 260px;
+  padding: 0;
+  min-height: 340px; /* feste Höhe für alle Karten */
   border: 1px solid var(--border);
   box-shadow: var(--card-shadow);
   transition: transform .18s ease, box-shadow .18s ease;
@@ -49,12 +49,28 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
+/* Oberer farbiger Bereich (Hintergrund) */
+.card-top-color {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* feste Höhe für farbige Box */
+  z-index: 0;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg,var(--accent),var(--accent2)); /* dynamisch per JS */
+}
+
+/* Titel und Icon */
 .card-title-wrapper {
   display: flex;
   align-items: center;
   gap: 12px;
+  position: relative;
+  z-index: 1;
 }
 
 .pill {
@@ -89,6 +105,8 @@
   height: 1px;
   background: rgba(0,0,0,0.08);
   margin: 8px 0;
+  position: relative;
+  z-index: 1;
 }
 
 /* -------------------------
@@ -102,6 +120,8 @@
   padding: 4px;
   border-radius: 6px;
   transition: background 0.15s ease;
+  position: relative;
+  z-index: 1;
 }
 .card-info-btn:hover {
   background: rgba(0,0,0,0.05);
@@ -116,6 +136,8 @@
   color: var(--muted);
   font-size: 14px;
   line-height: 1.35;
+  position: relative;
+  z-index: 1;
 }
 
 /* -------------------------
@@ -146,6 +168,8 @@
   justify-content: space-between;
   gap: 12px;
   padding: 0 16px 16px 16px;
+  position: relative;
+  z-index: 1;
 }
 
 .meta {
@@ -205,11 +229,11 @@
    Responsive
 ------------------------- */
 @media (max-width:900px){
-  .card { min-height: 240px; }
+  .card { min-height: 300px; }
 }
 
 @media (max-width:720px){
-  .card { min-height: 200px; }
+  .card { min-height:260px; }
   .card-grid { gap:12px; padding:6px; }
 }
 
