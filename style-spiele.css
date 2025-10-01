@@ -1,199 +1,221 @@
 /* -------------------------
-   Spiele-Seite — luftigere, gleich hohe Karten + zentrierte Sidebar
+   Spiele-Seite — komplett überarbeitet
 ------------------------- */
 
-/* Games section padding */
+/* Card grid padding override for full-width look */
 .games {
-  padding: 0 12px;
+  padding: 0 8px;
 }
 
-/* Card grid layout */
+/* grid uses the same class used auf der Startseite (card-grid) */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
   margin-top: 24px;
   padding: 8px;
-  align-items: stretch; /* wichtig für gleiche Höhe */
 }
 
-/* Card styling */
+/* -------------------------
+   CARD
+------------------------- */
 .card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background: var(--surface);
-  border-radius: 16px;
-  padding: 20px;
-  min-height: 260px; /* Basis-Höhe für alle Karten */
+  border-radius: 14px;
+  padding: 0; /* Padding verschoben in inner wrapper */
+  min-height: 260px;
   border: 1px solid var(--border);
   box-shadow: var(--card-shadow);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition: transform .18s ease, box-shadow .18s ease;
   position: relative;
   overflow: hidden;
 }
 
-/* Light mode extra Abhebung */
-[data-theme="light"] .card {
-  background: #ffffff;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-
-/* subtle glass-top accent */
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 30%);
-}
-
-/* Card hover effect */
+/* hover effect */
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 26px 48px rgba(0,0,0,0.18);
+  transform: translateY(-6px);
+  box-shadow: 0 28px 56px rgba(0,0,0,0.18);
 }
 
-/* Card top row */
-.card-top {
+/* -------------------------
+   CARD TOP — farbiger Bereich + Titel + Info
+------------------------- */
+.card-top-bg {
+  border-radius: 14px 14px 0 0;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 10px;
+  justify-content: space-between;
 }
 
-/* Icon pill */
+.card-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .pill {
-  width: 60px;
-  height: 60px;
-  border-radius: 14px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   font-weight: 800;
-  font-size: 22px;
+  font-size: 20px;
   flex-shrink: 0;
 }
 
-/* Title + short description */
 .card h3 {
   margin: 0;
-  font-size: 19px;
+  font-size: 18px;
   letter-spacing: -0.2px;
 }
+
 .card .short {
   margin-top: 6px;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--muted);
 }
 
-/* Body description area */
+/* -------------------------
+   Trennlinie
+------------------------- */
+.card-line {
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+  margin: 8px 0;
+}
+
+/* -------------------------
+   Info-Button
+------------------------- */
+.card-info-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+.card-info-btn:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+/* -------------------------
+   BODY
+------------------------- */
 .card-body {
-  margin-top: 14px;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.5;
+  padding: 0 16px 16px 16px;
   flex: 1;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.35;
 }
 
-/* Tags row */
+/* -------------------------
+   TAGS
+------------------------- */
 .tags {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
-  margin-top: 14px;
-}
-.tag-pill {
-  padding: 7px 12px;
-  border-radius: 999px;
-  font-size: 13px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(255,255,255,0.02));
-  color: var(--muted);
-  transition: transform 0.15s ease, background 0.15s ease;
-}
-.tag-pill:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(255,255,255,0.03));
+  margin-top: 12px;
 }
 
-/* Footer with meta + start button */
+.tag-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(255,255,255,0.02));
+  color: var(--muted);
+}
+
+/* -------------------------
+   CARD FOOTER
+------------------------- */
 .card-footer {
-  margin-top: 16px;
+  margin-top: 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
+  padding: 0 16px 16px 16px;
 }
+
 .meta {
   color: var(--muted);
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
 }
+
 .card-start {
-  padding: 12px 16px;
-  border-radius: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
   font-weight: 700;
   color: white;
   border: 0;
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition: transform .12s ease;
 }
-.card-start:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
-}
-.card-start:active {
-  transform: translateY(1px);
-}
+.card-start:active { transform: translateY(1px); }
 
-/* Rating small */
-.card-rating {
-  color: #f6c84c;
-  font-weight: 700;
-}
-
-/* Small responsive tweaks */
-@media (max-width: 900px) {
-  .card {
-    min-height: 240px;
-  }
-}
-@media (max-width: 720px) {
-  .card {
-    min-height: 210px;
-  }
-  .card-grid {
-    gap: 16px;
-    padding: 6px;
-  }
-}
-
-/* Why section consistency */
-.why {
-  padding: 18px;
-}
-.why-grid .why-card {
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-/* Pill color fallback */
-.pill.fallback {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
+/* -------------------------
+   CARD RATING
+------------------------- */
+.card-rating { 
+  color: #f6c84c; 
+  font-weight: 700; 
 }
 
 /* -------------------------
-   Sidebar: Nav-Links vertikal zentriert
+   Sidebar nav mittig
 ------------------------- */
+.sidebar > div:first-child {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .sidebar .nav {
   display: flex;
   flex-direction: column;
   justify-content: center; /* vertikal mittig */
-  height: 100%;
   gap: 12px;
+  flex-grow: 1;
+}
+
+/* -------------------------
+   Lightmode Card absetzen
+------------------------- */
+:root[data-theme="light"] .card {
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* -------------------------
+   Responsive
+------------------------- */
+@media (max-width:900px){
+  .card { min-height: 240px; }
+}
+
+@media (max-width:720px){
+  .card { min-height: 200px; }
+  .card-grid { gap:12px; padding:6px; }
+}
+
+/* -------------------------
+   Sonstiges / Fallbacks
+------------------------- */
+.pill.fallback { 
+  background: linear-gradient(90deg,var(--accent),var(--accent2)); 
 }

@@ -1,4 +1,4 @@
-/* script-spiele.js - Theme, Sidebar, Modal, JSON load, Stats */
+/* script-spiele.js - Theme, Sidebar, Modal, JSON load, Stats + Info-Button */
 
 /* ---- helpers ---- */
 const qs = s => document.querySelector(s);
@@ -32,9 +32,8 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 /* ====================
    THEME (auto/light/dark)
-   ==================== */
+==================== */
 function applyTheme(mode) {
-  // mode = 'auto'|'light'|'dark'
   if (mode === 'auto') {
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
@@ -52,15 +51,11 @@ function applyTheme(mode) {
 (function initTheme(){
   const saved = localStorage.getItem('gc-theme') || 'auto';
   applyTheme(saved);
-
-  // attach clicks
   if (themePoints) {
     qsa('.theme-points span').forEach(el => {
       el.addEventListener('click', () => applyTheme(el.dataset.mode));
     });
   }
-
-  // if auto, listen to system changes
   if (saved === 'auto' && window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => applyTheme('auto'));
   }
@@ -68,7 +63,7 @@ function applyTheme(mode) {
 
 /* ====================
    SIDEBAR mobile toggle
-   ==================== */
+==================== */
 if (sidebarToggle) {
   sidebarToggle.addEventListener('click', () => {
     sidebar.classList.toggle('open');
@@ -84,7 +79,7 @@ if (sidebarOverlay) {
 
 /* ====================
    PROFILE & STATS (local)
-   ==================== */
+==================== */
 function loadProfileUI() {
   const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
   if (user && user.name) {
@@ -222,24 +217,19 @@ if (importStats && importFile) {
 }
 
 /* ====================
-   Load spiele.json und render cards
-   ==================== */
+   Load spiele.json and render cards
+==================== */
 async function loadSpiele() {
   try {
     const res = await fetch('spiele.json', { cache: "no-store" });
     if (!res.ok) throw new Error('netzwerkfehler');
     const data = await res.json();
-    const list = data.spiele || data; // support array or object
+    const list = data.spiele || data; 
     renderSpiele(list);
   } catch (err) {
     console.error('Fehler beim Laden der spiele.json', err);
     if (gameList) gameList.innerHTML = `<p class="muted">Fehler beim Laden der Spielmodi.</p>`;
   }
-}
-
-function stars(n){
-  const full = Math.max(0, Math.min(5, Math.round(n||5)));
-  return '★'.repeat(full) + '☆'.repeat(5-full);
 }
 
 function renderSpiele(list){
@@ -254,20 +244,21 @@ function renderSpiele(list){
     const color2 = m.color2 || color1;
 
     el.innerHTML = `
-      <div class="card-top">
-        <div class="pill" style="background:linear-gradient(90deg, ${color1}, ${color2});">${m.icon || ''}</div>
-        <div style="display:flex;flex-direction:column">
-          <h3>${m.title}</h3>
-          <div class="short">${m.short || m.desc}</div>
+      <div class="card-top-bg" style="background:linear-gradient(180deg, ${color1}22, ${color2}22);">
+        <div class="card-title-wrapper">
+          <div class="pill" style="background:linear-gradient(90deg, ${color1}, ${color2});">${m.icon || ''}</div>
+          <div style="display:flex;flex-direction:column">
+            <h3>${m.title}</h3>
+            <div class="short">${m.short || m.desc}</div>
+          </div>
         </div>
-        <div style="margin-left:auto" class="card-rating" title="${m.rating || 5}">${stars(m.rating)}</div>
+        <button class="card-info-btn" title="Anleitung anzeigen">ℹ️</button>
       </div>
-
+      <div class="card-line"></div>
       <div class="card-body">
         <p>${m.desc}</p>
         <div class="tags">${(m.tags || []).map(t => `<span class="tag-pill">${t}</span>`).join('')}</div>
       </div>
-
       <div class="card-footer">
         <div class="meta info-left">
           <div>👥 ${m.players}</div>
@@ -280,41 +271,19 @@ function renderSpiele(list){
       </div>
     `;
 
-    // start button logic
+    // Start button
     el.querySelector('.card-start').addEventListener('click', () => {
-      const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
-      if (!user) {
-        // quick fallback: ask for username
-        const name = prompt('Gib deinen Namen ein (lokal gespeichert):');
-        if (name) {
-          const newUser = { name, id: 'u_' + Date.now() };
-          localStorage.setItem('gc-user', JSON.stringify(newUser));
-          loadProfileUI();
-        }
-      }
+      alert(`Spiel "${m.title}" starten!`);
+    });
 
-      // record play in local stats
-      const stats = JSON.parse(localStorage.getItem('gc-stats') || '{}');
-      const uid = (JSON.parse(localStorage.getItem('gc-user') || 'null') || { id: 'anon' }).id;
-      stats[uid] = stats[uid] || { plays: 0, wins: 0, last: null };
-      stats[uid].plays++;
-      stats[uid].last = new Date().toLocaleString();
-      localStorage.setItem('gc-stats', JSON.stringify(stats));
-      renderStats();
-
-      // simulate opening the game's page (if link provided)
-      if (m.link) {
-        window.location.href = m.link;
-      } else {
-        alert(`Starte Spiel: ${m.title}`);
-      }
+    // Info button
+    el.querySelector('.card-info-btn').addEventListener('click', () => {
+      alert(m.how || 'Keine Anleitung verfügbar.');
     });
 
     gameList.appendChild(el);
   });
 }
 
-/* initial load */
-document.addEventListener('DOMContentLoaded', () => {
-  loadSpiele();
-});
+/* initialize */
+loadSpiele();
