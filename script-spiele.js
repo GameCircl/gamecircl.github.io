@@ -1,133 +1,320 @@
-const gamesGrid = document.getElementById('gamesGrid');
-const yearEl = document.getElementById('year');
-const sidebar = document.getElementById('sidebar');
-const hamburger = document.getElementById('hamburger');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
-const themePoints = document.getElementById('themePoints');
-const themeMarker = document.getElementById('themeMarker');
-const statusMini = document.getElementById('statusMini');
-const miniName = document.getElementById('miniName');
-const miniAvatar = document.getElementById('miniAvatar');
-const openProfile = document.getElementById('openProfile');
-const modal = document.getElementById('modal');
-const modalClose = document.getElementById('modalClose');
+/* script-spiele.js - Theme, Sidebar, Modal, JSON load, Stats */
 
-yearEl.textContent = new Date().getFullYear();
+/* ---- helpers ---- */
+const qs = s => document.querySelector(s);
+const qsa = s => Array.from(document.querySelectorAll(s));
 
-/* -------------------------
-   THEME
-------------------------- */
-function applyTheme(mode){
-  if(mode==='auto'){
+/* ---- DOM refs ---- */
+const gameList = qs('#game-list');
+const yearEl = qs('#year');
+const sidebar = qs('#sidebar');
+const sidebarToggle = qs('#sidebarToggle');
+const sidebarOverlay = qs('#sidebarOverlay');
+const themePoints = qs('.theme-points');
+const themeMarker = qs('#themeMarker');
+const statusMini = qs('#miniStatus');
+const miniName = qs('#miniName');
+const miniAvatar = qs('#miniAvatar');
+
+const openLogin = qs('#openLogin');
+const modal = qs('#modal');
+const modalClose = qs('#modalClose');
+const usernameInput = qs('#username');
+const saveUser = qs('#saveUser');
+const logoutBtn = qs('#logoutBtn');
+const statsList = qs('#statsList');
+const exportStats = qs('#exportStats');
+const importStats = qs('#importStats');
+const importFile = qs('#importFile');
+
+/* set year */
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+/* ====================
+   THEME (auto/light/dark)
+   ==================== */
+function applyTheme(mode) {
+  // mode = 'auto'|'light'|'dark'
+  if (mode === 'auto') {
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', prefersDark?'dark':'light');
-    themeMarker.style.transform='translateX(0)';
-  } else if(mode==='light'){
-    document.documentElement.setAttribute('data-theme','light');
-    themeMarker.style.transform='translateX(100%)';
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    themeMarker.style.transform = 'translateX(0)';
+  } else if (mode === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    themeMarker.style.transform = 'translateX(100%)';
   } else {
-    document.documentElement.setAttribute('data-theme','dark');
-    themeMarker.style.transform='translateX(200%)';
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeMarker.style.transform = 'translateX(200%)';
   }
-  localStorage.setItem('gc-theme',mode);
+  localStorage.setItem('gc-theme', mode);
 }
 
-(function(){
-  const saved = localStorage.getItem('gc-theme')||'auto';
+(function initTheme(){
+  const saved = localStorage.getItem('gc-theme') || 'auto';
   applyTheme(saved);
-  themePoints.querySelectorAll('span[data-mode]').forEach(el=>{
-    el.addEventListener('click',()=>applyTheme(el.dataset.mode));
-  });
+
+  // attach clicks
+  if (themePoints) {
+    qsa('.theme-points span').forEach(el => {
+      el.addEventListener('click', () => applyTheme(el.dataset.mode));
+    });
+  }
+
+  // if auto, listen to system changes
+  if (saved === 'auto' && window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => applyTheme('auto'));
+  }
 })();
 
-/* -------------------------
+/* ====================
    SIDEBAR mobile toggle
-------------------------- */
-hamburger?.addEventListener('click',()=>{
-  sidebar.classList.toggle('open');
-  sidebarOverlay?.classList.toggle('hidden');
-});
-sidebarOverlay?.addEventListener('click',()=>{
-  sidebar.classList.remove('open');
-  sidebarOverlay.classList.add('hidden');
-});
+   ==================== */
+if (sidebarToggle) {
+  sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    if (sidebarOverlay) sidebarOverlay.classList.toggle('hidden');
+  });
+}
+if (sidebarOverlay) {
+  sidebarOverlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    sidebarOverlay.classList.add('hidden');
+  });
+}
 
-/* -------------------------
-   PROFILE (localStorage)
-------------------------- */
-function loadProfile(){
-  const user=JSON.parse(localStorage.getItem('gc-user')||'null');
-  if(user && user.name){
-    miniName.textContent=user.name;
-    miniAvatar.textContent=user.name.charAt(0).toUpperCase();
+/* ====================
+   PROFILE & STATS (local)
+   ==================== */
+function loadProfileUI() {
+  const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
+  if (user && user.name) {
+    miniName.textContent = user.name;
+    miniAvatar.textContent = user.name.charAt(0).toUpperCase();
   } else {
-    miniName.textContent='GameCircl';
-    miniAvatar.textContent='G';
+    miniName.textContent = 'GameCircl';
+    miniAvatar.textContent = 'G';
   }
 }
-openProfile.addEventListener('click',()=>{
-  modal.classList.remove('hidden');
-  modal.setAttribute('aria-hidden','false');
-});
-modalClose.addEventListener('click',()=>{
-  modal.classList.add('hidden');
-  modal.setAttribute('aria-hidden','true');
-});
-loadProfile();
+loadProfileUI();
 
-/* -------------------------
-   LOAD MODES
-------------------------- */
-async function loadModes(){
-  try{
-    const res = await fetch('modes-spiele.json',{cache:"no-store"});
+if (openLogin) {
+  openLogin.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+    modal.setAttribute('aria-hidden','false');
+    const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
+    usernameInput.value = user ? user.name : '';
+    renderStats();
+  });
+}
+if (modalClose) {
+  modalClose.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden','true');
+  });
+}
+
+if (saveUser) {
+  saveUser.addEventListener('click', () => {
+    const val = usernameInput.value.trim();
+    if (!val) { alert('Bitte Namen eingeben'); return; }
+    const user = { name: val, id: 'u_' + Date.now() };
+    localStorage.setItem('gc-user', JSON.stringify(user));
+    loadProfileUI();
+    modal.classList.add('hidden');
+  });
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    if (confirm('Lokales Profil entfernen?')) {
+      localStorage.removeItem('gc-user');
+      loadProfileUI();
+      renderStats();
+      modal.classList.add('hidden');
+    }
+  });
+}
+
+/* Stats rendering */
+function renderStats() {
+  const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
+  const stats = JSON.parse(localStorage.getItem('gc-stats') || '{}');
+
+  if (!statsList) return;
+
+  if (!user) {
+    statsList.innerHTML = '<p class="muted">Kein eingeloggter Benutzer. Erstelle ein lokales Profil.</p>';
+    return;
+  }
+
+  const s = stats[user.id] || { plays: 0, wins: 0, last: null };
+  statsList.innerHTML = `
+    <div><strong>Benutzer:</strong> ${user.name}</div>
+    <div><strong>Runden gespielt:</strong> ${s.plays}</div>
+    <div><strong>Siege:</strong> ${s.wins}</div>
+    <div><strong>Letzte Runde:</strong> ${s.last || '-'}</div>
+    <div style="margin-top:10px;">
+      <button id="addPlay" class="btn">+ Runde simulieren</button>
+      <button id="resetStats" class="btn">Reset</button>
+    </div>
+  `;
+
+  qs('#addPlay').addEventListener('click', () => {
+    const uid = user.id;
+    const stats = JSON.parse(localStorage.getItem('gc-stats') || '{}');
+    stats[uid] = stats[uid] || { plays: 0, wins: 0, last: null };
+    stats[uid].plays++;
+    stats[uid].last = new Date().toLocaleString();
+    localStorage.setItem('gc-stats', JSON.stringify(stats));
+    renderStats();
+  });
+  qs('#resetStats').addEventListener('click', () => {
+    if (!confirm('Statistiken zurücksetzen?')) return;
+    const stats = JSON.parse(localStorage.getItem('gc-stats') || '{}');
+    stats[user.id] = { plays: 0, wins: 0, last: null };
+    localStorage.setItem('gc-stats', JSON.stringify(stats));
+    renderStats();
+  });
+}
+
+/* Export / Import */
+if (exportStats) {
+  exportStats.addEventListener('click', () => {
+    const data = {
+      stats: JSON.parse(localStorage.getItem('gc-stats') || '{}'),
+      user: JSON.parse(localStorage.getItem('gc-user') || 'null')
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'gamecircl_stats.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+}
+if (importStats && importFile) {
+  importStats.addEventListener('click', () => importFile.click());
+  importFile.addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const parsed = JSON.parse(r.result);
+        if (parsed.stats) {
+          localStorage.setItem('gc-stats', JSON.stringify(parsed.stats));
+          if (parsed.user) localStorage.setItem('gc-user', JSON.stringify(parsed.user));
+          loadProfileUI();
+          renderStats();
+          alert('Import erfolgreich');
+        } else {
+          alert('Ungültiges Format');
+        }
+      } catch (err) {
+        alert('Fehler beim Import');
+      }
+    };
+    r.readAsText(f);
+  });
+}
+
+/* ====================
+   Load spiele.json und render cards
+   ==================== */
+async function loadSpiele() {
+  try {
+    const res = await fetch('spiele.json', { cache: "no-store" });
+    if (!res.ok) throw new Error('netzwerkfehler');
     const data = await res.json();
-    renderModes(data.modes||[]);
-  } catch(err){
-    console.error('Fehler beim Laden',err);
-    gamesGrid.innerHTML='<p style="color:var(--muted)">Fehler beim Laden der Spielmodi.</p>';
+    const list = data.spiele || data; // support array or object
+    renderSpiele(list);
+  } catch (err) {
+    console.error('Fehler beim Laden der spiele.json', err);
+    if (gameList) gameList.innerHTML = `<p class="muted">Fehler beim Laden der Spielmodi.</p>`;
   }
 }
 
-/* UTILITY: stars */
-function starsHTML(n){
-  const full=Math.max(0,Math.min(5,Math.round(n||5)));
-  return '★'.repeat(full)+'☆'.repeat(5-full);
+function stars(n){
+  const full = Math.max(0, Math.min(5, Math.round(n||5)));
+  return '★'.repeat(full) + '☆'.repeat(5-full);
 }
 
-/* RENDER */
-function renderModes(list){
-  gamesGrid.innerHTML='';
-  list.forEach((m,i)=>{
-    const card=document.createElement('article');
-    card.className='card';
-    card.style.animationDelay=(i*80)+'ms';
-    card.innerHTML=`
-      <div class="card-img">
-        <img src="bilder/${m.id}.png" alt="${m.title}" />
+function renderSpiele(list){
+  if (!gameList) return;
+  gameList.innerHTML = '';
+  list.forEach((m,i) => {
+    const el = document.createElement('article');
+    el.className = 'card';
+    el.style.animationDelay = (i*60) + 'ms';
+
+    const color1 = m.color || '#6c5ce7';
+    const color2 = m.color2 || color1;
+
+    el.innerHTML = `
+      <div class="card-top">
+        <div class="pill" style="background:linear-gradient(90deg, ${color1}, ${color2});">${m.icon || ''}</div>
+        <div style="display:flex;flex-direction:column">
+          <h3>${m.title}</h3>
+          <div class="short">${m.short || m.desc}</div>
+        </div>
+        <div style="margin-left:auto" class="card-rating" title="${m.rating || 5}">${stars(m.rating)}</div>
       </div>
+
       <div class="card-body">
-        <h3>${m.title}</h3>
         <p>${m.desc}</p>
-        <div class="stars">${starsHTML(m.rating)}</div>
-        <button class="btn primary start-game">▶ Spiel starten</button>
+        <div class="tags">${(m.tags || []).map(t => `<span class="tag-pill">${t}</span>`).join('')}</div>
+      </div>
+
+      <div class="card-footer">
+        <div class="meta info-left">
+          <div>👥 ${m.players}</div>
+          <div>⏱ ${m.time}</div>
+          <div>⚙️ ${m.difficulty}</div>
+        </div>
+        <div>
+          <button class="card-start" style="background:linear-gradient(90deg, ${color1}, ${color2});">▶ Spiel starten</button>
+        </div>
       </div>
     `;
-    card.querySelector('.start-game')?.addEventListener('click',()=>alert(`Starte ${m.title}!`));
-    gamesGrid.appendChild(card);
-  });
 
-  /* IntersectionObserver für fade-in */
-  const cards = document.querySelectorAll('.card');
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+    // start button logic
+    el.querySelector('.card-start').addEventListener('click', () => {
+      const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
+      if (!user) {
+        // quick fallback: ask for username
+        const name = prompt('Gib deinen Namen ein (lokal gespeichert):');
+        if (name) {
+          const newUser = { name, id: 'u_' + Date.now() };
+          localStorage.setItem('gc-user', JSON.stringify(newUser));
+          loadProfileUI();
+        }
+      }
+
+      // record play in local stats
+      const stats = JSON.parse(localStorage.getItem('gc-stats') || '{}');
+      const uid = (JSON.parse(localStorage.getItem('gc-user') || 'null') || { id: 'anon' }).id;
+      stats[uid] = stats[uid] || { plays: 0, wins: 0, last: null };
+      stats[uid].plays++;
+      stats[uid].last = new Date().toLocaleString();
+      localStorage.setItem('gc-stats', JSON.stringify(stats));
+      renderStats();
+
+      // simulate opening the game's page (if link provided)
+      if (m.link) {
+        window.location.href = m.link;
+      } else {
+        alert(`Starte Spiel: ${m.title}`);
       }
     });
-  },{threshold:0.1});
-  cards.forEach(c=>observer.observe(c));
+
+    gameList.appendChild(el);
+  });
 }
 
-loadModes();
+/* initial load */
+document.addEventListener('DOMContentLoaded', () => {
+  loadSpiele();
+});

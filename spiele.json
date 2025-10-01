@@ -1,11 +1,11 @@
 {
-  "modes": [
+  "spiele": [
     {
-      "id": "truth-or-dare",
+      "id": "wop",
       "title": "Wahrheit oder Pflicht",
       "short": "Der absolute Klassiker!",
-      "desc": "Mutige Wahrheiten oder verrückte Aufgaben - perfekt um das Eis zu brechen und unvergessliche Momente zu schaffen.",
-      "how": "Abwechselnd wählen Spieler zwischen 'Wahrheit' oder 'Pflicht'. Bei Wahrheit beantwortet ihr ehrlich eine Frage, bei Pflicht erfüllt ihr eine Aufgabe.",
+      "desc": "Mutige Wahrheiten oder verrückte Aufgaben – perfekt um das Eis zu brechen und unvergessliche Momente zu schaffen.",
+      "how": "Abwechselnd wählen Spieler zwischen 'Wahrheit' oder 'Pflicht'.",
       "tags": ["Klassiker","Mutig","Lustig"],
       "players": "2-12 Spieler",
       "time": "15-60 Min",
@@ -13,14 +13,15 @@
       "icon": "⚡",
       "rating": 5,
       "color": "#ff6b6b",
-      "color2": "#ff9a9e"
+      "color2": "#ff9a9e",
+      "link": "spiel-wop.html"
     },
     {
-      "id": "who-would-rather",
+      "id": "wer",
       "title": "Wer würde eher",
       "short": "Lustige Vermutungen",
       "desc": "Erratet, wer am ehesten bestimmte Dinge tun würde — garantiert für viele Lacher und Überraschungen.",
-      "how": "Alle zeigen gleichzeitig auf die Person, die die Aktion am ehesten tun würde. Die Person mit den meisten Stimmen bekommt einen Punkt oder trinkt.",
+      "how": "Alle zeigen gleichzeitig auf die Person, die die Aktion am ehesten tun würde.",
       "tags": ["Social","Lustig","Schnell"],
       "players": "3-10 Spieler",
       "time": "10-30 Min",
@@ -28,14 +29,15 @@
       "icon": "👥",
       "rating": 5,
       "color": "#0984e3",
-      "color2": "#00c6ff"
+      "color2": "#00c6ff",
+      "link": "spiel-werwuerde.html"
     },
     {
-      "id": "never-have-i-ever",
+      "id": "ichhab",
       "title": "Ich hab noch nie",
       "short": "Enthüllt Geheimnisse",
       "desc": "Erfahrt Dinge übereinander, die ihr nie gedacht hättet - der perfekte Eisbrecher.",
-      "how": "Jemand sagt 'Ich hab noch nie...' gefolgt von einer Aussage. Alle, die das schon gemacht haben, müssen trinken oder eine Aktion durchführen.",
+      "how": "Jemand sagt 'Ich hab noch nie...' gefolgt von einer Aussage. Alle, die das schon gemacht haben, reagieren.",
       "tags": ["Geheimnis","Kennenlernen","Party"],
       "players": "3-15 Spieler",
       "time": "20-45 Min",
@@ -43,14 +45,15 @@
       "icon": "🍻",
       "rating": 5,
       "color": "#8e44ad",
-      "color2": "#b388ff"
+      "color2": "#b388ff",
+      "link": "spiel-ichhabnochnie.html"
     },
     {
-      "id": "either-or",
-      "title": "Entweder/Oder",
+      "id": "entweder",
+      "title": "Entweder / Oder",
       "short": "Schnelle Entscheidungen",
       "desc": "Trefft schnelle Entscheidungen – ideal, wenn ihr euch zwischen zwei Optionen entscheiden müsst.",
-      "how": "Ein Spieler stellt eine Entweder/Oder-Frage. Alle wählen gleichzeitig eine Seite. Punkte können vergeben oder kleine Aufgaben folgen.",
+      "how": "Ein Spieler stellt eine Entweder/Oder-Frage. Alle wählen gleichzeitig eine Seite.",
       "tags": ["Schnell","Entscheidung","Spaß"],
       "players": "2-8 Spieler",
       "time": "5-20 Min",
@@ -58,14 +61,15 @@
       "icon": "🔀",
       "rating": 4,
       "color": "#00b894",
-      "color2": "#7bed9f"
+      "color2": "#7bed9f",
+      "link": "spiel-entwederoder.html"
     },
     {
-      "id": "two-truths-one-lie",
+      "id": "2w1l",
       "title": "2 Wahrheiten, 1 Lüge",
       "short": "Lüge enttarnen",
       "desc": "Jeder nennt zwei wahre Dinge und eine Lüge. Die anderen müssen raten, welche Aussage falsch ist.",
-      "how": "Reihum nennt jeder drei Aussagen (2 wahr, 1 falsch). Die Gruppe stimmt ab, welche Aussage die Lüge ist. Richtige Finder bekommen Punkte.",
+      "how": "Reihum nennt jeder drei Aussagen (2 wahr, 1 falsch). Die Gruppe stimmt ab.",
       "tags": ["Psychologisch","Kennenlernen","Taktik"],
       "players": "3-12 Spieler",
       "time": "10-30 Min",
@@ -73,14 +77,15 @@
       "icon": "🎭",
       "rating": 4,
       "color": "#ffb142",
-      "color2": "#ffd56b"
+      "color2": "#ffd56b",
+      "link": "spiel-2wahrheiten1luege.html"
     },
     {
-      "id": "who-am-i",
+      "id": "werbin",
       "title": "Wer bin ich?",
       "short": "Ratespiel",
       "desc": "Erratet die Figur, die euch zur Stirn geklebt wurde, durch Ja/Nein-Fragen.",
-      "how": "Jeder bekommt eine Karte mit einer Person/Figur auf die Stirn geklebt. Durch Fragen und Hinweise versucht ihr herauszufinden, wer ihr seid.",
+      "how": "Jeder bekommt eine Karte mit einer Person/Figur auf die Stirn geklebt. Durch Fragen wird geraten.",
       "tags": ["Raten","Team","Spaß"],
       "players": "3-10 Spieler",
       "time": "10-25 Min",
@@ -88,10 +93,11 @@
       "icon": "🕵️",
       "rating": 5,
       "color": "#e056fd",
-      "color2": "#ff7bce"
+      "color2": "#ff7bce",
+      "link": "spiel-werbinich.html"
     },
     {
-      "id": "quiz-battle",
+      "id": "quiz",
       "title": "Quiz Battle",
       "short": "Wissen vs. Freunde",
       "desc": "Stellt euer Allgemeinwissen auf die Probe in schnellen Quizrunden gegen Freunde.",
@@ -103,7 +109,8 @@
       "icon": "🧠",
       "rating": 4,
       "color": "#f19066",
-      "color2": "#ffb08a"
+      "color2": "#ffb08a",
+      "link": "spiel-quizbattle.html"
     }
   ]
 }
