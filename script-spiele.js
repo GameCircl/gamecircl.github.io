@@ -243,10 +243,12 @@ function renderSpiele(list){
     const color1 = m.color || '#6c5ce7';
     const color2 = m.color2 || color1;
 
+    // card structure
     el.innerHTML = `
-      <div class="card-top-bg" style="background:linear-gradient(180deg, ${color1}22, ${color2}22);">
+      <div class="card-top-bg">
+        <div class="card-top-color" style="background: linear-gradient(90deg, ${color1}, ${color2});"></div>
         <div class="card-title-wrapper">
-          <div class="pill" style="background:linear-gradient(90deg, ${color1}, ${color2});">${m.icon || ''}</div>
+          <div class="pill" style="background: linear-gradient(90deg, ${color1}, ${color2});">${m.icon || ''}</div>
           <div style="display:flex;flex-direction:column">
             <h3>${m.title}</h3>
             <div class="short">${m.short || m.desc}</div>
@@ -276,8 +278,9 @@ function renderSpiele(list){
       alert(`Spiel "${m.title}" starten!`);
     });
 
-    // Info button
+    // Info button (alternativ über eigenes Overlay / Modal realisierbar)
     el.querySelector('.card-info-btn').addEventListener('click', () => {
+      // optional: du kannst hier ein eigenes Modal statt alert implementieren
       alert(m.how || 'Keine Anleitung verfügbar.');
     });
 
