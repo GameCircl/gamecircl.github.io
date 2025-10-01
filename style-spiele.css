@@ -1,150 +1,199 @@
 /* -------------------------
-   Spiele-Seite — nur overrides / additions
+   Spiele-Seite — luftigere, gleich hohe Karten + zentrierte Sidebar
 ------------------------- */
 
-/* Card grid padding override for full-width look */
+/* Games section padding */
 .games {
-  padding: 0 4px;
+  padding: 0 12px;
 }
 
-/* grid uses the same class used auf der Startseite (card-grid) */
+/* Card grid layout */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
-  margin-top: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
   padding: 8px;
+  align-items: stretch; /* wichtig für gleiche Höhe */
 }
 
-/* card style matched to screenshot (rounded, layered, color pill etc.) */
+/* Card styling */
 .card {
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  background: linear-gradient(180deg, var(--surface), rgba(0,0,0,0.02));
-  border-radius: 14px;
-  padding: 16px;
-  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 20px;
+  min-height: 260px; /* Basis-Höhe für alle Karten */
   border: 1px solid var(--border);
   box-shadow: var(--card-shadow);
-  transition: transform .18s ease, box-shadow .18s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
   position: relative;
   overflow: hidden;
 }
 
-/* subtle glass-top accent (like in screenshot) */
-.card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
+/* Light mode extra Abhebung */
+[data-theme="light"] .card {
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* subtle glass-top accent */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
   background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 30%);
 }
 
-/* Card hover lift */
+/* Card hover effect */
 .card:hover {
   transform: translateY(-8px);
   box-shadow: 0 26px 48px rgba(0,0,0,0.18);
 }
 
-/* Card top row (icon pill + title) */
+/* Card top row */
 .card-top {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:8px;
-}
-.pill {
-  width:56px;
-  height:56px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color: #fff;
-  font-weight:800;
-  font-size:20px;
-  flex-shrink:0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
 }
 
-/* Title + short description styling */
+/* Icon pill */
+.pill {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+/* Title + short description */
 .card h3 {
-  margin:0;
-  font-size:18px;
+  margin: 0;
+  font-size: 19px;
   letter-spacing: -0.2px;
 }
 .card .short {
-  margin-top:6px;
-  font-size:13px;
-  color:var(--muted);
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--muted);
 }
 
-/* body description area */
+/* Body description area */
 .card-body {
-  margin-top:12px;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.35;
-  flex:1;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+  flex: 1;
 }
 
-/* tags row */
+/* Tags row */
 .tags {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
 }
 .tag-pill {
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 13px;
   background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(255,255,255,0.02));
-  color:var(--muted);
+  color: var(--muted);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.tag-pill:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(255,255,255,0.03));
 }
 
-/* footer area with meta + start button */
+/* Footer with meta + start button */
 .card-footer {
-  margin-top:14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
 }
 .meta {
-  color:var(--muted);
-  font-size:13px;
-  display:flex;
-  gap:10px;
-  align-items:center;
+  color: var(--muted);
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 .card-start {
-  padding:10px 14px;
-  border-radius:10px;
-  font-weight:700;
-  color:white;
-  border:0;
-  cursor:pointer;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  color: white;
+  border: 0;
+  cursor: pointer;
   box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-  transition: transform .12s ease;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
-.card-start:active { transform: translateY(1px); }
-
-/* rating small */
-.card-rating { color: #f6c84c; font-weight:700; }
-
-/* small responsive tweaks */
-@media (max-width:900px){
-  .card { min-height:200px; }
+.card-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
 }
-@media (max-width:720px){
-  .card { min-height:170px; }
-  .card-grid { gap:12px; padding:6px; }
+.card-start:active {
+  transform: translateY(1px);
 }
 
-/* keep the why section consistent but slightly tighter */
-.why { padding: 18px; }
-.why-grid .why-card { width:100%; max-width:300px; margin:0 auto; }
+/* Rating small */
+.card-rating {
+  color: #f6c84c;
+  font-weight: 700;
+}
 
-/* if needed: override for pill color fallback */
-.pill.fallback { background: linear-gradient(90deg,var(--accent),var(--accent2)); }
+/* Small responsive tweaks */
+@media (max-width: 900px) {
+  .card {
+    min-height: 240px;
+  }
+}
+@media (max-width: 720px) {
+  .card {
+    min-height: 210px;
+  }
+  .card-grid {
+    gap: 16px;
+    padding: 6px;
+  }
+}
+
+/* Why section consistency */
+.why {
+  padding: 18px;
+}
+.why-grid .why-card {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* Pill color fallback */
+.pill.fallback {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+/* -------------------------
+   Sidebar: Nav-Links vertikal zentriert
+------------------------- */
+.sidebar .nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertikal mittig */
+  height: 100%;
+  gap: 12px;
+}
