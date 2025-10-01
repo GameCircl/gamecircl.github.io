@@ -216,6 +216,37 @@ if (importStats && importFile) {
   });
 }
 
+
+/* -------------------------
+   LOGIN MODAL
+------------------------- */
+openLogin.addEventListener('click', ()=>{
+  modal.classList.remove('hidden');
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+});
+
+modalClose.addEventListener('click', ()=>{
+  modal.classList.remove('show');
+  setTimeout(()=> modal.classList.add('hidden'), 250);
+  modal.setAttribute('aria-hidden','true');
+});
+
+saveUser.addEventListener('click', ()=>{
+  const name = usernameInput.value.trim();
+  if(!name) return alert('Bitte Name eingeben');
+  localStorage.setItem('gc_user', name);
+  miniName.textContent = name;
+  modal.classList.remove('show');
+  setTimeout(()=> modal.classList.add('hidden'), 250);
+});
+
+logoutBtn.addEventListener('click', ()=>{
+  localStorage.removeItem('gc_user');
+  miniName.textContent = 'Gast';
+});
+
+
 /* ====================
    Load spiele.json and render cards
 ==================== */
