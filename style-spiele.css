@@ -25,13 +25,13 @@
   justify-content: space-between;
   background: var(--surface);
   border-radius: 14px;
-  min-height: 340px; /* feste Höhe */
+  padding: 0;
+  min-height: 340px; /* feste Höhe für alle Karten */
   border: 1px solid var(--border);
   box-shadow: var(--card-shadow);
   transition: transform .18s ease, box-shadow .18s ease;
   position: relative;
   overflow: hidden;
-  padding: 0;
 }
 
 /* hover effect */
@@ -44,12 +44,12 @@
    CARD TOP — farbiger Bereich + Titel + Info
 ------------------------- */
 .card-top-bg {
+  border-radius: 14px 14px 0 0;
   padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
-  z-index: 1;
 }
 
 /* Oberer farbiger Bereich (Hintergrund) */
@@ -58,11 +58,10 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 25%; /* proportional zur Höhe der Karte */
-  min-height: 80px;
-  max-height: 100px;
-  border-radius: 14px 14px 0 0;
+  height: 80px; /* feste Höhe für farbige Box */
   z-index: 0;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg,var(--accent),var(--accent2)); /* dynamisch per JS */
 }
 
 /* Titel und Icon */
@@ -71,6 +70,7 @@
   align-items: center;
   gap: 12px;
   position: relative;
+  z-index: 1;
 }
 
 .pill {
@@ -128,7 +128,7 @@
 }
 
 /* -------------------------
-   CARD BODY
+   BODY
 ------------------------- */
 .card-body {
   padding: 0 16px 16px 16px;
@@ -193,55 +193,11 @@
 .card-start:active { transform: translateY(1px); }
 
 /* -------------------------
-   CARD OVERLAY
+   CARD RATING
 ------------------------- */
-.card-overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.35);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  z-index: 10;
-}
-
-.card-overlay.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.overlay-inner {
-  background: #fff;
-  border-radius: 14px;
-  padding: 16px 20px;
-  max-width: 90%;
-  width: 320px;
-  text-align: center;
-  position: relative;
-}
-
-.overlay-inner h3 {
-  margin-top: 0;
-  font-size: 18px;
-}
-
-.overlay-inner p {
-  font-size: 14px;
-  color: var(--muted);
-  margin-top: 8px;
-}
-
-.overlay-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
+.card-rating { 
+  color: #f6c84c; 
+  font-weight: 700; 
 }
 
 /* -------------------------
@@ -256,7 +212,7 @@
 .sidebar .nav {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; /* vertikal mittig */
   gap: 12px;
   flex-grow: 1;
 }
