@@ -45,7 +45,7 @@
 ------------------------- */
 .card-top-bg {
   border-radius: 14px 14px 0 0;
-  padding: 12px 16px;
+  padding: 20px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -88,13 +88,13 @@
 
 .card h3 {
   margin: 0;
-  font-size: 18px;
+  font-size: 20px;
   letter-spacing: -0.2px;
 }
 
 .card .short {
   margin-top: 6px;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
 }
 
@@ -135,7 +135,7 @@
   flex: 1;
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.35;
+  line-height: 1.45;
   position: relative;
   z-index: 1;
 }
@@ -163,10 +163,10 @@
 ------------------------- */
 .card-footer {
   margin-top: 14px;
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   padding: 0 16px 16px 16px;
   position: relative;
   z-index: 1;
@@ -184,7 +184,7 @@
   padding: 10px 14px;
   border-radius: 10px;
   font-weight: 700;
-  color: white;
+  color: black;
   border: 0;
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(0,0,0,0.12);

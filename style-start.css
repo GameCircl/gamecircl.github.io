@@ -176,9 +176,9 @@ body { background:var(--bg); color:var(--text); }
   opacity:0; animation:fadeIn 0.4s forwards;
 }
 .card:hover { transform:rotateX(3deg) rotateY(3deg) translateY(-6px); box-shadow:0 20px 40px rgba(0,0,0,0.12); }
-.card .meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.card .meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
 .card h3 { font-size:18px; margin-bottom:6px; }
-.card p { color:var(--muted); font-size:13px; margin-bottom:8px; }
+.card p { color:var(--muted); font-size:14px; margin-bottom:8px; }
 .card .tag { display:flex; gap:8px; align-items:center; }
 .card .tag div:first-child { width:44px; height:44px; border-radius:8px; display:flex;align-items:center;justify-content:center;color:white;font-weight:700; }
 
