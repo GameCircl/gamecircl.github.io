@@ -50,9 +50,9 @@
     },
     {
       "id": "entweder",
-      "title": "Entweder / Oder",
+      "title": "Würdest du eher...?",
       "short": "Schnelle Entscheidungen",
-      "desc": "Trefft schnelle Entscheidungen – ideal, wenn ihr euch zwischen zwei Optionen entscheiden müsst.",
+      "desc": "Trefft schnelle, lustige und teils harte Entscheidungen – ideal, wenn ihr euch zwischen zwei Optionen entscheiden müsst.",
       "how": "Ein Spieler stellt eine Entweder/Oder-Frage. Alle wählen gleichzeitig eine Seite.",
       "tags": ["Schnell","Entscheidung","Spaß"],
       "players": "2-8 Spieler",
@@ -97,20 +97,20 @@
       "link": "spiel-werbinich.html"
     },
     {
-      "id": "quiz",
-      "title": "Quiz Battle",
-      "short": "Wissen vs. Freunde",
-      "desc": "Stellt euer Allgemeinwissen auf die Probe in schnellen Quizrunden gegen Freunde.",
-      "how": "Mehrere Runden mit Fragen aus unterschiedlichen Kategorien. Punkte sammeln und Runde gewinnen.",
-      "tags": ["Quiz","Kopf","Wettbewerb"],
-      "players": "2-8 Spieler",
-      "time": "15-40 Min",
-      "difficulty": "Variabel",
-      "icon": "🧠",
+      "id": "betbuddy",
+      "title": "Bet Buddy",
+      "short": "Wer schafft mehr?",
+      "desc": "Hier geht's ums Wetten, Schätzen und Vertrauen: Wie viel traut ihr eurem Buddy wirklich zu?",
+      "how": "Aus jedem Team tritt eine Person an. Dein Buddy schätzt, wie viel du schaffst. Der Buddy dessen, der am höchsten wettet, muss abliefern!",
+      "tags": ["Wetten","Team","Buddy","Mut"],
+      "players": "2-5 Teams á 2 Spieler",
+      "time": "10-45 Min",
+      "difficulty": "Mittel",
+      "icon": "🎲",
       "rating": 4,
       "color": "#f19066",
       "color2": "#ffb08a",
-      "link": "spiel-quizbattle.html"
+      "link": "spiel-betbuddy.html"
     }
   ]
 }
