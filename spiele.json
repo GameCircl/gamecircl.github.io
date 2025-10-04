@@ -161,22 +161,6 @@
         "link": "spiel-liedetector.html"
     },
     {
-        "id": "2w1l",
-        "title": "Spot the Fake",
-        "short": "Lüge enttarnen",
-        "desc": "Jeder nennt zwei wahre Dinge und eine Lüge. Die anderen müssen raten, welche Aussage falsch ist.",
-        "how": "Reihum nennt jeder drei Aussagen (2 wahr, 1 falsch). Die Gruppe stimmt ab.",
-        "tags": ["Psychologisch", "Kennenlernen", "Taktik"],
-        "players": "3-12 Spieler",
-        "time": "10-30 Min",
-        "difficulty": "Mittel",
-        "icon": "🎭",
-        "rating": 4,
-        "color": "#ff9f1a",
-        "color2": "#ffbe76",
-        "link": "spiel-2wahrheiten1luege.html"
-    },
-    {
         "id": "wronganswers",
         "title": "Nur falsche Antworten",
         "short": "Denk quer!",
