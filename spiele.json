@@ -124,8 +124,8 @@
         "difficulty": "Leicht",
         "icon": "🤠",
         "rating": 4,
-        "color": "#ff6b6b",
-        "color2": "#ff8787",
+        "color": "#ff3f34",
+        "color2": "#ff6b81",
         "link": "spiel-fastdraw.html"
     },
     {
@@ -156,8 +156,8 @@
         "difficulty": "Leicht-Mittel",
         "icon": "🕵️",
         "rating": 4,
-        "color": "#00b894",
-        "color2": "#55efc4",
+        "color": "#00cec9",
+        "color2": "#81ecec",
         "link": "spiel-liedetector.html"
     }
   ]
