@@ -17,25 +17,30 @@ const startBtn = document.getElementById('startBtn');
 const sidebarOverlayEl = document.getElementById('sidebarOverlay');
 
 /* -------------------------
-   DATEN LADEN
+   DATEN LADEN (nur noch spiele.json)
 ------------------------- */
 let games = [];
-fetch('modes.json')
+fetch('spiele.json')
   .then(res => res.json())
   .then(data => { 
-    games = data; 
-    renderGames(); 
-    renderGamesPage(); 
+    games = data.spiele || [];
+    renderHomeGames();
+    renderGamesPage();
   })
-  .catch(err => console.error('Fehler beim Laden der Spiele:', err));
+  .catch(err => console.error('Fehler beim Laden der spiele.json:', err));
 
 /* -------------------------
-   RENDER HOMEPAGE
+   HOMEPAGE: 4 zufällige Spiele anzeigen
 ------------------------- */
-function renderGames() {
+function renderHomeGames() {
   if(!gameList) return;
   gameList.innerHTML = '';
-  games.forEach((g, i) => {
+
+  // Array mischen
+  const shuffled = [...games].sort(() => 0.5 - Math.random());
+  const homeGames = shuffled.slice(0,4); // nur 4
+
+  homeGames.forEach((g,i) => {
     const el = document.createElement('div');
     el.className = 'card';
     el.style.animationDelay = `${i * 0.05}s`;
@@ -47,39 +52,18 @@ function renderGames() {
           </div>
           <div style="font-weight:700">${g.title}</div>
         </div>
-        <div class="rating">★★★★★</div>
+        <div class="rating">${'★'.repeat(g.rating)}${'☆'.repeat(5-g.rating)}</div>
       </div>
-      <p>${g.desc}</p>
+      <p>${g.short || g.desc}</p>
       <div style="display:flex;justify-content:space-between;align-items:center">
         <small style="color:var(--muted)">${g.players}</small>
-        <button class="btn" onclick="alert('Starte: ${g.title}')">→</button>
+        <button class="btn" onclick="location.href='${g.link}'">→</button>
       </div>
     `;
     gameList.appendChild(el);
   });
 }
 
-/* -------------------------
-   RENDER SPIELE PAGE
-------------------------- */
-function renderGamesPage() {
-  if(!gamesGrid) return;
-  gamesGrid.innerHTML = '';
-  games.forEach((g,i) => {
-    const el = document.createElement('div');
-    el.className = 'card';
-    el.style.animationDelay = `${i*0.04}s`;
-    const tagsHTML = g.tags ? g.tags.map(t => 
-      `<span style="background:${g.color};padding:2px 6px;border-radius:6px;color:white;margin-right:4px">${t}</span>`).join('') : '';
-    el.innerHTML = `
-      <h3>${g.title}</h3>
-      <p>${g.desc}</p>
-      <small>Spieler: ${g.players}</small>
-      ${tagsHTML ? `<div class="tag" style="margin-top:6px;">${tagsHTML}</div>` : ''}
-    `;
-    gamesGrid.appendChild(el);
-  });
-}
 
 /* -------------------------
    SIDEBAR MOBILE TOGGLE & OVERLAY
