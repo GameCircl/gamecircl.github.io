@@ -188,8 +188,8 @@
         "difficulty": "Einfach",
         "icon": "🙃",
         "rating": 4,
-        "color": "#20bf6b",
-        "color2": "#7bed9f",
+        "color": "#1abc9c",
+        "color2": "#16a085",
         "link": "spiel-nurfalscheantworten.html"
     },
     {
@@ -204,8 +204,8 @@
         "difficulty": "Mittel",
         "icon": "💣",
         "rating": 5,
-        "color": "#d63031",
-        "color2": "#e17055",
+        "color": "#e74c3c",
+        "color2": "#c0392b",
         "link": "spiel-bombe.html"
     },
     {
@@ -220,8 +220,8 @@
         "difficulty": "Mittel",
         "icon": "🤫",
         "rating": 5,
-        "color": "#6c3483",
-        "color2": "#bb8fce",
+        "color": "#9b59b6",
+        "color2": "#8e44ad",
         "link": "spiel-weristderluegner.html"
     }
   ]
