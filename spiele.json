@@ -99,7 +99,7 @@
     {
       "id": "betbuddy",
       "title": "Bet Buddy",
-      "short": "Wer schafft mehr?",
+      "short": "Setzt auf eure Freunde!",
       "desc": "Hier geht's ums Wetten, Schätzen und Vertrauen: Wie viel traut ihr eurem Buddy wirklich zu?",
       "how": "Aus jedem Team tritt eine Person an. Dein Buddy setzt darauf, wie viele Punkte oder Runden du schaffen wirst. Der Buddy mit dem höchsten Einsatz legt fest – und sein Partner muss abliefern!",
       "tags": ["Wetten","Team","Buddy","Mut"],
@@ -111,6 +111,54 @@
       "color": "#f19066",
       "color2": "#ffb08a",
       "link": "spiel-betbuddy.html"
+    },
+    {
+        "id": "fastdraw",
+        "title": "Fast Draw",
+        "short": "Schnell ziehen oder verlieren!",
+        "desc": "Ein Western-Duell für flinke Finger. Achtet auf das Signal – wer zu früh schießt, verliert sofort!",
+        "how": "Zwei Spieler treten gegeneinander an. Ein Countdown läuft, doch das 'DRAW!'-Signal erscheint zufällig. Wer zu früh klickt, scheidet aus. Wer nach dem Signal schneller ist, gewinnt das Duell.",
+        "tags": ["Reaktion", "Duell", "Schnelligkeit"],
+        "players": "2+ Spieler",
+        "time": "1-10 Min",
+        "difficulty": "Leicht",
+        "icon": "🤠",
+        "rating": 4,
+        "color": "#ff7675",
+        "color2": "#fab1a0",
+        "link": "spiel-fastdraw.html"
+    },
+    {
+        "id": "guesstheguess",
+        "title": "Guess the Guess",
+        "short": "Wem gehört welche Antwort?",
+        "desc": "Alle tippen heimlich eine Zahl oder Antwort ein. Dann müsst ihr raten: Wer hat was gesagt?",
+        "how": "Jeder Spieler beantwortet eine Frage anonym (z. B. 'Wie viele Stunden Netflix schaust du in der Woche?'). Danach werden die Antworten aufgedeckt. Die Gruppe versucht zu erraten, wem welche Antwort gehört.",
+        "tags": ["Raten", "Geheim", "Spaß"],
+        "players": "3-12 Spieler",
+        "time": "10-30 Min",
+        "difficulty": "Mittel",
+        "icon": "❓",
+        "rating": 4,
+        "color": "#74b9ff",
+        "color2": "#a4d4ff",
+        "link": "spiel-guesstheguess.html"
+    },
+    {
+        "id": "liedetector",
+        "title": "Lie Detector",
+        "short": "Wahrheit oder Lüge?",
+        "desc": "Kannst du deine Freunde täuschen? Bluffe clever oder decke Lügen auf, um Punkte zu sammeln.",
+        "how": "Ein Spieler beantwortet eine Frage mit 'Ja' oder 'Nein'. Alle anderen voten, ob er die Wahrheit sagt oder lügt. Liegt die Mehrheit richtig, bekommen sie Punkte. Kann der Spieler alle täuschen, kassiert er den Bonus.",
+        "tags": ["Bluff", "Voting", "Wahrheit"],
+        "players": "3-10 Spieler",
+        "time": "10-40 Min",
+        "difficulty": "Leicht-Mittel",
+        "icon": "🕵️",
+        "rating": 4,
+        "color": "#55efc4",
+        "color2": "#81ecec",
+        "link": "spiel-liedetector.html"
     }
   ]
 }
