@@ -25,7 +25,6 @@ fetch('spiele.json')
   .then(data => { 
     games = data.spiele || [];
     renderHomeGames();
-    renderGamesPage();
   })
   .catch(err => console.error('Fehler beim Laden der spiele.json:', err));
 
