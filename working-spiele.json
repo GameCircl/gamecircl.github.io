@@ -1,0 +1,20 @@
+{
+  "spiele": [
+    {
+      "id": "werbin",
+      "title": "Wer bin ich?",
+      "short": "Ratespiel",
+      "desc": "Erratet die Figur, die euch zur Stirn geklebt wurde, durch Ja/Nein-Fragen.",
+      "how": "Jeder bekommt eine Karte mit einer Person/Figur auf die Stirn geklebt. Durch Fragen wird geraten.",
+      "tags": ["Raten","Team","Spaß"],
+      "players": "3-10 Spieler",
+      "time": "10-25 Min",
+      "difficulty": "Einfach",
+      "icon": "🕵️",
+      "rating": 5,
+      "color": "#e056fd",
+      "color2": "#ff7bce",
+      "link": "spiel-werbinich.html"
+    }
+  ]
+}
