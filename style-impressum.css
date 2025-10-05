@@ -1,0 +1,58 @@
+/* Impressum- & Datenschutzseite */
+
+.legal-section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  margin-bottom: 40px;
+  transition: transform .4s ease, opacity .4s ease;
+}
+
+.legal-section h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: var(--accent);
+}
+
+.legal-section p {
+  line-height: 1.6;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.legal-section a {
+  color: var(--accent2);
+  text-decoration: none;
+}
+
+.legal-section a:hover {
+  text-decoration: underline;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.muted.small {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+@media (max-width: 720px) {
+  .legal-section {
+    padding: 24px 16px;
+    margin-bottom: 24px;
+  }
+  .legal-section h2 {
+    font-size: 20px;
+  }
+}
