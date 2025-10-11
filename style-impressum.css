@@ -56,3 +56,48 @@
     font-size: 20px;
   }
 }
+
+/* --- Neues, adaptives Impressum-Layout --- */
+@media (min-width: 900px) {
+  .content {
+    background: var(--bg);
+    box-shadow: none;
+    padding: 2rem 0;
+  }
+
+  .impressum-section {
+    background: transparent;
+    box-shadow: none;
+    border-left: 3px solid var(--accent);
+    border-radius: 0;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    transition: border-color 0.3s ease;
+  }
+
+  .impressum-section:hover {
+    border-color: var(--accent-hover);
+    transform: none;
+    box-shadow: none;
+  }
+
+  .impressum-section h2 {
+    margin-bottom: 0.75rem;
+    font-size: 1.4rem;
+  }
+
+  .impressum-section p {
+    line-height: 1.6;
+    font-size: 1.05rem;
+  }
+
+  .page-header .title {
+    font-size: 2.4rem;
+    letter-spacing: 0.3px;
+  }
+
+  .page-header .subtitle {
+    font-size: 1.2rem;
+    opacity: 0.8;
+  }
+}
