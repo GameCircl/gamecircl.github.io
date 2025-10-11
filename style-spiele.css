@@ -202,23 +202,6 @@
 }
 
 /* -------------------------
-   Sidebar nav mittig
-------------------------- */
-.sidebar > div:first-child {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.sidebar .nav {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* vertikal mittig */
-  gap: 6px;
-  flex-grow: 1;
-}
-
-/* -------------------------
    Lightmode Card absetzen
 ------------------------- */
 :root[data-theme="light"] .card {
