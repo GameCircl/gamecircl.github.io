@@ -17,7 +17,7 @@ const startBtn = document.getElementById('startBtn');
 const sidebarOverlayEl = document.getElementById('sidebarOverlay');
 
 /* -------------------------
-   DATEN LADEN
+   DATEN LADEN (nur noch spiele.json)
 ------------------------- */
 let games = [];
 fetch('spiele.json')
@@ -35,8 +35,9 @@ function renderHomeGames() {
   if(!gameList) return;
   gameList.innerHTML = '';
 
+  // Array mischen
   const shuffled = [...games].sort(() => 0.5 - Math.random());
-  const homeGames = shuffled.slice(0,4);
+  const homeGames = shuffled.slice(0,4); // nur 4
 
   homeGames.forEach((g,i) => {
     const el = document.createElement('div');
@@ -62,29 +63,25 @@ function renderHomeGames() {
   });
 }
 
+
 /* -------------------------
    SIDEBAR MOBILE TOGGLE & OVERLAY
 ------------------------- */
-function openSidebar() {
-  sidebar.classList.add('open');
-  sidebarOverlayEl.classList.remove('hidden');
-  sidebarToggle.classList.add('hide');
-  document.body.style.overflow = 'hidden'; // Scrollschutz aktiv
-}
-function closeSidebar() {
-  sidebar.classList.remove('open');
-  sidebarOverlayEl.classList.add('hidden');
-  sidebarToggle.classList.remove('hide');
-  document.body.style.overflow = ''; // Scrollschutz wieder aufheben
+if(sidebarToggle){
+  sidebarToggle.addEventListener('click', ()=>{
+    sidebar.classList.add('open');
+    sidebarOverlayEl.classList.remove('hidden');
+  });
+  sidebarOverlayEl.addEventListener('click', ()=>{
+    sidebar.classList.remove('open');
+    sidebarOverlayEl.classList.add('hidden');
+  });
 }
 
-if(sidebarToggle){
-  sidebarToggle.addEventListener('click', openSidebar);
-  sidebarOverlayEl.addEventListener('click', closeSidebar);
-}
+
 
 /* -------------------------
-   SIDEBAR MOBILE SWIPE
+   SIDEBAR MOBILE SWIPE (verbessert)
 ------------------------- */
 let startX = 0;
 let startY = 0;
@@ -100,24 +97,36 @@ document.addEventListener('touchmove', (e) => {
   const diffX = e.touches[0].clientX - startX;
   const diffY = e.touches[0].clientY - startY;
 
-  // horizontaler Swipe > vertikaler
-  if(Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 20) {
-    e.preventDefault(); // verhindert vertikales Scrollen
+  // Prüfe, ob horizontaler Swipe
+  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 20) {
+    e.preventDefault(); // verhindert Scrollen
     isSwiping = true;
 
-    if(diffX > 70 && !sidebar.classList.contains('open')) openSidebar();
-    if(diffX < -70 && sidebar.classList.contains('open')) closeSidebar();
+    // Swipe nach rechts -> öffnen
+    if (diffX > 70 && !sidebar.classList.contains('open')) {
+      sidebar.classList.add('open');
+      sidebarOverlayEl.classList.remove('hidden');
+    }
+
+    // Swipe nach links -> schließen
+    if (diffX < -70 && sidebar.classList.contains('open')) {
+      sidebar.classList.remove('open');
+      sidebarOverlayEl.classList.add('hidden');
+    }
   }
 });
 
-document.addEventListener('touchend', () => { isSwiping = false; });
+document.addEventListener('touchend', () => {
+  isSwiping = false;
+});
 
-/* -------------------------
-   THEME SWITCHER
-------------------------- */
+
+
+// ===== THEME SWITCHER =====
 const themePoints = document.querySelectorAll(".theme-points span");
 const themeMarker = document.getElementById("themeMarker");
 
+// Setzt Theme und Marker
 function setTheme(mode) {
   if (mode === "auto") {
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -126,18 +135,29 @@ function setTheme(mode) {
     document.documentElement.setAttribute("data-theme", mode);
   }
   localStorage.setItem("gc-theme", mode);
+
   const indexMap = { auto: 0, light: 1, dark: 2 };
-  themeMarker.style.transform = `translateX(${(indexMap[mode] ?? 0)*100}%)`;
+  const index = indexMap[mode] ?? 0;
+  themeMarker.style.transform = `translateX(${index * 100}%)`;
 }
 
+// Klicks auf die Theme-Buttons
 themePoints.forEach(span => {
-  span.addEventListener("click", () => setTheme(span.dataset.mode));
+  span.addEventListener("click", () => {
+    const mode = span.dataset.mode;
+    setTheme(mode);
+  });
 });
 
-setTheme(localStorage.getItem("gc-theme") || "auto");
+// Lade gespeichertes Theme
+let savedTheme = localStorage.getItem("gc-theme") || "auto";
+setTheme(savedTheme);
 
+// Reagiert auf System-Theme-Änderung, wenn Auto aktiv ist
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
-  if(localStorage.getItem("gc-theme")==='auto') setTheme("auto");
+  if (localStorage.getItem("gc-theme") === "auto") {
+    setTheme("auto");
+  }
 });
 
 /* -------------------------
@@ -169,9 +189,20 @@ logoutBtn.addEventListener('click', ()=>{
   miniName.textContent = 'Gast';
 });
 
+
+
 /* -------------------------
    ÜBER- und START BUTTON (LINKS)
 ------------------------- */
-startBtn?.addEventListener('click', ()=> window.location.href = "spiele.html");
-learnMore?.addEventListener('click', ()=> window.location.href = "über.html");
-homeBtn?.addEventListener('click', ()=> window.location.href = "index.html");
+
+startBtn?.addEventListener('click', ()=>{
+  window.location.href = "spiele.html";
+});
+
+learnMore?.addEventListener('click', ()=>{
+  window.location.href = "über.html";
+});
+
+homeBtn?.addEventListener('click', ()=>{
+  window.location.href = "index.html";
+});

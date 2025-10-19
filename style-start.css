@@ -28,7 +28,9 @@
 /* -------------------------
    DARK MODE FIXES
 ------------------------- */
-[data-theme="dark"] .modal-close { color: #fff; }
+[data-theme="dark"] .modal-close {
+  color: #fff;
+}
 [data-theme="dark"] .nav-link.active,
 [data-theme="dark"] .nav-link:hover {
   background: rgba(255,255,255,0.15);
@@ -47,7 +49,7 @@ body { background:var(--bg); color:var(--text); }
 .app { 
   display:flex; 
   flex-direction:row; 
-  height:100vh;
+  height:100vh;  /* volle Höhe */
 }
 
 /* -------------------------
@@ -55,7 +57,7 @@ body { background:var(--bg); color:var(--text); }
 ------------------------- */
 .sidebar {
   width:240px;
-  height:100vh;
+  height:100vh; /* volle Höhe */
   background: linear-gradient(180deg, var(--surface), rgba(0,0,0,0.02));
   border-right:1px solid var(--border);
   display:flex; 
@@ -66,6 +68,7 @@ body { background:var(--bg); color:var(--text); }
   transition: transform 0.3s ease;
 }
 .logo-row { display:flex; align-items:center; gap:10px; }
+.hamburger { display:none; border:0; background:transparent; font-size:20px; cursor:pointer; z-index:210; position:relative; }
 .logo { display:flex; gap:10px; align-items:center; }
 .logo-mark{
   width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));
@@ -75,19 +78,9 @@ body { background:var(--bg); color:var(--text); }
 .logo-text small { display:block; font-weight:400; color:var(--muted); font-size:11px; }
 
 /* NAV */
-.nav {
-  display:flex; 
-  flex-direction:column; 
-  gap:14px; /* größerer Abstand */
-  margin-top:0;
-}
+.nav { display:flex; flex-direction:column; gap:6px; margin-top:10px; transition: opacity 0.3s; }
 .nav-link {
-  display:block; 
-  padding:14px 12px; 
-  border-radius:8px; 
-  text-decoration:none; 
-  color:var(--muted);
-  text-align:center; /* zentriert */
+  display:block; padding:10px; border-radius:8px; text-decoration:none; color:var(--muted);
   transition:all .16s;
 }
 .nav-link.active, .nav-link:hover { 
@@ -158,7 +151,9 @@ body { background:var(--bg); color:var(--text); }
 }
 
 /* Footer unten halten */
-.main > .footer { margin-top:auto; }
+.main > .footer { 
+  margin-top:auto; 
+}
 
 /* HERO */
 .hero { text-align:center; padding-top:14px; padding-bottom:26px; }
@@ -231,8 +226,6 @@ input[type="text"]{ width:100%; padding:10px; border-radius:8px; border:1px soli
 }
 @media (max-width:720px){
   .app { flex-direction:column; }
-
-  /* Sidebar Mobile */
   .sidebar { 
     width:240px; 
     position:fixed; 
@@ -244,17 +237,12 @@ input[type="text"]{ width:100%; padding:10px; border-radius:8px; border:1px soli
     flex-direction:column; 
     padding:12px; 
     background:var(--surface);
-    justify-content:center; /* vertical zentriert */
-    gap:20px;
   }
   .sidebar.open { transform: translateX(0); }
 
   .nav { 
-    display:flex; 
-    flex-direction:column; 
-    gap:14px; 
-    justify-content:center; 
-    align-items:center;
+    display:flex; position:absolute; top:56px; left:0; flex-direction:column; width:240px; background:var(--surface); 
+    box-shadow:0 12px 28px rgba(0,0,0,0.25); padding:12px; border-radius:0 0 12px 12px; 
   }
 
   #sidebarOverlay {
@@ -262,10 +250,13 @@ input[type="text"]{ width:100%; padding:10px; border-radius:8px; border:1px soli
   }
   #sidebarOverlay.hidden { display:none; }
 
+  .hamburger { display:inline-block; }
   .main { padding:14px; }
   .card-grid, .games-grid { grid-template-columns: 1fr; }
   .why-grid { flex-direction:column; align-items:center; }
 }
+
+
 
 /* -------------------------
    FLOATING HAMBURGER (nur auf Mobile)
@@ -291,10 +282,32 @@ input[type="text"]{ width:100%; padding:10px; border-radius:8px; border:1px soli
   line-height: 1;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
-.floating-hamburger:hover { transform: scale(1.05); }
 
-/* Sichtbar nur auf Mobile */
-@media (max-width: 720px) { .floating-hamburger { display:flex; } }
+.floating-hamburger:hover {
+  transform: scale(1.05);
+}
 
-/* Hamburger ausgeblendet beim Öffnen */
-#sidebarToggle.hide { opacity:0; pointer-events:none; transition: opacity 0.25s ease; }
+/* Nur auf Mobile sichtbar */
+@media (max-width: 720px) {
+  .floating-hamburger { display: flex; }
+}
+
+@media (max-width: 768px) {
+  #sidebarToggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: var(--bg2);
+    color: var(--text);
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+}
