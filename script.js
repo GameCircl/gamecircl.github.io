@@ -78,6 +78,18 @@ if(sidebarToggle){
   });
 }
 
+
+// Swipe von links -> öffnet Sidebar
+document.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+document.addEventListener('touchmove', e => {
+  let diff = e.touches[0].clientX - startX;
+  if(diff > 70 && !sidebar.classList.contains('open')) { // swipe right
+    sidebar.classList.add('open');
+    sidebarOverlayEl.classList.remove('hidden');
+  }
+});
+
+
 /* optional: swipe to close */
 let startX = 0;
 sidebar.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
@@ -88,6 +100,7 @@ sidebar.addEventListener('touchmove', e => {
     sidebarOverlayEl.classList.add('hidden');
   }
 });
+
 
 // ===== THEME SWITCHER =====
 const themePoints = document.querySelectorAll(".theme-points span");
