@@ -258,33 +258,56 @@ input[type="text"]{ width:100%; padding:10px; border-radius:8px; border:1px soli
 
 
 
-
 /* -------------------------
-   MOBILE HEADER (sichtbar, wenn Sidebar eingeklappt)
+   FLOATING HAMBURGER (nur auf Mobile)
 ------------------------- */
-.mobile-header {
-  display: none;
+.floating-hamburger {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  z-index: 210;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-.mobile-header .mobile-logo {
-  font-weight: 700;
+  top: 16px;
+  left: 16px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  font-size: 20px;
   color: var(--text);
+  background: var(--surface-elevated, rgba(255,255,255,0.85));
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  z-index: 300;
+  display: none; /* Standardmäßig unsichtbar */
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-/* Nur auf kleinen Geräten sichtbar */
+.floating-hamburger:hover {
+  transform: scale(1.05);
+}
+
+/* Nur auf Mobile sichtbar */
 @media (max-width: 720px) {
-  .mobile-header { display: flex; }
-  .sidebar { top: 0; left: 0; padding-top: 70px; }
+  .floating-hamburger { display: flex; }
+}
+
+@media (max-width: 768px) {
+  #sidebarToggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: var(--bg2);
+    color: var(--text);
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
 }

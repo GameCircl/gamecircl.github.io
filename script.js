@@ -79,27 +79,47 @@ if(sidebarToggle){
 }
 
 
-// Swipe von links -> öffnet Sidebar
-document.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
-document.addEventListener('touchmove', e => {
-  let diff = e.touches[0].clientX - startX;
-  if(diff > 70 && !sidebar.classList.contains('open')) { // swipe right
-    sidebar.classList.add('open');
-    sidebarOverlayEl.classList.remove('hidden');
-  }
-});
 
-
-/* optional: swipe to close */
+/* -------------------------
+   SIDEBAR MOBILE SWIPE (verbessert)
+------------------------- */
 let startX = 0;
-sidebar.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
-sidebar.addEventListener('touchmove', e => {
-  let diff = e.touches[0].clientX - startX;
-  if(diff < -50){ // swipe left
-    sidebar.classList.remove('open');
-    sidebarOverlayEl.classList.add('hidden');
+let startY = 0;
+let isSwiping = false;
+
+document.addEventListener('touchstart', (e) => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+  isSwiping = false;
+});
+
+document.addEventListener('touchmove', (e) => {
+  const diffX = e.touches[0].clientX - startX;
+  const diffY = e.touches[0].clientY - startY;
+
+  // Prüfe, ob horizontaler Swipe
+  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 20) {
+    e.preventDefault(); // verhindert Scrollen
+    isSwiping = true;
+
+    // Swipe nach rechts -> öffnen
+    if (diffX > 70 && !sidebar.classList.contains('open')) {
+      sidebar.classList.add('open');
+      sidebarOverlayEl.classList.remove('hidden');
+    }
+
+    // Swipe nach links -> schließen
+    if (diffX < -70 && sidebar.classList.contains('open')) {
+      sidebar.classList.remove('open');
+      sidebarOverlayEl.classList.add('hidden');
+    }
   }
 });
+
+document.addEventListener('touchend', () => {
+  isSwiping = false;
+});
+
 
 
 // ===== THEME SWITCHER =====
