@@ -1,5 +1,17 @@
 const gameList = document.getElementById('game-list');
 const gamesGrid = document.getElementById('games-grid');
+const root = document.documentElement;
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const miniName = document.getElementById('miniName');
+const openLogin = document.getElementById('openLogin');
+const modal = document.getElementById('modal');
+const modalClose = document.getElementById('modalClose');
+const saveUser = document.getElementById('saveUser');
+const logoutBtn = document.getElementById('logoutBtn');
+const usernameInput = document.getElementById('username');
+const startBtn = document.getElementById('startBtn');
+const sidebarOverlayEl = document.getElementById('sidebarOverlay');
 
 
 /* -------------------------
