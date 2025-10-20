@@ -67,14 +67,17 @@ function renderHomeGames() {
 /* -------------------------
    SIDEBAR MOBILE TOGGLE & OVERLAY
 ------------------------- */
+
 if(sidebarToggle){
   sidebarToggle.addEventListener('click', ()=>{
     sidebar.classList.add('open');
     sidebarOverlayEl.classList.remove('hidden');
+    sidebarToggle.classList.add('hide'); // ← NEU
   });
   sidebarOverlayEl.addEventListener('click', ()=>{
     sidebar.classList.remove('open');
     sidebarOverlayEl.classList.add('hidden');
+    sidebarToggle.classList.remove('hide'); // ← NEU
   });
 }
 

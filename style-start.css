@@ -310,4 +310,10 @@ input[type="text"]{ width:100%; padding:10px; border-radius:8px; border:1px soli
     box-shadow: 0 0 8px rgba(0,0,0,0.2);
     cursor: pointer;
   }
+
+  #sidebarToggle.hide {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  }
 }
