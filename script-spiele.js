@@ -10,12 +10,9 @@ const yearEl = qs('#year');
 const sidebar = qs('#sidebar');
 const sidebarToggle = qs('#sidebarToggle');
 const sidebarOverlay = qs('#sidebarOverlay');
-const themePoints = qs('.theme-points');
-const themeMarker = qs('#themeMarker');
 const statusMini = qs('#miniStatus');
 const miniName = qs('#miniName');
 const miniAvatar = qs('#miniAvatar');
-
 const openLogin = qs('#openLogin');
 const modal = qs('#modal');
 const modalClose = qs('#modalClose');
