@@ -10,9 +10,12 @@ const yearEl = qs('#year');
 const sidebar = qs('#sidebar');
 const sidebarToggle = qs('#sidebarToggle');
 const sidebarOverlay = qs('#sidebarOverlay');
+const themePoints = qs('.theme-points');
+const themeMarker = qs('#themeMarker');
 const statusMini = qs('#miniStatus');
 const miniName = qs('#miniName');
 const miniAvatar = qs('#miniAvatar');
+
 const openLogin = qs('#openLogin');
 const modal = qs('#modal');
 const modalClose = qs('#modalClose');
@@ -23,6 +26,41 @@ const statsList = qs('#statsList');
 const exportStats = qs('#exportStats');
 const importStats = qs('#importStats');
 const importFile = qs('#importFile');
+
+/* set year */
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+/* ====================
+   THEME (auto/light/dark)
+==================== */
+function applyTheme(mode) {
+  if (mode === 'auto') {
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    themeMarker.style.transform = 'translateX(0)';
+  } else if (mode === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    themeMarker.style.transform = 'translateX(100%)';
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeMarker.style.transform = 'translateX(200%)';
+  }
+  localStorage.setItem('gc-theme', mode);
+}
+
+(function initTheme(){
+  const saved = localStorage.getItem('gc-theme') || 'auto';
+  applyTheme(saved);
+  if (themePoints) {
+    qsa('.theme-points span').forEach(el => {
+      el.addEventListener('click', () => applyTheme(el.dataset.mode));
+    });
+  }
+  if (saved === 'auto' && window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => applyTheme('auto'));
+  }
+})();
+
 
 
 /* ====================
@@ -95,6 +133,12 @@ function renderSpiele(list){
 }
 
 
+
+/* initialize */
+loadSpiele();
+
+
+
 /* -------------------------
    SIDEBAR MOBILE TOGGLE & OVERLAY
 ------------------------- */
@@ -156,43 +200,144 @@ document.addEventListener('touchend', () => {
 
 
 
-// ===== THEME SWITCHER =====
-const themePoints = document.querySelectorAll(".theme-points span");
-const themeMarker = document.getElementById("themeMarker");
-
-// Setzt Theme und Marker
-function setTheme(mode) {
-  if (mode === "auto") {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
+/* ====================
+   PROFILE & STATS (local)
+==================== */
+function loadProfileUI() {
+  const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
+  if (user && user.name) {
+    miniName.textContent = user.name;
+    miniAvatar.textContent = user.name.charAt(0).toUpperCase();
   } else {
-    document.documentElement.setAttribute("data-theme", mode);
+    miniName.textContent = 'GameCircl';
+    miniAvatar.textContent = 'G';
   }
-  localStorage.setItem("gc-theme", mode);
+}
+loadProfileUI();
 
-  const indexMap = { auto: 0, light: 1, dark: 2 };
-  const index = indexMap[mode] ?? 0;
-  themeMarker.style.transform = `translateX(${index * 100}%)`;
+if (openLogin) {
+  openLogin.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+    modal.setAttribute('aria-hidden','false');
+    const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
+    usernameInput.value = user ? user.name : '';
+    renderStats();
+  });
+}
+if (modalClose) {
+  modalClose.addEventListener('click', () => {
+    modal.classList.add('hidden');
+    modal.setAttribute('aria-hidden','true');
+  });
 }
 
-// Klicks auf die Theme-Buttons
-themePoints.forEach(span => {
-  span.addEventListener("click", () => {
-    const mode = span.dataset.mode;
-    setTheme(mode);
+if (saveUser) {
+  saveUser.addEventListener('click', () => {
+    const val = usernameInput.value.trim();
+    if (!val) { alert('Bitte Namen eingeben'); return; }
+    const user = { name: val, id: 'u_' + Date.now() };
+    localStorage.setItem('gc-user', JSON.stringify(user));
+    loadProfileUI();
+    modal.classList.add('hidden');
   });
-});
+}
 
-// Lade gespeichertes Theme
-let savedTheme = localStorage.getItem("gc-theme") || "auto";
-setTheme(savedTheme);
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    if (confirm('Lokales Profil entfernen?')) {
+      localStorage.removeItem('gc-user');
+      loadProfileUI();
+      renderStats();
+      modal.classList.add('hidden');
+    }
+  });
+}
 
-// Reagiert auf System-Theme-Änderung, wenn Auto aktiv ist
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
-  if (localStorage.getItem("gc-theme") === "auto") {
-    setTheme("auto");
+/* Stats rendering */
+function renderStats() {
+  const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
+  const stats = JSON.parse(localStorage.getItem('gc-stats') || '{}');
+
+  if (!statsList) return;
+
+  if (!user) {
+    statsList.innerHTML = '<p class="muted">Kein eingeloggter Benutzer. Erstelle ein lokales Profil.</p>';
+    return;
   }
-});
+
+  const s = stats[user.id] || { plays: 0, wins: 0, last: null };
+  statsList.innerHTML = `
+    <div><strong>Benutzer:</strong> ${user.name}</div>
+    <div><strong>Runden gespielt:</strong> ${s.plays}</div>
+    <div><strong>Siege:</strong> ${s.wins}</div>
+    <div><strong>Letzte Runde:</strong> ${s.last || '-'}</div>
+    <div style="margin-top:10px;">
+      <button id="addPlay" class="btn">+ Runde simulieren</button>
+      <button id="resetStats" class="btn">Reset</button>
+    </div>
+  `;
+
+  qs('#addPlay').addEventListener('click', () => {
+    const uid = user.id;
+    const stats = JSON.parse(localStorage.getItem('gc-stats') || '{}');
+    stats[uid] = stats[uid] || { plays: 0, wins: 0, last: null };
+    stats[uid].plays++;
+    stats[uid].last = new Date().toLocaleString();
+    localStorage.setItem('gc-stats', JSON.stringify(stats));
+    renderStats();
+  });
+  qs('#resetStats').addEventListener('click', () => {
+    if (!confirm('Statistiken zurücksetzen?')) return;
+    const stats = JSON.parse(localStorage.getItem('gc-stats') || '{}');
+    stats[user.id] = { plays: 0, wins: 0, last: null };
+    localStorage.setItem('gc-stats', JSON.stringify(stats));
+    renderStats();
+  });
+}
+
+/* Export / Import */
+if (exportStats) {
+  exportStats.addEventListener('click', () => {
+    const data = {
+      stats: JSON.parse(localStorage.getItem('gc-stats') || '{}'),
+      user: JSON.parse(localStorage.getItem('gc-user') || 'null')
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'gamecircl_stats.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+}
+if (importStats && importFile) {
+  importStats.addEventListener('click', () => importFile.click());
+  importFile.addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const parsed = JSON.parse(r.result);
+        if (parsed.stats) {
+          localStorage.setItem('gc-stats', JSON.stringify(parsed.stats));
+          if (parsed.user) localStorage.setItem('gc-user', JSON.stringify(parsed.user));
+          loadProfileUI();
+          renderStats();
+          alert('Import erfolgreich');
+        } else {
+          alert('Ungültiges Format');
+        }
+      } catch (err) {
+        alert('Fehler beim Import');
+      }
+    };
+    r.readAsText(f);
+  });
+}
 
 
 /* -------------------------
@@ -223,7 +368,3 @@ logoutBtn.addEventListener('click', ()=>{
   localStorage.removeItem('gc_user');
   miniName.textContent = 'Gast';
 });
-
-
-/* initialize */
-loadSpiele();
