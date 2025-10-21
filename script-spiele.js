@@ -97,5 +97,136 @@ function renderSpiele(list){
   });
 }
 
+
+/* -------------------------
+   SIDEBAR MOBILE TOGGLE & OVERLAY
+------------------------- */
+
+if(sidebarToggle){
+  sidebarToggle.addEventListener('click', ()=>{
+    sidebar.classList.add('open');
+    sidebarOverlayEl.classList.remove('hidden');
+    sidebarToggle.classList.add('hide'); // ← NEU
+  });
+  sidebarOverlayEl.addEventListener('click', ()=>{
+    sidebar.classList.remove('open');
+    sidebarOverlayEl.classList.add('hidden');
+    sidebarToggle.classList.remove('hide'); // ← NEU
+  });
+}
+
+
+
+/* -------------------------
+   SIDEBAR MOBILE SWIPE (verbessert)
+------------------------- */
+let startX = 0;
+let startY = 0;
+let isSwiping = false;
+
+document.addEventListener('touchstart', (e) => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+  isSwiping = false;
+});
+
+document.addEventListener('touchmove', (e) => {
+  const diffX = e.touches[0].clientX - startX;
+  const diffY = e.touches[0].clientY - startY;
+
+  // Prüfe, ob horizontaler Swipe
+  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 20) {
+    e.preventDefault(); // verhindert Scrollen
+    isSwiping = true;
+
+    // Swipe nach rechts -> öffnen
+    if (diffX > 70 && !sidebar.classList.contains('open')) {
+      sidebar.classList.add('open');
+      sidebarOverlayEl.classList.remove('hidden');
+    }
+
+    // Swipe nach links -> schließen
+    if (diffX < -70 && sidebar.classList.contains('open')) {
+      sidebar.classList.remove('open');
+      sidebarOverlayEl.classList.add('hidden');
+    }
+  }
+});
+
+document.addEventListener('touchend', () => {
+  isSwiping = false;
+});
+
+
+
+// ===== THEME SWITCHER =====
+const themePoints = document.querySelectorAll(".theme-points span");
+const themeMarker = document.getElementById("themeMarker");
+
+// Setzt Theme und Marker
+function setTheme(mode) {
+  if (mode === "auto") {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
+  } else {
+    document.documentElement.setAttribute("data-theme", mode);
+  }
+  localStorage.setItem("gc-theme", mode);
+
+  const indexMap = { auto: 0, light: 1, dark: 2 };
+  const index = indexMap[mode] ?? 0;
+  themeMarker.style.transform = `translateX(${index * 100}%)`;
+}
+
+// Klicks auf die Theme-Buttons
+themePoints.forEach(span => {
+  span.addEventListener("click", () => {
+    const mode = span.dataset.mode;
+    setTheme(mode);
+  });
+});
+
+// Lade gespeichertes Theme
+let savedTheme = localStorage.getItem("gc-theme") || "auto";
+setTheme(savedTheme);
+
+// Reagiert auf System-Theme-Änderung, wenn Auto aktiv ist
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+  if (localStorage.getItem("gc-theme") === "auto") {
+    setTheme("auto");
+  }
+});
+
+
+/* -------------------------
+   LOGIN MODAL
+------------------------- */
+openLogin.addEventListener('click', ()=>{
+  modal.classList.remove('hidden');
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+});
+
+modalClose.addEventListener('click', ()=>{
+  modal.classList.remove('show');
+  setTimeout(()=> modal.classList.add('hidden'), 250);
+  modal.setAttribute('aria-hidden','true');
+});
+
+saveUser.addEventListener('click', ()=>{
+  const name = usernameInput.value.trim();
+  if(!name) return alert('Bitte Name eingeben');
+  localStorage.setItem('gc_user', name);
+  miniName.textContent = name;
+  modal.classList.remove('show');
+  setTimeout(()=> modal.classList.add('hidden'), 250);
+});
+
+logoutBtn.addEventListener('click', ()=>{
+  localStorage.removeItem('gc_user');
+  miniName.textContent = 'Gast';
+});
+
+
 /* initialize */
 loadSpiele();
