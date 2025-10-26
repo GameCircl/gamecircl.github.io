@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
    DATEN LADEN (nur noch spiele.json)
 ------------------------- */
 let games = [];
-fetch('spiele.json')
+fetch('JSON-Datastores/spiele.json')
   .then(res => res.json())
   .then(data => { 
     games = data.spiele || [];

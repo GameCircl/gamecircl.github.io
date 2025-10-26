@@ -68,7 +68,7 @@ function applyTheme(mode) {
 ==================== */
 async function loadSpiele() {
   try {
-    const res = await fetch('spiele.json', { cache: "no-store" });
+    const res = await fetch('JSON-Datastores/spiele.json', { cache: "no-store" });
     if (!res.ok) throw new Error('netzwerkfehler');
     const data = await res.json();
     const list = data.spiele || data; 
