@@ -14,22 +14,27 @@
 .legal-section h2 {
   font-size: 24px;
   margin-bottom: 16px;
-  color: var(--accent);
+  background: linear-gradient(150deg,#ceb634, #40f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .legal-section p {
   line-height: 1.6;
-  margin-bottom: 12px;
+  margin-bottom: 27px;
   color: var(--text);
 }
 
 .legal-section a {
-  color: var(--accent2);
+  background: linear-gradient(150deg,#ceb634, #936ff5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-decoration: none;
 }
 
 .legal-section a:hover {
   text-decoration: underline;
+  text-decoration-color: cadetblue;
 }
 
 .fade-in {
@@ -118,8 +123,8 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+    justify-content: normal;
+    height: 95%;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
   }
 }
