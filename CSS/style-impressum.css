@@ -111,8 +111,8 @@
   .legal-wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    max-width: 900px;
+    gap: 0px;
+    max-width: 1270px;
     margin: 0 auto;
   }
 
