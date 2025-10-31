@@ -71,10 +71,18 @@
 
 /* details (collapsed by default) */
 .news-details {
-  margin-top:8px;
-  display:none;
+  margin-top: 8px;
+  display: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
 }
-.news-details.open { display:block; }
+.news-details.open {
+  display: block;
+  max-height: 400px;
+  opacity: 1;
+}
 
 /* tags row */
 .news-tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; }

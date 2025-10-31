@@ -12,73 +12,56 @@ const saveUser = document.getElementById('saveUser');
 const usernameInput = document.getElementById('username');
 const sidebarOverlayEl = document.getElementById('sidebarOverlay');
 
-
 /* -------------------------
    SIDEBAR MOBILE TOGGLE & OVERLAY
 ------------------------- */
-
 if(sidebarToggle){
   sidebarToggle.addEventListener('click', ()=>{
     sidebar.classList.add('open');
     sidebarOverlayEl.classList.remove('hidden');
-    sidebarToggle.classList.add('hide'); // ← NEU
+    sidebarToggle.classList.add('hide');
   });
   sidebarOverlayEl.addEventListener('click', ()=>{
     sidebar.classList.remove('open');
     sidebarOverlayEl.classList.add('hidden');
-    sidebarToggle.classList.remove('hide'); // ← NEU
+    sidebarToggle.classList.remove('hide');
   });
 }
 
-
-
 /* -------------------------
-   SIDEBAR MOBILE SWIPE (verbessert)
+   SIDEBAR MOBILE SWIPE
 ------------------------- */
 let startX = 0;
 let startY = 0;
 let isSwiping = false;
-
-document.addEventListener('touchstart', (e) => {
+document.addEventListener('touchstart', e => {
   startX = e.touches[0].clientX;
   startY = e.touches[0].clientY;
   isSwiping = false;
 });
-
-document.addEventListener('touchmove', (e) => {
+document.addEventListener('touchmove', e => {
   const diffX = e.touches[0].clientX - startX;
   const diffY = e.touches[0].clientY - startY;
-
-  // Prüfe, ob horizontaler Swipe
   if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 20) {
-    e.preventDefault(); // verhindert Scrollen
+    e.preventDefault();
     isSwiping = true;
-
-    // Swipe nach rechts -> öffnen
     if (diffX > 70 && !sidebar.classList.contains('open')) {
       sidebar.classList.add('open');
       sidebarOverlayEl.classList.remove('hidden');
     }
-
-    // Swipe nach links -> schließen
     if (diffX < -70 && sidebar.classList.contains('open')) {
       sidebar.classList.remove('open');
       sidebarOverlayEl.classList.add('hidden');
     }
   }
 });
+document.addEventListener('touchend', () => isSwiping = false);
 
-document.addEventListener('touchend', () => {
-  isSwiping = false;
-});
-
-
-
-// ===== THEME SWITCHER =====
+/* -------------------------
+   THEME SWITCHER
+------------------------- */
 const themePoints = document.querySelectorAll(".theme-points span");
 const themeMarker = document.getElementById("themeMarker");
-
-// Setzt Theme und Marker
 function setTheme(mode) {
   if (mode === "auto") {
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -87,47 +70,27 @@ function setTheme(mode) {
     document.documentElement.setAttribute("data-theme", mode);
   }
   localStorage.setItem("gc-theme", mode);
-
   const indexMap = { auto: 0, light: 1, dark: 2 };
-  const index = indexMap[mode] ?? 0;
-  themeMarker.style.transform = `translateX(${index * 100}%)`;
+  themeMarker.style.transform = `translateX(${(indexMap[mode] ?? 0) * 100}%)`;
 }
-
-// Klicks auf die Theme-Buttons
-themePoints.forEach(span => {
-  span.addEventListener("click", () => {
-    const mode = span.dataset.mode;
-    setTheme(mode);
-  });
-});
-
-// Lade gespeichertes Theme
-let savedTheme = localStorage.getItem("gc-theme") || "auto";
-setTheme(savedTheme);
-
-// Reagiert auf System-Theme-Änderung, wenn Auto aktiv ist
+themePoints.forEach(span => span.addEventListener("click", () => setTheme(span.dataset.mode)));
+setTheme(localStorage.getItem("gc-theme") || "auto");
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
-  if (localStorage.getItem("gc-theme") === "auto") {
-    setTheme("auto");
-  }
+  if (localStorage.getItem("gc-theme") === "auto") setTheme("auto");
 });
 
 /* -------------------------
    LOGIN MODAL
 ------------------------- */
-openLogin.addEventListener('click', ()=>{
+openLogin?.addEventListener('click', ()=>{
   modal.classList.remove('hidden');
   modal.classList.add('show');
-  modal.setAttribute('aria-hidden','false');
 });
-
-modalClose.addEventListener('click', ()=>{
+modalClose?.addEventListener('click', ()=>{
   modal.classList.remove('show');
   setTimeout(()=> modal.classList.add('hidden'), 250);
-  modal.setAttribute('aria-hidden','true');
 });
-
-saveUser.addEventListener('click', ()=>{
+saveUser?.addEventListener('click', ()=>{
   const name = usernameInput.value.trim();
   if(!name) return alert('Bitte Name eingeben');
   localStorage.setItem('gc_user', name);
@@ -135,16 +98,16 @@ saveUser.addEventListener('click', ()=>{
   modal.classList.remove('show');
   setTimeout(()=> modal.classList.add('hidden'), 250);
 });
-
-logoutBtn.addEventListener('click', ()=>{
+logoutBtn?.addEventListener('click', ()=>{
   localStorage.removeItem('gc_user');
   miniName.textContent = 'Gast';
 });
 
-
-
+/* -------------------------
+   NEWS SYSTEM
+------------------------- */
 (async function(){
-  const newsUrl = 'JSON-Datastores/news.json'; // <-- passe ggf. an: 'news.json' oder 'data/news.json'
+  const newsUrl = 'JSON-Datastores/news.json';
   const container = document.getElementById('newsList');
   const emptyEl = document.getElementById('newsEmpty');
   const tagFiltersEl = document.getElementById('tagFilters');
@@ -156,62 +119,29 @@ logoutBtn.addEventListener('click', ()=>{
   let searchTerm = '';
   let sortMode = 'date-desc';
 
-  function formatDate(d){
-    const dt = new Date(d + 'T00:00:00');
-    return dt.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' });
-  }
+  const tagPalette = ['#4a6cf7','#1bb88a','#ff7b54','#d96cff','#f2c14e','#70a1ff','#a29bfe'];
 
-  function collectTags(list){
-    const s = new Set();
-    list.forEach(n => (n.tags || []).forEach(t => s.add(t)));
-    return Array.from(s).sort();
-  }
+  const escapeHtml = s => (s||'').toString()
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
-  function renderFilters(tags){
-    tagFiltersEl.innerHTML = '';
-    const allBtn = document.createElement('button');
-    allBtn.className = 'filter-btn active';
-    allBtn.textContent = 'Alle';
-    allBtn.addEventListener('click', ()=> { activeTag = null; render(); setActiveFilterBtn(); });
-    tagFiltersEl.appendChild(allBtn);
+  const formatDate = d => new Date(d+'T00:00:00').toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric'});
 
-    tags.forEach(t => {
-      const b = document.createElement('button');
-      b.className = 'filter-btn';
-      b.textContent = t;
-      b.dataset.tag = t;
-      b.addEventListener('click', () => {
-        activeTag = activeTag === t ? null : t;
-        render();
-        setActiveFilterBtn();
-      });
-      tagFiltersEl.appendChild(b);
-    });
-    setActiveFilterBtn();
-  }
-  function setActiveFilterBtn(){
-    tagFiltersEl.querySelectorAll('.filter-btn').forEach(b=>{
-      const t = b.dataset.tag;
-      if(!t && !activeTag){
-        b.classList.add('active');
-      } else if (t && activeTag === t){
-        b.classList.add('active');
-      } else {
-        b.classList.remove('active');
-      }
-    });
-  }
+  const collectTags = list => [...new Set(list.flatMap(n => n.tags || []))].sort();
 
   function sortNews(list){
     const copy = [...list];
-    if(sortMode === 'date-desc') copy.sort((a,b)=> new Date(b.date) - new Date(a.date));
-    else if(sortMode === 'date-asc') copy.sort((a,b)=> new Date(a.date) - new Date(b.date));
-    else if(sortMode === 'pinned-first') copy.sort((a,b)=> (b.pinned ? 1:0) - (a.pinned ? 1:0) || (new Date(b.date)-new Date(a.date)));
+    if(sortMode === 'pinned-first')
+      copy.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0) || new Date(b.date)-new Date(a.date));
+    else if(sortMode === 'date-asc')
+      copy.sort((a,b)=>new Date(a.date)-new Date(b.date));
+    else
+      copy.sort((a,b)=>new Date(b.date)-new Date(a.date));
     return copy;
   }
 
   function matchesFilter(n){
-    if(activeTag && !(n.tags || []).includes(activeTag)) return false;
+    if(activeTag && !(n.tags||[]).includes(activeTag)) return false;
     if(searchTerm){
       const hay = (n.title + ' ' + (n.summary||'') + ' ' + (n.content||[]).join(' ')).toLowerCase();
       if(!hay.includes(searchTerm.toLowerCase())) return false;
@@ -222,27 +152,24 @@ logoutBtn.addEventListener('click', ()=>{
   function createCard(n){
     const art = document.createElement('article');
     art.className = 'news-card' + (n.pinned ? ' pinned' : '');
+    const tagColor = tagPalette[Math.abs(n.title.charCodeAt(0)) % tagPalette.length];
+
     art.innerHTML = `
+      ${n.pinned ? '<div class="pinned-badge">📌 Angeheftet</div>' : ''}
       <div class="news-header">
-        <div class="meta-left">
-          <strong class="news-title">${escapeHtml(n.title)}</strong>
-        </div>
-        <div class="meta-right">
-          <span class="news-date">${formatDate(n.date)}</span>
-        </div>
+        <strong class="news-title">${escapeHtml(n.title)}</strong>
+        <span class="news-date">${formatDate(n.date)}</span>
       </div>
-      <div class="news-summary">${escapeHtml(n.summary || '')}</div>
+      <p class="news-summary">${escapeHtml(n.summary||'')}</p>
       <div class="news-details" aria-hidden="true">
-        ${((n.content || []).map(item=>`<div>• ${escapeHtml(item)}</div>`)).join('')}
+        ${(n.content||[]).map(line=>`<div>• ${escapeHtml(line)}</div>`).join('')}
       </div>
       <div class="news-tags">
-        ${(n.tags || []).map(t=>`<span class="tag-pill tag-${escapeHtml(t)}">${escapeHtml(t)}</span>`).join(' ')}
+        ${(n.tags||[]).map(t=>`<span class="tag-pill" style="border-color:${tagColor}">${escapeHtml(t)}</span>`).join(' ')}
       </div>
-      <div style="display:flex;gap:8px;margin-top:8px;">
-        <button class="btn show-more">Mehr</button>
-        ${n.pinned ? '<span class="tag-pill" style="background:linear-gradient(90deg,#4a6cf7,#6b8cff);color:#fff;border:0">Pinned</span>' : ''}
-      </div>
+      <button class="btn show-more">Mehr</button>
     `;
+
     const btn = art.querySelector('.show-more');
     const details = art.querySelector('.news-details');
     btn.addEventListener('click', ()=>{
@@ -250,29 +177,44 @@ logoutBtn.addEventListener('click', ()=>{
       details.setAttribute('aria-hidden', !open);
       btn.textContent = open ? 'Weniger' : 'Mehr';
     });
+
     return art;
   }
 
   function render(){
     container.innerHTML = '';
     const filtered = sortNews(allNews).filter(matchesFilter);
-    if(!filtered.length){
-      emptyEl.style.display = '';
-      return;
-    } else emptyEl.style.display = 'none';
-
+    emptyEl.style.display = filtered.length ? 'none' : '';
     filtered.forEach(n => container.appendChild(createCard(n)));
   }
 
-  function escapeHtml(s){
-    return (s||'').toString()
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;');
+  function renderFilters(tags){
+    tagFiltersEl.innerHTML = '';
+    const allBtn = document.createElement('button');
+    allBtn.className = 'filter-btn active';
+    allBtn.textContent = 'Alle';
+    allBtn.addEventListener('click', ()=>{ activeTag=null; render(); setActiveFilterBtn(); });
+    tagFiltersEl.appendChild(allBtn);
+    tags.forEach(t=>{
+      const b = document.createElement('button');
+      b.className = 'filter-btn';
+      b.textContent = t;
+      b.dataset.tag = t;
+      b.addEventListener('click', ()=>{
+        activeTag = activeTag === t ? null : t;
+        render();
+        setActiveFilterBtn();
+      });
+      tagFiltersEl.appendChild(b);
+    });
+  }
+  function setActiveFilterBtn(){
+    tagFiltersEl.querySelectorAll('.filter-btn').forEach(b=>{
+      const t = b.dataset.tag;
+      b.classList.toggle('active', !t && !activeTag || t && activeTag === t);
+    });
   }
 
-  // events
   searchInput?.addEventListener('input', e=>{
     searchTerm = e.target.value.trim();
     render();
@@ -282,26 +224,18 @@ logoutBtn.addEventListener('click', ()=>{
     render();
   });
 
-  // load json
   try {
     const res = await fetch(newsUrl, {cache:'no-store'});
-    if(!res.ok) throw new Error('netzwerk');
+    if(!res.ok) throw new Error('Netzwerkfehler');
     const json = await res.json();
     allNews = json.updates || json;
-    // ensure date converted
-    allNews.forEach(n=>{
-      if(!n.date) n.date = '1970-01-01';
-    });
+    allNews.forEach(n=>n.date = n.date || '1970-01-01');
 
-    // collect & render filters
     const tags = collectTags(allNews);
     renderFilters(tags);
-
-    // initial render
     render();
   } catch(err){
-    console.error('Fehler beim Laden der News', err);
+    console.error('Fehler beim Laden der News:', err);
     container.innerHTML = '<p class="muted">Fehler beim Laden der News.</p>';
   }
-
 })();
