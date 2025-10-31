@@ -1,69 +1,50 @@
 {
-  "updates": [
+  "news": [
     {
-      "id": "2025-10-25-1",
-      "title": "Neues Design-Update 🎨",
-      "date": "2025-10-25",
-      "type": "feature",
-      "summary": "Überarbeitete Oberfläche, flüssiger Darkmode & feinere Animationen.",
+      "id": "2025-10-30-pinned",
+      "date": "2025-10-30",
+      "title": "Großes Update: Neue Spielmodi & Animationen",
+      "summary": "Unser größtes Update bringt neue Animationen, überarbeitete Übergänge und einen neuen Spielmodus.",
       "content": [
-        "Startbildschirm-Layout neu gestaltet.",
-        "Darkmode-Übergang jetzt fließend.",
-        "Buttons und Hover-Animationen verfeinert.",
-        "Kleinere Performance-Optimierungen."
+        "Neuer Spielmodus: 'Rätsel-Roulette'.",
+        "Animationen für Namensratter und Strafaufgaben verbessert.",
+        "Mehr Performance-Optimierungen auf Mobilgeräten."
       ],
-      "tags": ["UI", "Design", "Darkmode"]
+      "tags": ["feature","update"],
+      "pinned": true
     },
     {
-      "id": "2025-10-20-1",
-      "title": "Wahrheit oder Pflicht: Mut & Grenzen 💥",
-      "date": "2025-10-20",
-      "type": "game",
-      "summary": "Mehr Fragen, besseres Gender-Handling, Bugfix für Gruppenauswahl.",
+      "id": "2025-10-22-1",
+      "date": "2025-10-22",
+      "title": "Darkmode: Lesbarkeit & Kontraste verbessert",
+      "summary": "Verbesserte Kontraste, feinere Abstufungen und optimierte Farben für längere Sessions.",
       "content": [
-        "120 neue Fragen für 'Mut & Grenzen' hinzugefügt.",
-        "Gruppentexte jetzt korrekt gespeichert.",
-        "Fehler beim Filtern nach Gender behoben."
+        "Kontrastverhältnis für Buttons erhöht.",
+        "Fehler im Theme-Switcher behoben."
       ],
-      "tags": ["WOP", "Gameplay", "Update"]
+      "tags": ["improvement","ui"]
     },
     {
-      "id": "2025-10-12-1",
-      "title": "Neue Favicons & Branding ✨",
-      "date": "2025-10-12",
-      "type": "feature",
-      "summary": "Neue Icon-Sets für Browser & Mobilgeräte.",
+      "id": "2025-10-15-1",
+      "date": "2025-10-15",
+      "title": "Kategorie-Erweiterung: 'Mut & Grenzen'",
+      "summary": "Über 120 neue Fragen und passende Pflichtaufgaben wurden hinzugefügt.",
       "content": [
-        "Apple Touch Icons in mehreren Größen ergänzt.",
-        "Favicon-Set aktualisiert.",
-        "Kleines Branding-Polish für das Logo."
+        "Neue Pflicht-Aufgaben mit leichtem körperlichem Bezug.",
+        "Verbesserte Gender-Filter in der Kategorienauswahl."
       ],
-      "tags": ["Branding", "Design"]
+      "tags": ["content","wop"]
     },
     {
-      "id": "2025-09-28-1",
-      "title": "Sicherheits-Hinweis: Lokale Daten",
-      "date": "2025-09-28",
-      "type": "announce",
-      "summary": "Kurzer Hinweis, wie deine lokalen Spielstände und Statistiken gespeichert werden.",
+      "id": "2025-10-07-1",
+      "date": "2025-10-07",
+      "title": "Kleine UI-Optimierungen",
+      "summary": "Abstände, Button-Stile und Mikro-Animationen wurden verfeinert.",
       "content": [
-        "Alle Nutzerdaten werden lokal im Browser (localStorage) gespeichert.",
-        "Keine Übermittlung an externe Dienste erfolgt.",
-        "Bei Problemen: Exportiere deine Daten und sichere sie manuell."
+        "Hover-States überarbeitet.",
+        "Card-Animations-Timing optimiert."
       ],
-      "tags": ["Privacy", "Info"]
-    },
-    {
-      "id": "2025-09-12-1",
-      "title": "Fehlerbehebung: Modal schloss nicht immer",
-      "date": "2025-09-12",
-      "type": "fix",
-      "summary": "Kleiner Bugfix beim Login-Modal und Sidebar-Swipe.",
-      "content": [
-        "Modal-Fokus-Verhalten verbessert.",
-        "Swipe-Logik für mobile Sidebar stabilisiert."
-      ],
-      "tags": ["Bugfix", "UX"]
+      "tags": ["minor","design"]
     }
   ]
 }

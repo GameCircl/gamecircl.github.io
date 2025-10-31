@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-  <!-- Favicons (wie bei dir) -->
+  <!-- App / Icons (wie in deinen anderen Seiten) -->
   <link rel="apple-touch-icon" sizes="57x57" href="bilder/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="bilder/apple-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="bilder/apple-icon-72x72.png">
@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" sizes="144x144" href="bilder/apple-icon-144x144.png">
   <link rel="apple-touch-icon" sizes="152x152" href="bilder/apple-icon-152x152.png">
   <link rel="apple-touch-icon" sizes="180x180" href="bilder/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="bilder/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="bilder/android-icon-192x192.png">
   <link rel="icon" type="image/png" sizes="32x32" href="bilder/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="96x96" href="bilder/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="bilder/favicon-16x16.png">
@@ -23,14 +23,17 @@
   <meta name="msapplication-TileImage" content="bilder/ms-icon-144x144.png">
   <meta name="theme-color" content="#09FFFF">
 
-  <title>❗ Updates & News — GameCircl</title>
+  <title>❗ News & Updates — GameCircl</title>
+
+  <!-- Grundstyle -->
   <link rel="stylesheet" href="CSS/style-start.css" />
+  <!-- Seitenspezifisch -->
   <link rel="stylesheet" href="CSS/style-news.css" />
 </head>
 <body>
   <div class="app" id="app">
 
-    <!-- Floating Hamburger nur für Mobile (wie elsewhere) -->
+    <!-- Floating Hamburger nur für Mobile (wie bei deinen anderen Seiten) -->
     <button id="sidebarToggle" class="floating-hamburger" aria-label="Menü öffnen">☰</button>
 
     <!-- SIDEBAR -->
@@ -59,8 +62,9 @@
             <div class="theme-marker" id="themeMarker"></div>
           </div>
         </div>
+
         <div class="status-mini" id="miniStatus">
-          <div class="avatar" id="miniAvatar">G</div>
+          <div class="avatar">G</div>
           <div class="status-text">
             <div class="name" id="miniName">GameCircl</div>
             <div class="sub">Bereit zum Spielen!</div>
@@ -75,40 +79,40 @@
 
     <!-- MAIN -->
     <main class="main">
-      <section class="page page-news">
-        <header class="hero" id="newsHero">
-          <p class="badge">What's new</p>
-          <h1 class="title"><span class="gradient">Updates & News</span></h1>
-          <p class="subtitle">Neuigkeiten, Changelogs und Ankündigungen — immer aktuell.</p>
-          <div class="hero-meta" id="heroMeta">
-            <div id="latestBadge" class="small-muted"></div>
-          </div>
+      <section id="page-news" class="page">
+        <header class="hero">
+          <p class="badge">Updates & Ankündigungen</p>
+          <h1 class="title"><span class="gradient">News</span> & Updates</h1>
+          <p class="subtitle">Alles Wichtige zu neuen Features, Fixes und geplanten Änderungen.</p>
         </header>
 
-        <!-- Filter / Search -->
-        <div class="news-controls">
-          <div class="filters" id="tagFilters" aria-label="Filter nach Tags"></div>
-          <div class="search-wrap">
-            <input id="newsSearch" type="search" placeholder="Suche News oder Tags..." aria-label="News suchen" />
-            <button id="clearSearch" class="btn">✕</button>
-          </div>
+        <!-- Filterbar -->
+        <div class="news-controls" style="max-width:1100px;margin:0 auto 18px;padding:0 18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+          <input id="newsSearch" type="search" placeholder="Suche News..." style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);" />
+          <div id="tagFilters" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+          <select id="sortSelect" aria-label="Sortierung" style="padding:10px;border-radius:10px;border:1px solid var(--border);">
+            <option value="date-desc">Neueste zuerst</option>
+            <option value="date-asc">Älteste zuerst</option>
+            <option value="pinned-first">Pinned zuerst</option>
+          </select>
         </div>
 
-        <!-- News grid -->
-        <div class="news-container" id="newsContainer" aria-live="polite">
-          <!-- Dynamische Cards -->
-        </div>
+        <!-- Container für News -->
+        <main id="newsList" class="news-container"></main>
 
-        <!-- leeres fallback -->
-        <div id="newsEmpty" class="muted small hidden">Keine News gefunden.</div>
+        <!-- Leere-state -->
+        <div id="newsEmpty" style="display:none;text-align:center;color:var(--muted);padding:40px 18px;">Keine News gefunden.</div>
 
-        <footer class="footer">
-          <small>© <span id="year"></span> Pixelstorm Interactive Development Group — made with ❤️</small>
-        </footer>
       </section>
+
+      <footer class="footer">
+        <small>© <span id="year"></span> Pixelstorm Interactive Development Group — made with ❤️</small>
+      </footer>
     </main>
   </div>
 
-  <script src="JS/script-news.js"></script>
+  <!-- Scripts -->
+  <script src="JS/script-start.js"></script> <!-- vorhandene Basis-Logik (sidebar, theme) -->
+  <script src="JS/script-news.js"></script>  <!-- neues: lädt news.json und rendert -->
 </body>
 </html>
