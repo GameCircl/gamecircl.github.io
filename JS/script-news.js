@@ -287,7 +287,7 @@ logoutBtn.addEventListener('click', ()=>{
     const res = await fetch(newsUrl, {cache:'no-store'});
     if(!res.ok) throw new Error('netzwerk');
     const json = await res.json();
-    allNews = json.news || json;
+    allNews = json.updates || json;
     // ensure date converted
     allNews.forEach(n=>{
       if(!n.date) n.date = '1970-01-01';
