@@ -4,11 +4,17 @@
 ──────────────── */
 
 /* Allgemein */
-.page {
-  padding: 60px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.main { 
+  flex:1; 
+  padding:28px; 
+  overflow:auto; 
+  display:flex;
+  flex-direction:column;
+}
+
+/* Footer unten halten */
+.main > .footer { 
+  margin-top:auto; 
 }
 
 /* Wrapper mit zwei Spalten */
