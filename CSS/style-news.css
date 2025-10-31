@@ -1,0 +1,182 @@
+/* style-news.css - nur seiten-spezifisch */
+
+/* Container / Grid */
+.news-controls {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  max-width:1200px;
+  margin: 0 auto 18px;
+  padding: 0 8px;
+  width:100%;
+}
+.filters {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.search-wrap {
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.search-wrap input[type="search"]{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
+  width:220px;
+}
+.search-wrap .btn {
+  padding:8px 10px;
+  border-radius:8px;
+  background:transparent;
+  border:1px solid var(--border);
+}
+
+/* Tag pill */
+.tag-pill {
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#fff;
+  font-weight:600;
+  font-size:13px;
+  box-shadow: var(--card-shadow);
+}
+
+/* Filter buttons */
+.tag-filter {
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--muted);
+  cursor:pointer;
+  font-size:13px;
+  transition: all .18s;
+}
+.tag-filter.active {
+  color:#fff;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  border-color: transparent;
+}
+
+/* News grid */
+.news-container{
+  max-width:1270px;
+  margin: 0 auto;
+  padding: 8px;
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Card */
+.news-card {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 16px;
+  border:1px solid var(--border);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: transform .18s, box-shadow .18s;
+}
+.news-card:hover { transform: translateY(-6px); box-shadow:0 22px 44px rgba(0,0,0,0.08); }
+
+/* header row */
+.news-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:8px;
+}
+.news-left {
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.news-type {
+  min-width:48px;
+  height:48px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  color:#fff;
+  font-size:18px;
+}
+.news-date {
+  font-size:13px;
+  color:var(--muted);
+}
+.news-title {
+  font-size:18px;
+  margin:6px 0 8px;
+  line-height:1.15;
+}
+.news-summary {
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+/* details collapse */
+.news-details {
+  overflow:hidden;
+  max-height:0;
+  transition: max-height .34s ease;
+  margin-top:8px;
+}
+.news-details.expanded {
+  /* large enough to open; content defines the required height */
+  max-height: 400px;
+}
+
+/* details list */
+.news-details ul {
+  margin:8px 0 0;
+  padding-left:18px;
+}
+.news-details li { margin-bottom:6px; color:var(--text); }
+
+/* controls row */
+.news-controls-row{
+  display:flex;
+  gap:8px;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:10px;
+}
+
+/* pill colors by type */
+.news-card.feature .news-type { background: linear-gradient(90deg,var(--accent),var(--accent2)); }
+.news-card.game    .news-type { background: linear-gradient(90deg,#06A0A0,#40C9A2); }
+.news-card.fix     .news-type { background: linear-gradient(90deg,#4CAF50,#8BC34A); }
+.news-card.announce{ background: linear-gradient(90deg,#F2994A,#F2C94C); }
+
+/* small metadata */
+.news-meta { display:flex; gap:10px; align-items:center; color:var(--muted); font-size:13px; }
+
+/* responsive */
+@media (min-width:900px){
+  .news-container { grid-template-columns: repeat(2, 1fr); }
+  .search-wrap input[type="search"]{ width:320px; }
+}
+@media (min-width:1300px){
+  .news-container { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* subtle animation on appear */
+.news-card { opacity:0; transform: translateY(10px); animation: newsIn .35s forwards; }
+@keyframes newsIn { to { opacity:1; transform:none; } }
+
+/* small helpers */
+.small-muted { color:var(--muted); font-size:13px; margin-top:8px; text-align:center; }
+.hidden{ display:none !important; }

@@ -1,0 +1,69 @@
+{
+  "updates": [
+    {
+      "id": "2025-10-25-1",
+      "title": "Neues Design-Update 🎨",
+      "date": "2025-10-25",
+      "type": "feature",
+      "summary": "Überarbeitete Oberfläche, flüssiger Darkmode & feinere Animationen.",
+      "content": [
+        "Startbildschirm-Layout neu gestaltet.",
+        "Darkmode-Übergang jetzt fließend.",
+        "Buttons und Hover-Animationen verfeinert.",
+        "Kleinere Performance-Optimierungen."
+      ],
+      "tags": ["UI", "Design", "Darkmode"]
+    },
+    {
+      "id": "2025-10-20-1",
+      "title": "Wahrheit oder Pflicht: Mut & Grenzen 💥",
+      "date": "2025-10-20",
+      "type": "game",
+      "summary": "Mehr Fragen, besseres Gender-Handling, Bugfix für Gruppenauswahl.",
+      "content": [
+        "120 neue Fragen für 'Mut & Grenzen' hinzugefügt.",
+        "Gruppentexte jetzt korrekt gespeichert.",
+        "Fehler beim Filtern nach Gender behoben."
+      ],
+      "tags": ["WOP", "Gameplay", "Update"]
+    },
+    {
+      "id": "2025-10-12-1",
+      "title": "Neue Favicons & Branding ✨",
+      "date": "2025-10-12",
+      "type": "feature",
+      "summary": "Neue Icon-Sets für Browser & Mobilgeräte.",
+      "content": [
+        "Apple Touch Icons in mehreren Größen ergänzt.",
+        "Favicon-Set aktualisiert.",
+        "Kleines Branding-Polish für das Logo."
+      ],
+      "tags": ["Branding", "Design"]
+    },
+    {
+      "id": "2025-09-28-1",
+      "title": "Sicherheits-Hinweis: Lokale Daten",
+      "date": "2025-09-28",
+      "type": "announce",
+      "summary": "Kurzer Hinweis, wie deine lokalen Spielstände und Statistiken gespeichert werden.",
+      "content": [
+        "Alle Nutzerdaten werden lokal im Browser (localStorage) gespeichert.",
+        "Keine Übermittlung an externe Dienste erfolgt.",
+        "Bei Problemen: Exportiere deine Daten und sichere sie manuell."
+      ],
+      "tags": ["Privacy", "Info"]
+    },
+    {
+      "id": "2025-09-12-1",
+      "title": "Fehlerbehebung: Modal schloss nicht immer",
+      "date": "2025-09-12",
+      "type": "fix",
+      "summary": "Kleiner Bugfix beim Login-Modal und Sidebar-Swipe.",
+      "content": [
+        "Modal-Fokus-Verhalten verbessert.",
+        "Swipe-Logik für mobile Sidebar stabilisiert."
+      ],
+      "tags": ["Bugfix", "UX"]
+    }
+  ]
+}

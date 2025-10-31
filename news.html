@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- Favicons (wie bei dir) -->
+  <link rel="apple-touch-icon" sizes="57x57" href="bilder/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="bilder/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="bilder/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="bilder/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="bilder/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="bilder/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="bilder/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="bilder/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="bilder/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="bilder/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="bilder/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="bilder/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="bilder/favicon-16x16.png">
+  <link rel="manifest" href="bilder/manifest.json">
+  <meta name="msapplication-TileColor" content="#09FFFF">
+  <meta name="msapplication-TileImage" content="bilder/ms-icon-144x144.png">
+  <meta name="theme-color" content="#09FFFF">
+
+  <title>❗ Updates & News — GameCircl</title>
+  <link rel="stylesheet" href="CSS/style-start.css" />
+  <link rel="stylesheet" href="CSS/style-news.css" />
+</head>
+<body>
+  <div class="app" id="app">
+
+    <!-- Floating Hamburger nur für Mobile (wie elsewhere) -->
+    <button id="sidebarToggle" class="floating-hamburger" aria-label="Menü öffnen">☰</button>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo-row">
+        <div class="logo">
+          <div class="logo-mark">GC</div>
+          <div class="logo-text">GameCircl <small>Gesellschaftsspiele</small></div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html" class="nav-link">🏠 Home</a>
+        <a href="spiele.html" class="nav-link">🎮 Spiele</a>
+        <a href="news.html" class="nav-link active">❗ Updates & News</a>
+        <a href="ueber.html" class="nav-link">ℹ️ Über GameCircl</a>
+        <a href="impressum.html" class="nav-link">📜 Impressum</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="theme-row" id="themeRow">
+          <div class="theme-points">
+            <span data-mode="auto">Auto</span>
+            <span data-mode="light">Hell</span>
+            <span data-mode="dark">Dunkel</span>
+            <div class="theme-marker" id="themeMarker"></div>
+          </div>
+        </div>
+        <div class="status-mini" id="miniStatus">
+          <div class="avatar" id="miniAvatar">G</div>
+          <div class="status-text">
+            <div class="name" id="miniName">GameCircl</div>
+            <div class="sub">Bereit zum Spielen!</div>
+          </div>
+          <button class="settings-btn" id="openLogin" title="Login / Statistiken">⚙️</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- OVERLAY -->
+    <div id="sidebarOverlay" class="overlay hidden"></div>
+
+    <!-- MAIN -->
+    <main class="main">
+      <section class="page page-news">
+        <header class="hero" id="newsHero">
+          <p class="badge">What's new</p>
+          <h1 class="title"><span class="gradient">Updates & News</span></h1>
+          <p class="subtitle">Neuigkeiten, Changelogs und Ankündigungen — immer aktuell.</p>
+          <div class="hero-meta" id="heroMeta">
+            <div id="latestBadge" class="small-muted"></div>
+          </div>
+        </header>
+
+        <!-- Filter / Search -->
+        <div class="news-controls">
+          <div class="filters" id="tagFilters" aria-label="Filter nach Tags"></div>
+          <div class="search-wrap">
+            <input id="newsSearch" type="search" placeholder="Suche News oder Tags..." aria-label="News suchen" />
+            <button id="clearSearch" class="btn">✕</button>
+          </div>
+        </div>
+
+        <!-- News grid -->
+        <div class="news-container" id="newsContainer" aria-live="polite">
+          <!-- Dynamische Cards -->
+        </div>
+
+        <!-- leeres fallback -->
+        <div id="newsEmpty" class="muted small hidden">Keine News gefunden.</div>
+
+        <footer class="footer">
+          <small>© <span id="year"></span> Pixelstorm Interactive Development Group — made with ❤️</small>
+        </footer>
+      </section>
+    </main>
+  </div>
+
+  <script src="JS/script-news.js"></script>
+</body>
+</html>
