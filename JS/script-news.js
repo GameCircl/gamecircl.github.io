@@ -1,376 +1,307 @@
 /* script-news.js
-   News page script — loads news.json, renders cards, integrates theme/sidebar/modal
+   Lädt news.json, rendert Cards, Filter & Suche.
 */
 
-(() => {
-  /* -------------------------
-     SELECTORS / ELEMENTS
-  ------------------------- */
-  const newsListEl = document.getElementById('newsList');
-  const newsEmpty = document.getElementById('newsEmpty');
-  const qSearch = document.getElementById('qSearch');
-  const filterType = document.getElementById('filterType');
-  const tagsContainer = document.getElementById('tagsContainer');
-  const clearFiltersBtn = document.getElementById('clearFilters');
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const miniName = document.getElementById('miniName');
+const openLogin = document.getElementById('openLogin');
+const modal = document.getElementById('modal');
+const modalClose = document.getElementById('modalClose');
+const saveUser = document.getElementById('saveUser');
+const usernameInput = document.getElementById('username');
+const sidebarOverlayEl = document.getElementById('sidebarOverlay');
 
-  const root = document.documentElement;
-  const sidebar = document.getElementById('sidebar');
-  const sidebarToggle = document.getElementById('sidebarToggle');
-  const sidebarOverlayEl = document.getElementById('sidebarOverlay');
-  const miniName = document.getElementById('miniName');
-  const miniAvatar = document.getElementById('miniAvatar');
 
-  const openLogin = document.getElementById('openLogin');
-  const modal = document.getElementById('modal');
-  const modalClose = document.getElementById('modalClose');
-  const saveUser = document.getElementById('saveUser');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const usernameInput = document.getElementById('username');
+/* -------------------------
+   SIDEBAR MOBILE TOGGLE & OVERLAY
+------------------------- */
 
-  const themePoints = document.querySelectorAll(".theme-points span");
-  const themeMarker = document.getElementById("themeMarker");
-
-  /* state */
-  let allNews = [];
-  let activeTag = '';
-  let activeType = '';
-  let searchQ = '';
-
-  /* -------------------------
-     UTIL: format date
-  ------------------------- */
-  function fmtDate(dStr) {
-    try {
-      const d = new Date(dStr);
-      return d.toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' });
-    } catch (e) {
-      return dStr;
-    }
-  }
-
-  /* -------------------------
-     Load JSON (news)
-  ------------------------- */
-  async function loadNews() {
-    try {
-      const res = await fetch('JSON-Datastores/news.json', { cache: 'no-store' });
-      if (!res.ok) throw new Error('netzwerkfehler');
-      const json = await res.json();
-      allNews = (json.updates || []).map(n => Object.assign({}, n));
-      renderAll();
-      buildTagList();
-    } catch (err) {
-      console.error('Fehler beim Laden news.json', err);
-      newsListEl.innerHTML = '<div class="news-empty muted">Fehler beim Laden der News.</div>';
-    }
-  }
-
-  /* -------------------------
-     Render helpers
-  ------------------------- */
-  function sortNews(list) {
-    return list.slice().sort((a,b) => {
-      // pinned first
-      if ((a.pinned?1:0) !== (b.pinned?1:0)) return (b.pinned?1:0) - (a.pinned?1:0);
-      // then date desc
-      return new Date(b.date) - new Date(a.date);
-    });
-  }
-
-  function buildTagList() {
-    const tags = new Set();
-    allNews.forEach(n => (n.tags || []).forEach(t => tags.add(t)));
-    tagsContainer.innerHTML = '';
-    Array.from(tags).sort().forEach(tag => {
-      const btn = document.createElement('button');
-      btn.className = 'tag-chip';
-      btn.textContent = tag;
-      btn.dataset.tag = tag;
-      btn.addEventListener('click', () => {
-        if (activeTag === tag) activeTag = '';
-        else activeTag = tag;
-        renderAll();
-        highlightActiveTag();
-      });
-      tagsContainer.appendChild(btn);
-    });
-    highlightActiveTag();
-  }
-
-  function highlightActiveTag() {
-    tagsContainer.querySelectorAll('.tag-chip').forEach(el => {
-      el.classList.toggle('active', el.dataset.tag === activeTag);
-    });
-  }
-
-  function filterNews() {
-    return allNews.filter(n => {
-      if (activeType && n.type !== activeType) return false;
-      if (activeTag && !(n.tags || []).includes(activeTag)) return false;
-      if (searchQ) {
-        const q = searchQ.toLowerCase();
-        const inTitle = (n.title || '').toLowerCase().includes(q);
-        const inSummary = (n.summary || '').toLowerCase().includes(q);
-        const inContent = ( (n.content || []).join(' ') ).toLowerCase().includes(q);
-        const inTags = (n.tags || []).join(' ').toLowerCase().includes(q);
-        if (!(inTitle || inSummary || inContent || inTags)) return false;
-      }
-      return true;
-    });
-  }
-
-  /* -------------------------
-     render news list
-  ------------------------- */
-  function renderAll() {
-    const list = sortNews(filterNews());
-    newsListEl.innerHTML = '';
-    if (!list.length) {
-      newsEmpty.classList.remove('hidden');
-      return;
-    } else {
-      newsEmpty.classList.add('hidden');
-    }
-
-    list.forEach((n, idx) => {
-      const card = document.createElement('article');
-      card.className = 'news-card fade-in';
-      card.dataset.id = n.id || idx;
-
-      // inner HTML
-      card.innerHTML = `
-        <div class="news-head">
-          <div class="news-left">
-            <div>
-              <div class="news-date">${fmtDate(n.date)}</div>
-            </div>
-            <div>
-              <h3 class="news-title">${escapeHtml(n.title)}${n.pinned ? ' <span class="pinned-badge">Pinned</span>' : ''}</h3>
-              <p class="news-summary">${escapeHtml(n.summary || '')}</p>
-            </div>
-          </div>
-          <div class="news-meta">
-            <div class="news-type ${escapeHtml(n.type || '')}">${escapeHtml(n.type || '')}</div>
-            <div style="margin-top:8px;">
-              <button class="toggle-details" aria-expanded="false">Details ▾</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="news-details" aria-hidden="true">
-          <div class="news-body">
-            ${Array.isArray(n.content) ? `<ul>${n.content.map(it => `<li>${escapeHtml(it)}</li>`).join('')}</ul>` : `<p>${escapeHtml(n.content || '')}</p>`}
-          </div>
-        </div>
-
-        <div class="news-foot">
-          <div class="news-tags">
-            ${(n.tags || []).map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')}
-          </div>
-          <div>
-            <small class="muted">ID: ${escapeHtml(n.id || '—')}</small>
-          </div>
-        </div>
-      `;
-
-      // toggle details
-      const toggleBtn = card.querySelector('.toggle-details');
-      const details = card.querySelector('.news-details');
-
-      toggleBtn.addEventListener('click', () => {
-        const open = details.classList.toggle('open');
-        if (open) {
-          details.style.maxHeight = details.scrollHeight + 24 + 'px';
-          toggleBtn.textContent = 'Details ▴';
-          toggleBtn.setAttribute('aria-expanded', 'true');
-          details.setAttribute('aria-hidden', 'false');
-        } else {
-          details.style.maxHeight = null;
-          toggleBtn.textContent = 'Details ▾';
-          toggleBtn.setAttribute('aria-expanded', 'false');
-          details.setAttribute('aria-hidden', 'true');
-        }
-      });
-
-      newsListEl.appendChild(card);
-    });
-
-    // observe fade-ins
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  }
-
-  /* -------------------------
-     small helper: escapeHtml
-  ------------------------- */
-  function escapeHtml(str){
-    return String(str || '').replace(/[&<>"']/g, m => ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-    }[m]));
-  }
-
-  /* -------------------------
-     UI: search / filter bindings
-  ------------------------- */
-  qSearch?.addEventListener('input', (e) => {
-    searchQ = e.target.value.trim();
-    renderAll();
+if(sidebarToggle){
+  sidebarToggle.addEventListener('click', ()=>{
+    sidebar.classList.add('open');
+    sidebarOverlayEl.classList.remove('hidden');
+    sidebarToggle.classList.add('hide'); // ← NEU
   });
-  filterType?.addEventListener('change', (e) => {
-    activeType = e.target.value;
-    renderAll();
+  sidebarOverlayEl.addEventListener('click', ()=>{
+    sidebar.classList.remove('open');
+    sidebarOverlayEl.classList.add('hidden');
+    sidebarToggle.classList.remove('hide'); // ← NEU
   });
-  clearFiltersBtn?.addEventListener('click', () => {
-    activeTag = '';
-    activeType = '';
-    searchQ = '';
-    qSearch.value = '';
-    filterType.value = '';
-    highlightActiveTag();
-    renderAll();
-  });
+}
 
-  /* -------------------------
-     build observer for fade-in
-  ------------------------- */
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (en.isIntersecting) {
-        en.target.classList.add('visible');
-        observer.unobserve(en.target);
-      }
-    });
-  }, { threshold: 0.12 });
 
-  /* -------------------------
-     THEME (same as your other scripts)
-  ------------------------- */
-  function setTheme(mode) {
-    if (mode === 'auto') {
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-    } else {
-      document.documentElement.setAttribute('data-theme', mode);
-    }
-    localStorage.setItem('gc-theme', mode);
 
-    const indexMap = { auto: 0, light: 1, dark: 2 };
-    const index = indexMap[mode] ?? 0;
-    if (themeMarker) themeMarker.style.transform = `translateX(${index * 100}%)`;
-  }
+/* -------------------------
+   SIDEBAR MOBILE SWIPE (verbessert)
+------------------------- */
+let startX = 0;
+let startY = 0;
+let isSwiping = false;
 
-  themePoints?.forEach(span => {
-    span.addEventListener('click', () => setTheme(span.dataset.mode));
-  });
-  setTheme(localStorage.getItem('gc-theme') || 'auto');
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      if (localStorage.getItem('gc-theme') === 'auto') setTheme('auto');
-    });
-  }
+document.addEventListener('touchstart', (e) => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+  isSwiping = false;
+});
 
-  /* -------------------------
-     SIDEBAR: toggle + overlay + hide btn
-  ------------------------- */
-  if (sidebarToggle) {
-    sidebarToggle.addEventListener('click', () => {
+document.addEventListener('touchmove', (e) => {
+  const diffX = e.touches[0].clientX - startX;
+  const diffY = e.touches[0].clientY - startY;
+
+  // Prüfe, ob horizontaler Swipe
+  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 20) {
+    e.preventDefault(); // verhindert Scrollen
+    isSwiping = true;
+
+    // Swipe nach rechts -> öffnen
+    if (diffX > 70 && !sidebar.classList.contains('open')) {
       sidebar.classList.add('open');
       sidebarOverlayEl.classList.remove('hidden');
-      sidebarToggle.classList.add('hide');
-    });
-    sidebarOverlayEl.addEventListener('click', () => {
+    }
+
+    // Swipe nach links -> schließen
+    if (diffX < -70 && sidebar.classList.contains('open')) {
       sidebar.classList.remove('open');
       sidebarOverlayEl.classList.add('hidden');
-      sidebarToggle.classList.remove('hide');
+    }
+  }
+});
+
+document.addEventListener('touchend', () => {
+  isSwiping = false;
+});
+
+
+
+// ===== THEME SWITCHER =====
+const themePoints = document.querySelectorAll(".theme-points span");
+const themeMarker = document.getElementById("themeMarker");
+
+// Setzt Theme und Marker
+function setTheme(mode) {
+  if (mode === "auto") {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
+  } else {
+    document.documentElement.setAttribute("data-theme", mode);
+  }
+  localStorage.setItem("gc-theme", mode);
+
+  const indexMap = { auto: 0, light: 1, dark: 2 };
+  const index = indexMap[mode] ?? 0;
+  themeMarker.style.transform = `translateX(${index * 100}%)`;
+}
+
+// Klicks auf die Theme-Buttons
+themePoints.forEach(span => {
+  span.addEventListener("click", () => {
+    const mode = span.dataset.mode;
+    setTheme(mode);
+  });
+});
+
+// Lade gespeichertes Theme
+let savedTheme = localStorage.getItem("gc-theme") || "auto";
+setTheme(savedTheme);
+
+// Reagiert auf System-Theme-Änderung, wenn Auto aktiv ist
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+  if (localStorage.getItem("gc-theme") === "auto") {
+    setTheme("auto");
+  }
+});
+
+/* -------------------------
+   LOGIN MODAL
+------------------------- */
+openLogin.addEventListener('click', ()=>{
+  modal.classList.remove('hidden');
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+});
+
+modalClose.addEventListener('click', ()=>{
+  modal.classList.remove('show');
+  setTimeout(()=> modal.classList.add('hidden'), 250);
+  modal.setAttribute('aria-hidden','true');
+});
+
+saveUser.addEventListener('click', ()=>{
+  const name = usernameInput.value.trim();
+  if(!name) return alert('Bitte Name eingeben');
+  localStorage.setItem('gc_user', name);
+  miniName.textContent = name;
+  modal.classList.remove('show');
+  setTimeout(()=> modal.classList.add('hidden'), 250);
+});
+
+logoutBtn.addEventListener('click', ()=>{
+  localStorage.removeItem('gc_user');
+  miniName.textContent = 'Gast';
+});
+
+
+
+(async function(){
+  const newsUrl = 'JSON-Datastores/news.json'; // <-- passe ggf. an: 'news.json' oder 'data/news.json'
+  const container = document.getElementById('newsList');
+  const emptyEl = document.getElementById('newsEmpty');
+  const tagFiltersEl = document.getElementById('tagFilters');
+  const searchInput = document.getElementById('newsSearch');
+  const sortSelect = document.getElementById('sortSelect');
+
+  let allNews = [];
+  let activeTag = null;
+  let searchTerm = '';
+  let sortMode = 'date-desc';
+
+  function formatDate(d){
+    const dt = new Date(d + 'T00:00:00');
+    return dt.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' });
+  }
+
+  function collectTags(list){
+    const s = new Set();
+    list.forEach(n => (n.tags || []).forEach(t => s.add(t)));
+    return Array.from(s).sort();
+  }
+
+  function renderFilters(tags){
+    tagFiltersEl.innerHTML = '';
+    const allBtn = document.createElement('button');
+    allBtn.className = 'filter-btn active';
+    allBtn.textContent = 'Alle';
+    allBtn.addEventListener('click', ()=> { activeTag = null; render(); setActiveFilterBtn(); });
+    tagFiltersEl.appendChild(allBtn);
+
+    tags.forEach(t => {
+      const b = document.createElement('button');
+      b.className = 'filter-btn';
+      b.textContent = t;
+      b.dataset.tag = t;
+      b.addEventListener('click', () => {
+        activeTag = activeTag === t ? null : t;
+        render();
+        setActiveFilterBtn();
+      });
+      tagFiltersEl.appendChild(b);
+    });
+    setActiveFilterBtn();
+  }
+  function setActiveFilterBtn(){
+    tagFiltersEl.querySelectorAll('.filter-btn').forEach(b=>{
+      const t = b.dataset.tag;
+      if(!t && !activeTag){
+        b.classList.add('active');
+      } else if (t && activeTag === t){
+        b.classList.add('active');
+      } else {
+        b.classList.remove('active');
+      }
     });
   }
 
-  /* Swipe handling — horizontal swipe detection prevents vertical scroll */
-  let startX = 0, startY = 0, isSwiping = false;
-  document.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    isSwiping = false;
-  }, { passive: true });
-
-  document.addEventListener('touchmove', (e) => {
-    if (!e.touches || !e.touches[0]) return;
-    const diffX = e.touches[0].clientX - startX;
-    const diffY = e.touches[0].clientY - startY;
-
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 18) {
-      // treat as horizontal swipe — prevent vertical scroll
-      e.preventDefault();
-      isSwiping = true;
-      if (diffX > 70 && !sidebar.classList.contains('open')) {
-        sidebar.classList.add('open');
-        sidebarOverlayEl.classList.remove('hidden');
-        sidebarToggle?.classList.add('hide');
-      } else if (diffX < -70 && sidebar.classList.contains('open')) {
-        sidebar.classList.remove('open');
-        sidebarOverlayEl.classList.add('hidden');
-        sidebarToggle?.classList.remove('hide');
-      }
-    }
-  }, { passive: false });
-
-  document.addEventListener('touchend', () => { isSwiping = false; });
-
-  /* -------------------------
-     LOGIN / STATS modal
-  ------------------------- */
-  function loadProfileUI() {
-    const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
-    if (user && user.name) {
-      miniName.textContent = user.name;
-      miniAvatar.textContent = user.name.charAt(0).toUpperCase();
-    } else {
-      miniName.textContent = 'GameCircl';
-      miniAvatar.textContent = 'G';
-    }
+  function sortNews(list){
+    const copy = [...list];
+    if(sortMode === 'date-desc') copy.sort((a,b)=> new Date(b.date) - new Date(a.date));
+    else if(sortMode === 'date-asc') copy.sort((a,b)=> new Date(a.date) - new Date(b.date));
+    else if(sortMode === 'pinned-first') copy.sort((a,b)=> (b.pinned ? 1:0) - (a.pinned ? 1:0) || (new Date(b.date)-new Date(a.date)));
+    return copy;
   }
-  loadProfileUI();
 
-  openLogin?.addEventListener('click', () => {
-    modal.classList.remove('hidden');
-    modal.classList.add('show');
-    modal.setAttribute('aria-hidden','false');
-    const user = JSON.parse(localStorage.getItem('gc-user') || 'null');
-    if (usernameInput) usernameInput.value = user ? user.name : '';
+  function matchesFilter(n){
+    if(activeTag && !(n.tags || []).includes(activeTag)) return false;
+    if(searchTerm){
+      const hay = (n.title + ' ' + (n.summary||'') + ' ' + (n.content||[]).join(' ')).toLowerCase();
+      if(!hay.includes(searchTerm.toLowerCase())) return false;
+    }
+    return true;
+  }
+
+  function createCard(n){
+    const art = document.createElement('article');
+    art.className = 'news-card' + (n.pinned ? ' pinned' : '');
+    art.innerHTML = `
+      <div class="news-header">
+        <div class="meta-left">
+          <strong class="news-title">${escapeHtml(n.title)}</strong>
+        </div>
+        <div class="meta-right">
+          <span class="news-date">${formatDate(n.date)}</span>
+        </div>
+      </div>
+      <div class="news-summary">${escapeHtml(n.summary || '')}</div>
+      <div class="news-details" aria-hidden="true">
+        ${((n.content || []).map(item=>`<div>• ${escapeHtml(item)}</div>`)).join('')}
+      </div>
+      <div class="news-tags">
+        ${(n.tags || []).map(t=>`<span class="tag-pill tag-${escapeHtml(t)}">${escapeHtml(t)}</span>`).join(' ')}
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn show-more">Mehr</button>
+        ${n.pinned ? '<span class="tag-pill" style="background:linear-gradient(90deg,#4a6cf7,#6b8cff);color:#fff;border:0">Pinned</span>' : ''}
+      </div>
+    `;
+    const btn = art.querySelector('.show-more');
+    const details = art.querySelector('.news-details');
+    btn.addEventListener('click', ()=>{
+      const open = details.classList.toggle('open');
+      details.setAttribute('aria-hidden', !open);
+      btn.textContent = open ? 'Weniger' : 'Mehr';
+    });
+    return art;
+  }
+
+  function render(){
+    container.innerHTML = '';
+    const filtered = sortNews(allNews).filter(matchesFilter);
+    if(!filtered.length){
+      emptyEl.style.display = '';
+      return;
+    } else emptyEl.style.display = 'none';
+
+    filtered.forEach(n => container.appendChild(createCard(n)));
+  }
+
+  function escapeHtml(s){
+    return (s||'').toString()
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  // events
+  searchInput?.addEventListener('input', e=>{
+    searchTerm = e.target.value.trim();
+    render();
+  });
+  sortSelect?.addEventListener('change', e=>{
+    sortMode = e.target.value;
+    render();
   });
 
-  modalClose?.addEventListener('click', () => {
-    modal.classList.remove('show');
-    setTimeout(()=> modal.classList.add('hidden'), 220);
-    modal.setAttribute('aria-hidden','true');
-  });
+  // load json
+  try {
+    const res = await fetch(newsUrl, {cache:'no-store'});
+    if(!res.ok) throw new Error('netzwerk');
+    const json = await res.json();
+    allNews = json.news || json;
+    // ensure date converted
+    allNews.forEach(n=>{
+      if(!n.date) n.date = '1970-01-01';
+    });
 
-  saveUser?.addEventListener('click', () => {
-    const name = usernameInput?.value.trim();
-    if (!name) return alert('Bitte Name eingeben');
-    const user = { name, id: 'u_' + Date.now() };
-    localStorage.setItem('gc-user', JSON.stringify(user));
-    loadProfileUI();
-    modal.classList.remove('show');
-    setTimeout(()=> modal.classList.add('hidden'), 220);
-  });
+    // collect & render filters
+    const tags = collectTags(allNews);
+    renderFilters(tags);
 
-  logoutBtn?.addEventListener('click', () => {
-    localStorage.removeItem('gc-user');
-    loadProfileUI();
-  });
-
-  /* -------------------------
-     footer year + fade-in observer for initial elements
-  ------------------------- */
-  document.addEventListener('DOMContentLoaded', () => {
-    const y = document.getElementById('year');
-    if (y) y.textContent = new Date().getFullYear();
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  });
-
-  /* -------------------------
-     Init
-  ------------------------- */
-  loadNews();
+    // initial render
+    render();
+  } catch(err){
+    console.error('Fehler beim Laden der News', err);
+    container.innerHTML = '<p class="muted">Fehler beim Laden der News.</p>';
+  }
 
 })();
