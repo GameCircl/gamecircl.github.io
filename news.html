@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>❗ Updates & News — GameCircl</title>
 
-  <!-- App / Icons (wie in deinen anderen Seiten) -->
+  <!-- Favicons (wie bei dir) -->
   <link rel="apple-touch-icon" sizes="57x57" href="bilder/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="bilder/apple-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="bilder/apple-icon-72x72.png">
@@ -14,7 +15,7 @@
   <link rel="apple-touch-icon" sizes="144x144" href="bilder/apple-icon-144x144.png">
   <link rel="apple-touch-icon" sizes="152x152" href="bilder/apple-icon-152x152.png">
   <link rel="apple-touch-icon" sizes="180x180" href="bilder/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192"  href="bilder/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="bilder/android-icon-192x192.png">
   <link rel="icon" type="image/png" sizes="32x32" href="bilder/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="96x96" href="bilder/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="bilder/favicon-16x16.png">
@@ -23,17 +24,15 @@
   <meta name="msapplication-TileImage" content="bilder/ms-icon-144x144.png">
   <meta name="theme-color" content="#09FFFF">
 
-  <title>❗ News & Updates — GameCircl</title>
-
-  <!-- Grundstyle -->
+  <!-- Global base style (dein bereits vorhandenes) -->
   <link rel="stylesheet" href="CSS/style-start.css" />
-  <!-- Seitenspezifisch -->
+  <!-- Page-specific -->
   <link rel="stylesheet" href="CSS/style-news.css" />
 </head>
 <body>
   <div class="app" id="app">
 
-    <!-- Floating Hamburger nur für Mobile (wie bei deinen anderen Seiten) -->
+    <!-- Floating Hamburger nur für Mobile -->
     <button id="sidebarToggle" class="floating-hamburger" aria-label="Menü öffnen">☰</button>
 
     <!-- SIDEBAR -->
@@ -45,7 +44,7 @@
         </div>
       </div>
 
-      <nav class="nav">
+      <nav class="nav" role="navigation" aria-label="Hauptnavigation">
         <a href="index.html" class="nav-link">🏠 Home</a>
         <a href="spiele.html" class="nav-link">🎮 Spiele</a>
         <a href="news.html" class="nav-link active">❗ Updates & News</a>
@@ -54,17 +53,17 @@
       </nav>
 
       <div class="sidebar-bottom">
-        <div class="theme-row" id="themeRow">
-          <div class="theme-points">
-            <span data-mode="auto">Auto</span>
-            <span data-mode="light">Hell</span>
-            <span data-mode="dark">Dunkel</span>
+        <div class="theme-row" id="themeRow" aria-hidden="false">
+          <div class="theme-points" role="tablist" aria-label="Theme">
+            <span data-mode="auto" role="tab">Auto</span>
+            <span data-mode="light" role="tab">Hell</span>
+            <span data-mode="dark" role="tab">Dunkel</span>
             <div class="theme-marker" id="themeMarker"></div>
           </div>
         </div>
 
         <div class="status-mini" id="miniStatus">
-          <div class="avatar">G</div>
+          <div class="avatar" id="miniAvatar">G</div>
           <div class="status-text">
             <div class="name" id="miniName">GameCircl</div>
             <div class="sub">Bereit zum Spielen!</div>
@@ -81,38 +80,75 @@
     <main class="main">
       <section id="page-news" class="page">
         <header class="hero">
-          <p class="badge">Updates & Ankündigungen</p>
-          <h1 class="title"><span class="gradient">News</span> & Updates</h1>
-          <p class="subtitle">Alles Wichtige zu neuen Features, Fixes und geplanten Änderungen.</p>
+          <p class="badge">Neuigkeiten & Releases</p>
+          <h1 class="title"><span class="gradient">Updates</span> & News</h1>
+          <p class="subtitle">Hier findest du Release-Notes, Design-Updates und wichtige Hinweise — sortiert nach Datum.</p>
         </header>
 
         <!-- Filterbar -->
-        <div class="news-controls" style="max-width:1100px;margin:0 auto 18px;padding:0 18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-          <input id="newsSearch" type="search" placeholder="Suche News..." style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);" />
-          <div id="tagFilters" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
-          <select id="sortSelect" aria-label="Sortierung" style="padding:10px;border-radius:10px;border:1px solid var(--border);">
-            <option value="date-desc">Neueste zuerst</option>
-            <option value="date-asc">Älteste zuerst</option>
-            <option value="pinned-first">Pinned zuerst</option>
-          </select>
+        <div class="news-controls fade-in">
+          <div class="controls-left">
+            <input id="qSearch" type="search" placeholder="Suche Nachrichten oder Tags..." />
+            <select id="filterType" aria-label="Typ filtern">
+              <option value="">Alle Typen</option>
+              <option value="feature">Feature</option>
+              <option value="game">Game</option>
+              <option value="fix">Fix</option>
+              <option value="info">Info</option>
+              <option value="update">Update</option>
+            </select>
+          </div>
+          <div class="controls-right">
+            <div id="tagsContainer" class="tags-row" aria-hidden="false"></div>
+            <button id="clearFilters" class="btn">Filter zurücksetzen</button>
+          </div>
         </div>
 
-        <!-- Container für News -->
-        <main id="newsList" class="news-container"></main>
+        <!-- News list -->
+        <section id="newsList" class="news-list fade-in" aria-live="polite"></section>
 
-        <!-- Leere-state -->
-        <div id="newsEmpty" style="display:none;text-align:center;color:var(--muted);padding:40px 18px;">Keine News gefunden.</div>
+        <!-- Empty state -->
+        <div id="newsEmpty" class="muted small hidden">Keine News gefunden.</div>
 
+        <footer class="footer">
+          <small>© <span id="year"></span> Pixelstorm Interactive Development Group — made with ❤️</small>
+        </footer>
       </section>
-
-      <footer class="footer">
-        <small>© <span id="year"></span> Pixelstorm Interactive Development Group — made with ❤️</small>
-      </footer>
     </main>
   </div>
 
-  <!-- Scripts -->
-  <script src="JS/script-start.js"></script> <!-- vorhandene Basis-Logik (sidebar, theme) -->
-  <script src="JS/script-news.js"></script>  <!-- neues: lädt news.json und rendert -->
+  <!-- LOGIN / STATISTICS MODAL (re-used) -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h3 id="modalTitle">Login & Statistiken</h3>
+
+      <div id="loginArea">
+        <label>
+          Benutzername
+          <input type="text" id="username" placeholder="Dein Name" />
+        </label>
+        <div class="login-actions">
+          <button id="saveUser" class="btn primary">Speichern</button>
+          <button id="logoutBtn" class="btn secondary">Ausloggen (lokal)</button>
+        </div>
+        <p class="muted">Deine Daten bleiben lokal in diesem Browser.</p>
+      </div>
+
+      <hr />
+      <div id="statsArea">
+        <h4>Deine Statistiken (Demo)</h4>
+        <div id="statsList"><p class="muted small">Keine Statistiken.</p></div>
+        <div class="stat-actions">
+          <button id="exportStats" class="btn">Export (JSON)</button>
+          <button id="importStats" class="btn">Import (JSON)</button>
+          <input id="importFile" type="file" accept="application/json" class="hidden" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="JS/script-news.js" defer></script>
 </body>
 </html>
