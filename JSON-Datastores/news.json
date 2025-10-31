@@ -1,50 +1,56 @@
 {
-  "news": [
+  "updates": [
     {
-      "id": "2025-10-30-pinned",
+      "id": "2025-10-30-1",
+      "title": "Design-Upgrade 🧭",
       "date": "2025-10-30",
-      "title": "Großes Update: Neue Spielmodi & Animationen",
-      "summary": "Unser größtes Update bringt neue Animationen, überarbeitete Übergänge und einen neuen Spielmodus.",
+      "type": "feature",
+      "summary": "Neue Floating-Hamburger, Swipe-Navigation und modernisierte News-Ansicht.",
       "content": [
-        "Neuer Spielmodus: 'Rätsel-Roulette'.",
-        "Animationen für Namensratter und Strafaufgaben verbessert.",
-        "Mehr Performance-Optimierungen auf Mobilgeräten."
+        "Die Sidebar unterstützt jetzt Swipe-Gesten und schließt automatisch das Toggle-Icon.",
+        "Cards auf der News-Seite sind jetzt übersichtlicher und unterstützen Pinned-Posts.",
+        "Fehlerkorrekturen und Performance-Verbesserungen am Ladeverhalten."
       ],
-      "tags": ["feature","update"],
+      "tags": ["UI", "Design", "Navigation"],
       "pinned": true
     },
     {
-      "id": "2025-10-22-1",
-      "date": "2025-10-22",
-      "title": "Darkmode: Lesbarkeit & Kontraste verbessert",
-      "summary": "Verbesserte Kontraste, feinere Abstufungen und optimierte Farben für längere Sessions.",
+      "id": "2025-10-25-1",
+      "title": "Spielmodus-Update: Mut & Grenzen 💥",
+      "date": "2025-10-25",
+      "type": "game",
+      "summary": "Inhaltliches Update: neue Fragen & überarbeitete Pflicht-Aufgaben.",
       "content": [
-        "Kontrastverhältnis für Buttons erhöht.",
-        "Fehler im Theme-Switcher behoben."
+        "Über 120 neue Wahrheit-Fragen hinzugefügt.",
+        "Pflicht-Aufgaben überarbeitet: weniger cringe, mehr praktikabel.",
+        "Filter für Gruppentexte verbessert."
       ],
-      "tags": ["improvement","ui"]
+      "tags": ["WOP", "Gameplay"]
     },
     {
-      "id": "2025-10-15-1",
-      "date": "2025-10-15",
-      "title": "Kategorie-Erweiterung: 'Mut & Grenzen'",
-      "summary": "Über 120 neue Fragen und passende Pflichtaufgaben wurden hinzugefügt.",
+      "id": "2025-10-20-1",
+      "title": "Bugfixes & Performance 🧩",
+      "date": "2025-10-20",
+      "type": "fix",
+      "summary": "Stabilitätsverbesserungen und kleinere Bugfixes.",
       "content": [
-        "Neue Pflicht-Aufgaben mit leichtem körperlichem Bezug.",
-        "Verbesserte Gender-Filter in der Kategorienauswahl."
+        "Darkmode-Animationen flüssiger gestaltet.",
+        "Fehler beim lokalen Speichern von Statistiken behoben.",
+        "Kleinere CSS-Fixes auf Mobilgeräten."
       ],
-      "tags": ["content","wop"]
+      "tags": ["Fix", "Performance"]
     },
     {
-      "id": "2025-10-07-1",
-      "date": "2025-10-07",
-      "title": "Kleine UI-Optimierungen",
-      "summary": "Abstände, Button-Stile und Mikro-Animationen wurden verfeinert.",
+      "id": "2025-10-10-1",
+      "title": "Hinweis: Beta-Testgruppe 🎯",
+      "date": "2025-10-10",
+      "type": "info",
+      "summary": "Wir suchen Tester für neue Spielmodi — melde dich im Discord.",
       "content": [
-        "Hover-States überarbeitet.",
-        "Card-Animations-Timing optimiert."
+        "Kurze Anmeldung im Discord genügt.",
+        "Tester erhalten frühen Zugriff auf neue Fragen-Pakete."
       ],
-      "tags": ["minor","design"]
+      "tags": ["Community", "Beta"]
     }
   ]
 }
