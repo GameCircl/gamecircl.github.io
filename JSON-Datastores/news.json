@@ -1,56 +1,112 @@
 {
   "updates": [
     {
-      "id": "2025-10-30-1",
-      "title": "Design-Upgrade 🧭",
-      "date": "2025-10-30",
+      "id": "2025-11-01-1",
+      "title": "Einführung der Seite '❗ Updates & News'",
+      "date": "2025-10-31 bis 2025-11-01",
       "type": "feature",
-      "summary": "Neue Floating-Hamburger, Swipe-Navigation und modernisierte News-Ansicht.",
+      "summary": "Neue Seite für Updates und News hinzugefügt; Verbesserungen am UI und Bugfixes.",
       "content": [
-        "Die Sidebar unterstützt jetzt Swipe-Gesten und schließt automatisch das Toggle-Icon.",
-        "Cards auf der News-Seite sind jetzt übersichtlicher und unterstützen Pinned-Posts.",
-        "Fehlerkorrekturen und Performance-Verbesserungen am Ladeverhalten."
+        "Neue 'Updates & News' Seite hinzugefügt, um über Änderungen und Neuigkeiten zu informieren.",
+        "UI-Verbesserungen für bessere Navigation und Benutzerfreundlichkeit.",
+        "Kleinere Bugfixes und Performance-Verbesserungen."
       ],
-      "tags": ["UI", "Design", "Navigation"],
+      "tags": ["Feature", "Design", "Bugfixes"],
       "pinned": true
     },
     {
-      "id": "2025-10-25-1",
-      "title": "Spielmodus-Update: Mut & Grenzen 💥",
-      "date": "2025-10-25",
-      "type": "game",
-      "summary": "Inhaltliches Update: neue Fragen & überarbeitete Pflicht-Aufgaben.",
+      "id": "2025-10-26-1",
+      "title": "'Über GameCircl' Seite hinzugefügt 📝 & Style-Improvements",
+      "date": "2025-10-26",
+      "type": "feature; style",
+      "summary": "Neue Seite mit Informationen über GameCircl und das Team; Design-Verbesserungen.",
       "content": [
-        "Über 120 neue Wahrheit-Fragen hinzugefügt.",
-        "Pflicht-Aufgaben überarbeitet: weniger cringe, mehr praktikabel.",
-        "Filter für Gruppentexte verbessert."
+        "Über GameCircl Seite mit Team-Informationen und Projektzielen hinzugefügt.",
+        "Design-Verbesserungen für konsistentere Benutzererfahrung.",
+        "Style-Verbesserungen für Buttons, Links und Cards auf allen Seiten."
       ],
-      "tags": ["WOP", "Gameplay"]
+      "tags": ["Feature", "Design", "Information"]
     },
     {
-      "id": "2025-10-20-1",
-      "title": "Bugfixes & Performance 🧩",
-      "date": "2025-10-20",
+      "id": "2025-10-19-1",
+      "title": "Responsivität für Mobile 📱",
+      "date": "2025-10-19",
+      "type": "comfort",
+      "summary": "Darstellung der Seite für Mobile verbessert; neue Features für bessere Bedienbarkeit.",
+      "content": [
+        "Alle Seiten wurden für mobile Geräte optimiert.",
+        "Mobile Sidebar mit Swipe-Funktionalität und Floating-Hamburger hinzugefügt.",
+        "Kleinere Bugfixes und Performance-Verbesserungen."
+      ],
+      "tags": ["Mobile", "Design", "Bugfixes"]
+    },
+    {
+      "id": "2025-10-05-1",
+      "title": "Impressum-Seite hinzugefügt & Dateistruktur überarbeitet 📄",
+      "date": "2025-10-05 bis 2025-10-11",
+      "type": "structure",
+      "summary": "Einführung impressum.html; Umstrukturierung und Verbesserung der Dateien.",
+      "content": [
+        "impressum.html mit Angaben zum Betreiber der Seite sowie Datenschutzinformationen hinzugefügt.",
+        "Dateistruktur überarbeitet für bessere Wartbarkeit und Übersicht.",
+        "Style-Verbesserungen für konsistenteres Design auf allen Seiten."
+      ],
+      "tags": ["Feature", "Design", "Inhalt"]
+    },
+    {
+      "id": "2025-10-04-1",
+      "title": "Neue Spielmodi implementiert 🎮",
+      "date": "2025-10-04",
+      "type": "gameplay",
+      "summary": "Neue Spielmodi für noch mehr Spielspaß hinzugefügt.",
+      "content": [
+        "spiele.html mit 12 verschiedenen Spielmodi sowie Favicon für GameCircl eingeführt",
+        "Neue Farbverläufe und Hover-Effekte für Überschriften, Buttons, Cards und Links.",
+        "CTA-Buttons auf der Startseite funktionsfähig gemacht.",
+        "Verbesserungen in scripts für bessere Performance und Fehlerbehebungen."
+      ],
+      "tags": ["Gameplay", "Design", "Bugfixes"]
+    },
+    {
+      "id": "2025-09-25-1",
+      "title": "Seite 'Spiele' hinzugefügt 💥, Bugfixes und Style-Improvements",
+      "date": "2025-09-25",
+      "type": "feature",
+      "summary": "spiele.html und Favicon implementiert, Style-Verbesserungen & Bugfixes.",
+      "content": [
+        "spiele.html mit 12 verschiedenen Spielmodi sowie Favicon für GameCircl eingeführt",
+        "Neue Farbverläufe und Hover-Effekte für Überschriften, Buttons, Cards und Links.",
+        "CTA-Buttons auf der Startseite funktionsfähig gemacht.",
+        "Verbesserungen in scripts für bessere Performance und Fehlerbehebungen."
+      ],
+      "tags": ["Feature", "Design", "Bugfixes"]
+    },
+    {
+      "id": "2025-09-16-1",
+      "title": "Bugfixes und Style-Verbesserungen 🛠️",
+      "date": "2025-09-16 bis 2025-09-24",
       "type": "fix",
-      "summary": "Stabilitätsverbesserungen und kleinere Bugfixes.",
+      "summary": "Design verbessert, kleinere Bugfixes und weitere Features auf Home-Seite.",
       "content": [
-        "Darkmode-Animationen flüssiger gestaltet.",
-        "Fehler beim lokalen Speichern von Statistiken behoben.",
-        "Kleinere CSS-Fixes auf Mobilgeräten."
+        "Theme-Switcher, Sidebar & Login-Modal hinzugefügt",
+        "Verbesserung des Designs von Header, Hero-Section und Footer.",
+        "Why-Section auf der Home-Seite hinzugefügt.",
+        "Kleinere Bugfixes und Performance-Verbesserungen."
       ],
-      "tags": ["Fix", "Performance"]
+      "tags": ["Bugfixes", "Design"]
     },
     {
-      "id": "2025-10-10-1",
-      "title": "Hinweis: Beta-Testgruppe 🎯",
-      "date": "2025-10-10",
-      "type": "info",
-      "summary": "Wir suchen Tester für neue Spielmodi — melde dich im Discord.",
+      "id": "2025-09-15-1",
+      "title": "Die Geburt von GameCircl 🎉",
+      "date": "2025-09-15",
+      "type": "project start",
+      "summary": "Der Geburtstag von GameCircl: Hier fing alles an.",
       "content": [
-        "Kurze Anmeldung im Discord genügt.",
-        "Tester erhalten frühen Zugriff auf neue Fragen-Pakete."
+        "GameCircl entstand am 15.09.2025 als Spaßprojekt für meine Freundesgruppe und mich.",
+        "Das Grundgerüst wurde gelegt; Home-Seite, das erste Stylesheet und das erste Script wurde entwickelt.",
+        "Die ersten Features wurden implementiert: Sidebar, die Startseite und einfache UI."
       ],
-      "tags": ["Community", "Beta"]
+      "tags": ["Projektstart", "GameCircl"]
     }
   ]
 }

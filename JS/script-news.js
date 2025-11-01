@@ -77,7 +77,7 @@
     }).join(' ');
 
     art.innerHTML = `
-      ${n.pinned ? '<div class="pinned-badge">📌 Angeheftet</div>' : ''}
+      ${n.pinned ? '<div class="pinned-badge">❗ NEU</div>' : ''}
       <div class="news-header">
         <div style="min-width:0;flex:1;">
           <h3 class="news-title">${escapeHtml(n.title)}</h3>

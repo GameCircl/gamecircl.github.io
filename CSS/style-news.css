@@ -134,6 +134,7 @@
 
 /* Tags in Karten (nicht klickbar) */
 .news-tags {
+  
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -144,7 +145,7 @@
   padding: 6px 10px;
   border-radius: 999px;
   border: 0;
-  background: var(--accent);
+  background: linear-gradient(150deg, #facc15, #8b5cf6);
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -233,7 +234,7 @@
   background: rgba(6, 160, 160, 0.06);
 }
 .filter-btn.active {
-  background: var(--accent);
+  background: linear-gradient(150deg, #facc15, #8b5cf6);
   color: #fff;
   border: 0;
   transform: translateY(-1px);
@@ -277,4 +278,8 @@
     width: 100%;
     text-align: center;
   }
+}
+
+[data-theme="dark"] .filter-btn.active {
+  color: black;
 }
