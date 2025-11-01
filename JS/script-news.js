@@ -108,25 +108,41 @@
     const btn = art.querySelector('.toggle-btn');
     const details = art.querySelector('.news-details');
 
-    btn.addEventListener('click', (e) => {
-      const open = details.classList.toggle('open');
-      details.setAttribute('aria-hidden', !open);
-      btn.textContent = open ? 'Weniger' : 'Mehr';
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+btn.addEventListener('click', (e) => {
+  const open = details.classList.toggle('open');
+  details.setAttribute('aria-hidden', !open);
+  btn.textContent = open ? 'Weniger' : 'Mehr';
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 
-      // smooth open/close: set maxHeight
-      if(open) {
-        // remove collapsed so card can expand naturally
-        art.classList.remove('collapsed');
-        details.style.maxHeight = details.scrollHeight + 'px';
-      } else {
-        // collapse back to uniform height
-        details.style.maxHeight = '0px';
-        // small timeout to allow transition before re-applying collapsed height
-        setTimeout(()=> art.classList.add('collapsed'), 260);
-      }
-      e.stopPropagation();
+  // sanfte Animation
+  if(open){
+    art.classList.remove('collapsed');
+    details.style.maxHeight = details.scrollHeight + 'px';
+
+    // nach Transition maxHeight auf "none" setzen, damit dynamischer Inhalt nicht abgeschnitten wird
+    const clearHeight = () => {
+      details.style.maxHeight = 'none';
+      details.removeEventListener('transitionend', clearHeight);
+    };
+    details.addEventListener('transitionend', clearHeight);
+  } else {
+    // dynamisch auf scrollHeight setzen, damit Übergang flüssig startet
+    details.style.maxHeight = details.scrollHeight + 'px';
+
+    // nächsten Frame warten, dann auf 0 setzen für smooth collapse
+    requestAnimationFrame(() => {
+      details.style.maxHeight = '0px';
     });
+
+    // collapsed wieder nach Transition setzen
+    const addCollapsed = () => {
+      art.classList.add('collapsed');
+      details.removeEventListener('transitionend', addCollapsed);
+    };
+    details.addEventListener('transitionend', addCollapsed);
+  }
+  e.stopPropagation();
+});
 
     return art;
   }
