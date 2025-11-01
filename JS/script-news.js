@@ -92,7 +92,7 @@
       </div>
 
       <div class="news-controls-row">
-        <button class="btn show-more">Mehr</button>
+        <button class="btn-more show-more">Mehr</button>
       </div>
 
       <div class="news-details" aria-hidden="true">
