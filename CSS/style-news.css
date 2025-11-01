@@ -28,7 +28,7 @@
 }
 
 .btn-more:hover {
-  background: var(--accent); /* beim Hover leicht betont */
+  background: linear-gradient(90deg,#00b8a9,#0074e4); /* beim Hover leicht betont */
   color: #fff;
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(0,0,0,0.08); /* subtiler Schatten */
