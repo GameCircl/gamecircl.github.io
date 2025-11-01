@@ -1,6 +1,6 @@
-/* style-news.css – GameCircl News (v2 refined, responsive & balanced) */
+/* style-news.css — GameCircl polished final */
 
-/* === Main Layout === */
+/* Allgemein */
 .main { 
   flex:1; 
   padding:28px; 
@@ -15,167 +15,107 @@
   margin-top:auto; 
 }
 
-/* === Container & Grid === */
+/* Container & Grid */
 .news-container {
-  max-width: 1100px;
-  margin: 0 auto 56px;
+  max-width: 1050px;
+  margin: 28px auto 64px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
   gap: 22px;
-  padding: 0 10px;
+  padding: 0 18px;
+  align-items: stretch;
   box-sizing: border-box;
-  align-items: start;
 }
 
-/* === Search + Filter Controls === */
-.news-filters {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 0 10px;
-}
-
-.news-filters .search-row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.news-filters input[type="search"] {
-  flex: 1;
-  min-width: 250px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  font-size: 1rem;
-  transition: all 0.25s ease;
-}
-.news-filters input[type="search"]:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-light);
-}
-
-.news-filters .options-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-.news-filters select {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-  transition: border-color 0.2s ease;
-}
-.news-filters select:hover {
-  border-color: var(--accent);
-}
-
-/* === News Card Base === */
+/* Kartenbasis */
 .news-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 18px 20px;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.06);
-  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  padding: 20px 22px 18px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.22s ease;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: flex-start;
+  height: 100%;
   position: relative;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(8px);
-  animation: fadeInNews 0.45s forwards;
 }
 
-@keyframes fadeInNews {
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Hover Style */
 .news-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 38px rgba(0,0,0,0.1);
-  border-color: var(--accent);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
 }
 
-/* === Pinned Cards === */
+/* Einheitliche Höhe bei geschlossenem Zustand */
+.news-card.collapsed {
+  min-height: 210px;
+}
+
+/* Pinned */
 .news-card.pinned {
-  border: 1.5px solid var(--accent);
-  box-shadow: 0 0 18px rgba(6,160,160,0.14);
+  border: 2px solid rgba(76, 103, 255, 0.95);
+  box-shadow: 0 28px 60px rgba(76, 103, 255, 0.06);
 }
-.news-card.pinned::before {
-  content: "📌";
+.pinned-badge {
   position: absolute;
-  top: 10px;
-  right: 14px;
-  font-size: 1.1rem;
-  opacity: 0.8;
+  top: -10px;
+  left: 18px;
+  background: linear-gradient(90deg, #4a6cf7, #6b8cff);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  box-shadow: 0 8px 18px rgba(75, 108, 255, 0.12);
 }
 
-/* === Card Header === */
+/* Header */
 .news-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
-  gap: 10px;
 }
-
 .news-title {
-  font-size: 1.18rem;
-  font-weight: 800;
-  color: var(--text);
-  line-height: 1.15;
+  font-size: 1.15rem;
   margin: 0;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text);
 }
-
 .news-date {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--muted);
   white-space: nowrap;
-  margin-top: 2px;
+  align-self: center;
 }
 
-/* === Summary === */
+/* Summary */
 .news-summary {
   color: var(--muted);
-  line-height: 1.5;
-  font-size: 0.98rem;
+  line-height: 1.45;
+  font-size: 0.97rem;
+  margin-top: 4px;
 }
 
-/* === Details (Collapsible) === */
+/* Details */
 .news-details {
-  margin-top: 6px;
+  margin-top: 10px;
   overflow: hidden;
   max-height: 0;
+  transition: max-height 0.36s cubic-bezier(.2, .9, .2, 1), opacity 0.3s ease;
   opacity: 0;
-  transition: max-height 0.4s cubic-bezier(.2,.9,.2,1), opacity 0.25s ease;
 }
 .news-details.open {
-  max-height: 800px;
   opacity: 1;
+  max-height: 800px;
 }
-
-/* === Details Inner === */
 .news-details > div {
   margin: 6px 0;
-  color: var(--muted);
   font-size: 0.95rem;
+  color: var(--muted);
 }
 .news-details > div::before {
   content: "• ";
@@ -184,87 +124,149 @@
   margin-right: 6px;
 }
 
-/* === Tags === */
+/* Tags in Karten (nicht klickbar) */
 .news-tags {
   display: flex;
-  flex-wrap: wrap;
   gap: 6px;
-  margin-top: 4px;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 .tag-pill {
   font-size: 0.75rem;
   padding: 6px 10px;
   border-radius: 999px;
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted);
+  border: 0;
+  background: var(--accent);
+  color: #fff;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  cursor: default;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Controls-Bar */
+#controlsBar {
+  width: 100%;
+  max-width: 1050px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 26px;
+  padding: 0 18px;
+  box-sizing: border-box;
+}
+
+/* Obere Reihe: Suche + Sortierung */
+.controls-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+.controls-top input[type="search"] {
+  flex: 1;
+  min-width: 240px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+.controls-top input[type="search"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(6, 160, 160, 0.15);
+  outline: none;
+}
+.controls-top select {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border 0.15s;
+}
+.controls-top select:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+/* Untere Reihe: Tagfilter + Reset */
+.controls-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+#tagFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-btn {
+  font-size: 0.83rem;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
   cursor: pointer;
   transition: all 0.18s ease;
 }
-.tag-pill:hover {
-  transform: translateY(-2px);
-  background: var(--accent);
-  color: #fff;
-  border: none;
+.filter-btn:hover {
+  background: rgba(6, 160, 160, 0.06);
 }
-.tag-pill.active {
+.filter-btn.active {
   background: var(--accent);
   color: #fff;
   border: 0;
-  box-shadow: 0 10px 26px rgba(6,160,160,0.12);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(6, 160, 160, 0.08);
 }
 
-/* Tag Farbvarianten */
-.tag-UI { background: linear-gradient(90deg,#4a6cf7,#6b8cff); color:#fff; border:0; }
-.tag-Design { background: linear-gradient(90deg,#f66,#f39); color:#fff; border:0; }
-.tag-Navigation { background: linear-gradient(90deg,#2ecc71,#22c55e); color:#fff; border:0; }
-.tag-WOP, .tag-Gameplay { background: linear-gradient(90deg,#06A0A0,#2dd4bf); color:#fff; border:0; }
-.tag-Fix, .tag-Performance { background: linear-gradient(90deg,#f97316,#f59e0b); color:#fff; border:0; }
-.tag-Community, .tag-Beta { background: linear-gradient(90deg,#9b59b6,#6c5ce7); color:#fff; border:0; }
-
-/* === Buttons & Controls === */
-.news-controls-row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-top: 8px;
-}
-
-.btn.show-more {
-  border: 0;
+/* Reset-Button */
+#resetFilters {
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
   background: transparent;
-  color: var(--accent);
-  font-weight: 700;
+  color: var(--muted);
   cursor: pointer;
-  padding: 8px 10px;
-  border-radius: 8px;
-  transition: background 0.15s ease;
+  transition: all 0.18s;
+  font-weight: 600;
 }
-.btn.show-more:hover {
-  background: rgba(6,160,160,0.08);
+#resetFilters:hover {
+  background: rgba(6, 160, 160, 0.07);
+  color: var(--accent);
 }
 
-/* === Empty State === */
+/* Leerer Zustand */
 #newsEmpty {
   color: var(--muted);
-  font-size: 1.05rem;
-  padding: 42px 18px;
+  font-size: 1rem;
+  padding: 40px 18px;
   text-align: center;
 }
 
-/* === Responsive === */
-@media (max-width: 900px) {
-  .news-container {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .news-filters {
-    gap: 8px;
-  }
-  .news-filters .options-row {
+/* Responsiv */
+@media (max-width: 640px) {
+  .controls-top {
     flex-direction: column;
-    align-items: stretch;
+  }
+  .controls-top input[type="search"],
+  .controls-top select {
+    width: 100%;
+  }
+  #resetFilters {
+    width: 100%;
+    text-align: center;
   }
 }

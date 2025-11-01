@@ -86,16 +86,26 @@
           <p class="subtitle">Alles Wichtige zu neuen Features, Fixes und geplanten Änderungen.</p>
         </header>
 
-        <!-- Filterbar -->
-        <div class="news-controls" style="max-width:1100px;margin:0 auto 18px;padding:0 18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-          <input id="newsSearch" type="search" placeholder="Suche News..." style="flex:1;min-width:200px;padding:10px;border-radius:10px;border:1px solid var(--border);" />
-          <div id="tagFilters" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
-          <select id="sortSelect" aria-label="Sortierung" style="padding:10px;border-radius:10px;border:1px solid var(--border);">
-            <option value="date-desc">Neueste zuerst</option>
-            <option value="date-asc">Älteste zuerst</option>
-            <option value="pinned-first">Pinned zuerst</option>
+    <!-- Filter- & Suchleiste -->
+    <div id="controlsBar">
+      <!-- obere Reihe: Suche + Sortierung -->
+      <div class="controls-top">
+        <input id="newsSearch" type="search" placeholder="🔍 Suche News oder Stichwörter...">
+          <select id="sortSelect" aria-label="Sortierung">
+            <option value="date-desc">🕓 Neueste zuerst</option>
+            <option value="date-asc">📅 Älteste zuerst</option>
+            <option value="pinned-first">📌 Pinned zuerst</option>
           </select>
+      </div>
+
+      <!-- untere Reihe: Tag-Filter + Reset -->
+      <div class="controls-bottom">
+        <div id="tagFilters">
+        <!-- Diese Buttons werden von script-news.js dynamisch befüllt -->
         </div>
+      <button id="resetFilters">🔄 Alle zurücksetzen</button>
+      </div>
+    </div>
 
         <!-- Container für News -->
         <main id="newsList" class="news-container"></main>
