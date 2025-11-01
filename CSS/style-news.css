@@ -62,7 +62,7 @@
 
 /* Pinned */
 .news-card.pinned {
-  border: linear-gradient(90deg,var(--accent),var(--accent2));
+  border: var(--accent2);
   box-shadow: 0 28px 60px rgba(76, 103, 255, 0.06);
 }
 .pinned-badge {
@@ -234,7 +234,7 @@
   background: rgba(6, 160, 160, 0.06);
 }
 .filter-btn.active {
-  background: linear-gradient(90deg,var(--accent),var(--accent2));
+  background: var(--accent);
   color: #fff;
   border: 0;
   transform: translateY(-1px);
