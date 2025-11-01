@@ -62,14 +62,14 @@
 
 /* Pinned */
 .news-card.pinned {
-  border: 2px solid rgba(76, 103, 255, 0.95);
+  border: linear-gradient(90deg,var(--accent),var(--accent2));
   box-shadow: 0 28px 60px rgba(76, 103, 255, 0.06);
 }
 .pinned-badge {
   position: absolute;
   top: -10px;
   left: 18px;
-  background: linear-gradient(90deg, #4a6cf7, #6b8cff);
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
   color: #fff;
   font-weight: 700;
   border-radius: 999px;
@@ -145,7 +145,7 @@
   padding: 6px 10px;
   border-radius: 999px;
   border: 0;
-  background: linear-gradient(90deg, #4a6cf7, #6b8cff);
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
   color: #fff;
   text-transform: none;
   letter-spacing: 0.04em;
@@ -234,7 +234,7 @@
   background: rgba(6, 160, 160, 0.06);
 }
 .filter-btn.active {
-  background: linear-gradient(150deg, #facc15, #8b5cf6);
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
   color: #fff;
   border: 0;
   transform: translateY(-1px);
