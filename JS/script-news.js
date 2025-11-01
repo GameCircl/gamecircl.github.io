@@ -1,6 +1,6 @@
 /* script-news.js
    Lädt news.json, rendert Cards, Filter, Suche, Sortierung.
-   Ready-to-use mit JSON-Datastores/news.json (oder JSON-Datastores/news.json)
+   Updated v2: collapsed cards, reset-button, no clickable tag-pills inside cards.
 */
 
 (function(){
@@ -10,6 +10,7 @@
   const tagFiltersEl = document.getElementById('tagFilters');
   const searchInput = document.getElementById('newsSearch');
   const sortSelect = document.getElementById('sortSelect');
+  const resetBtn = document.getElementById('resetFilters');
 
   if(!container) {
     console.warn('newsList container nicht gefunden – Abbruch script-news.js');
@@ -69,10 +70,12 @@
   function createCard(n){
     const art = document.createElement('article');
     art.className = 'news-card' + (n.pinned ? ' pinned' : '');
+    art.classList.add('collapsed'); // start collapsed so all cards have equal height
 
     const tagsHtml = (n.tags || []).map(t => {
       // sanitize class name: replace spaces/slashes
       const safeClass = 'tag-' + t.replace(/[^\w\-]/g,'');
+      // tag-pill is decorative now (pointer-events:none in CSS)
       return `<span class="tag-pill ${safeClass}">${escapeHtml(t)}</span>`;
     }).join(' ');
 
@@ -92,7 +95,7 @@
       </div>
 
       <div class="news-controls-row">
-        <button class="btn show-more">Mehr</button>
+        <button class="toggle-btn" aria-expanded="false">Mehr</button>
       </div>
 
       <div class="news-details" aria-hidden="true">
@@ -100,28 +103,28 @@
       </div>
     `;
 
-    // enable clicking tag pills inside card to filter
-    art.querySelectorAll('.tag-pill').forEach(p => {
-      p.addEventListener('click', (e) => {
-        const tagText = p.textContent;
-        // set activeTag and update filter buttons UI
-        setActiveTag(tagText);
-        // reflect in filter bar (if exists)
-        highlightFilterButton(tagText);
-        render();
-        e.stopPropagation();
-      });
-    });
+    // NOTE: tag-pill elements are decorative only (no click listeners)
 
-    const btn = art.querySelector('.show-more');
+    const btn = art.querySelector('.toggle-btn');
     const details = art.querySelector('.news-details');
+
     btn.addEventListener('click', (e) => {
       const open = details.classList.toggle('open');
       details.setAttribute('aria-hidden', !open);
       btn.textContent = open ? 'Weniger' : 'Mehr';
-      // ensure smooth open by setting maxHeight (CSS transition)
-      if(open) details.style.maxHeight = details.scrollHeight + 'px';
-      else details.style.maxHeight = '0px';
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+      // smooth open/close: set maxHeight
+      if(open) {
+        // remove collapsed so card can expand naturally
+        art.classList.remove('collapsed');
+        details.style.maxHeight = details.scrollHeight + 'px';
+      } else {
+        // collapse back to uniform height
+        details.style.maxHeight = '0px';
+        // small timeout to allow transition before re-applying collapsed height
+        setTimeout(()=> art.classList.add('collapsed'), 260);
+      }
       e.stopPropagation();
     });
 
@@ -132,8 +135,10 @@
   function render(){
     container.innerHTML = '';
     if(!Array.isArray(allNews) || allNews.length === 0){
-      emptyEl.style.display = '';
-      emptyEl.textContent = 'Keine News vorhanden.';
+      if(emptyEl) {
+        emptyEl.style.display = '';
+        emptyEl.textContent = 'Keine News vorhanden.';
+      }
       return;
     }
 
@@ -143,11 +148,13 @@
     const filtered = sorted.filter(matchesFilter);
 
     if(filtered.length === 0){
-      emptyEl.style.display = '';
-      emptyEl.textContent = 'Keine News gefunden.';
+      if(emptyEl) {
+        emptyEl.style.display = '';
+        emptyEl.textContent = 'Keine News gefunden.';
+      }
       return;
     } else {
-      emptyEl.style.display = 'none';
+      if(emptyEl) emptyEl.style.display = 'none';
     }
 
     filtered.forEach(n => container.appendChild(createCard(n)));
@@ -214,6 +221,19 @@
   sortSelect?.addEventListener('change', () => {
     render();
   });
+
+  // reset button functionality
+  if(resetBtn){
+    resetBtn.addEventListener('click', () => {
+      if(searchInput) searchInput.value = '';
+      if(sortSelect) sortSelect.value = 'date-desc';
+      setActiveTag(null);
+      setActiveFilterBtn();
+      render();
+      // optional: put focus back to search
+      if(searchInput) searchInput.focus();
+    });
+  }
 
   // initial load
   (async function load(){

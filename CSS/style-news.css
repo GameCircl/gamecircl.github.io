@@ -1,30 +1,31 @@
-/* style-news.css — GameCircl polished final */
+/* style-news.css — GameCircl polished final v2 */
 
 /* Allgemein */
 .main { 
-  flex:1; 
-  padding:28px; 
-  overflow:auto; 
-  display:flex;
-  flex-direction:column;
+  flex: 1; 
+  padding: 28px; 
+  overflow: auto; 
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
 /* Footer unten halten */
 .main > .footer { 
-  margin-top:auto; 
+  margin-top: auto; 
 }
 
 /* Container & Grid */
 .news-container {
-  max-width: 1050px;
+  max-width: 1100px;
   margin: 28px auto 64px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(1000px, 1fr)); /* etwas breiter */
+  gap: 24px;
   padding: 0 18px;
   align-items: stretch;
   box-sizing: border-box;
+  transition: none; /* verhindert Breiten-Shrink bei Filter */
 }
 
 /* Kartenbasis */
@@ -32,7 +33,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 20px 22px 18px;
+  padding: 22px 24px 20px;
   box-shadow: var(--card-shadow);
   transition: all 0.22s ease;
   display: flex;
@@ -40,6 +41,7 @@
   justify-content: flex-start;
   height: 100%;
   position: relative;
+  overflow: hidden;
 }
 
 .news-card:hover {
@@ -49,7 +51,7 @@
 
 /* Einheitliche Höhe bei geschlossenem Zustand */
 .news-card.collapsed {
-  min-height: 210px;
+  min-height: 230px; /* leicht erhöht, für Einheitlichkeit */
 }
 
 /* Pinned */
@@ -57,6 +59,7 @@
   border: 2px solid rgba(76, 103, 255, 0.95);
   box-shadow: 0 28px 60px rgba(76, 103, 255, 0.06);
 }
+
 .pinned-badge {
   position: absolute;
   top: -10px;
@@ -68,6 +71,7 @@
   padding: 6px 12px;
   font-size: 0.82rem;
   box-shadow: 0 8px 18px rgba(75, 108, 255, 0.12);
+  margin-bottom: 10px; /* zusätzlicher Abstand nach unten */
 }
 
 /* Header */
@@ -78,13 +82,15 @@
   gap: 12px;
   flex-wrap: wrap;
 }
+
 .news-title {
-  font-size: 1.15rem;
+  font-size: 1.18rem;
   margin: 0;
   font-weight: 800;
   line-height: 1.15;
   color: var(--text);
 }
+
 .news-date {
   font-size: 0.9rem;
   color: var(--muted);
@@ -102,21 +108,24 @@
 
 /* Details */
 .news-details {
-  margin-top: 10px;
+  margin-top: 12px;
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.36s cubic-bezier(.2, .9, .2, 1), opacity 0.3s ease;
   opacity: 0;
 }
+
 .news-details.open {
   opacity: 1;
   max-height: 800px;
 }
+
 .news-details > div {
   margin: 6px 0;
   font-size: 0.95rem;
   color: var(--muted);
 }
+
 .news-details > div::before {
   content: "• ";
   color: var(--accent);
@@ -129,8 +138,10 @@
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 12px;
+  margin-bottom: 8px; /* Abstand nach unten für "Mehr"-Button */
 }
+
 .tag-pill {
   font-size: 0.75rem;
   padding: 6px 10px;
@@ -145,14 +156,34 @@
   pointer-events: none;
 }
 
+/* Mehr-Button */
+.news-card button.toggle-btn {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.news-card button.toggle-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
 /* Controls-Bar */
 #controlsBar {
   width: 100%;
   max-width: 1050px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 26px;
+  gap: 12px;
+  margin-bottom: 28px;
   padding: 0 18px;
   box-sizing: border-box;
 }
@@ -164,6 +195,7 @@
   gap: 10px;
   justify-content: space-between;
 }
+
 .controls-top input[type="search"] {
   flex: 1;
   min-width: 240px;
@@ -175,11 +207,13 @@
   font-size: 0.95rem;
   transition: border 0.15s, box-shadow 0.15s;
 }
+
 .controls-top input[type="search"]:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(6, 160, 160, 0.15);
   outline: none;
 }
+
 .controls-top select {
   padding: 10px 14px;
   border-radius: 12px;
@@ -190,6 +224,7 @@
   cursor: pointer;
   transition: border 0.15s;
 }
+
 .controls-top select:focus {
   border-color: var(--accent);
   outline: none;
@@ -221,9 +256,11 @@
   cursor: pointer;
   transition: all 0.18s ease;
 }
+
 .filter-btn:hover {
   background: rgba(6, 160, 160, 0.06);
 }
+
 .filter-btn.active {
   background: var(--accent);
   color: #fff;
@@ -243,6 +280,7 @@
   transition: all 0.18s;
   font-weight: 600;
 }
+
 #resetFilters:hover {
   background: rgba(6, 160, 160, 0.07);
   color: var(--accent);
@@ -257,14 +295,22 @@
 }
 
 /* Responsiv */
+@media (max-width: 840px) {
+  .news-container {
+    grid-template-columns: 1fr; /* 1 Karte pro Reihe */
+  }
+}
+
 @media (max-width: 640px) {
   .controls-top {
     flex-direction: column;
   }
+
   .controls-top input[type="search"],
   .controls-top select {
     width: 100%;
   }
+
   #resetFilters {
     width: 100%;
     text-align: center;
