@@ -1,147 +1,63 @@
 /* script-news.js
-   Lädt news.json, rendert Cards, Filter & Suche.
+   Lädt news.json, rendert Cards, Filter, Suche, Sortierung.
+   Ready-to-use mit JSON-Datastores/news.json (oder JSON-Datastores/news.json)
 */
 
-const sidebar = document.getElementById('sidebar');
-const sidebarToggle = document.getElementById('sidebarToggle');
-const miniName = document.getElementById('miniName');
-const openLogin = document.getElementById('openLogin');
-const modal = document.getElementById('modal');
-const modalClose = document.getElementById('modalClose');
-const saveUser = document.getElementById('saveUser');
-const usernameInput = document.getElementById('username');
-const sidebarOverlayEl = document.getElementById('sidebarOverlay');
-
-/* -------------------------
-   SIDEBAR MOBILE TOGGLE & OVERLAY
-------------------------- */
-if(sidebarToggle){
-  sidebarToggle.addEventListener('click', ()=>{
-    sidebar.classList.add('open');
-    sidebarOverlayEl.classList.remove('hidden');
-    sidebarToggle.classList.add('hide');
-  });
-  sidebarOverlayEl.addEventListener('click', ()=>{
-    sidebar.classList.remove('open');
-    sidebarOverlayEl.classList.add('hidden');
-    sidebarToggle.classList.remove('hide');
-  });
-}
-
-/* -------------------------
-   SIDEBAR MOBILE SWIPE
-------------------------- */
-let startX = 0;
-let startY = 0;
-let isSwiping = false;
-document.addEventListener('touchstart', e => {
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-  isSwiping = false;
-});
-document.addEventListener('touchmove', e => {
-  const diffX = e.touches[0].clientX - startX;
-  const diffY = e.touches[0].clientY - startY;
-  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 20) {
-    e.preventDefault();
-    isSwiping = true;
-    if (diffX > 70 && !sidebar.classList.contains('open')) {
-      sidebar.classList.add('open');
-      sidebarOverlayEl.classList.remove('hidden');
-    }
-    if (diffX < -70 && sidebar.classList.contains('open')) {
-      sidebar.classList.remove('open');
-      sidebarOverlayEl.classList.add('hidden');
-    }
-  }
-});
-document.addEventListener('touchend', () => isSwiping = false);
-
-/* -------------------------
-   THEME SWITCHER
-------------------------- */
-const themePoints = document.querySelectorAll(".theme-points span");
-const themeMarker = document.getElementById("themeMarker");
-function setTheme(mode) {
-  if (mode === "auto") {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
-  } else {
-    document.documentElement.setAttribute("data-theme", mode);
-  }
-  localStorage.setItem("gc-theme", mode);
-  const indexMap = { auto: 0, light: 1, dark: 2 };
-  themeMarker.style.transform = `translateX(${(indexMap[mode] ?? 0) * 100}%)`;
-}
-themePoints.forEach(span => span.addEventListener("click", () => setTheme(span.dataset.mode)));
-setTheme(localStorage.getItem("gc-theme") || "auto");
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
-  if (localStorage.getItem("gc-theme") === "auto") setTheme("auto");
-});
-
-/* -------------------------
-   LOGIN MODAL
-------------------------- */
-openLogin?.addEventListener('click', ()=>{
-  modal.classList.remove('hidden');
-  modal.classList.add('show');
-});
-modalClose?.addEventListener('click', ()=>{
-  modal.classList.remove('show');
-  setTimeout(()=> modal.classList.add('hidden'), 250);
-});
-saveUser?.addEventListener('click', ()=>{
-  const name = usernameInput.value.trim();
-  if(!name) return alert('Bitte Name eingeben');
-  localStorage.setItem('gc_user', name);
-  miniName.textContent = name;
-  modal.classList.remove('show');
-  setTimeout(()=> modal.classList.add('hidden'), 250);
-});
-logoutBtn?.addEventListener('click', ()=>{
-  localStorage.removeItem('gc_user');
-  miniName.textContent = 'Gast';
-});
-
-/* -------------------------
-   NEWS SYSTEM
-------------------------- */
-(async function(){
-  const newsUrl = 'JSON-Datastores/news.json';
+(function(){
+  // safe DOM refs (optional elements tolerated)
   const container = document.getElementById('newsList');
   const emptyEl = document.getElementById('newsEmpty');
   const tagFiltersEl = document.getElementById('tagFilters');
   const searchInput = document.getElementById('newsSearch');
   const sortSelect = document.getElementById('sortSelect');
 
+  if(!container) {
+    console.warn('newsList container nicht gefunden – Abbruch script-news.js');
+    return;
+  }
+
+  const newsUrl = 'JSON-Datastores/news.json'; // deine Struktur
   let allNews = [];
   let activeTag = null;
   let searchTerm = '';
-  let sortMode = 'date-desc';
 
-  const tagPalette = ['#4a6cf7','#1bb88a','#ff7b54','#d96cff','#f2c14e','#70a1ff','#a29bfe'];
-
+  // helpers
   const escapeHtml = s => (s||'').toString()
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
-  const formatDate = d => new Date(d+'T00:00:00').toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric'});
+  const fmtDate = dStr => {
+    try {
+      const dt = new Date(dStr + 'T00:00:00');
+      return dt.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' });
+    } catch(e){ return dStr; }
+  };
 
-  const collectTags = list => [...new Set(list.flatMap(n => n.tags || []))].sort();
+  const collectTags = list => {
+    const s = new Set();
+    (list || []).forEach(n => (n.tags || []).forEach(t => s.add(t)));
+    return Array.from(s).sort((a,b) => a.localeCompare(b,'de'));
+  };
 
-  function sortNews(list){
+  // sort: pinned always on top, then by date (default newest first)
+  function sortNews(list, mode = 'date-desc'){
     const copy = [...list];
-    if(sortMode === 'pinned-first')
-      copy.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0) || new Date(b.date)-new Date(a.date));
-    else if(sortMode === 'date-asc')
-      copy.sort((a,b)=>new Date(a.date)-new Date(b.date));
-    else
-      copy.sort((a,b)=>new Date(b.date)-new Date(a.date));
+    const byDateDesc = (a,b) => new Date(b.date) - new Date(a.date);
+    const byDateAsc  = (a,b) => new Date(a.date) - new Date(b.date);
+
+    // pinned always before non-pinned; then date order according to mode
+    if(mode === 'date-asc'){
+      copy.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || byDateAsc(a,b));
+    } else if(mode === 'pinned-first') {
+      copy.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || byDateDesc(a,b));
+    } else {
+      // default date-desc (but keep pinned on top)
+      copy.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || byDateDesc(a,b));
+    }
     return copy;
   }
 
   function matchesFilter(n){
-    if(activeTag && !(n.tags||[]).includes(activeTag)) return false;
+    if(activeTag && !(n.tags || []).includes(activeTag)) return false;
     if(searchTerm){
       const hay = (n.title + ' ' + (n.summary||'') + ' ' + (n.content||[]).join(' ')).toLowerCase();
       if(!hay.includes(searchTerm.toLowerCase())) return false;
@@ -149,93 +65,180 @@ logoutBtn?.addEventListener('click', ()=>{
     return true;
   }
 
+  // create a card DOM node
   function createCard(n){
     const art = document.createElement('article');
     art.className = 'news-card' + (n.pinned ? ' pinned' : '');
-    const tagColor = tagPalette[Math.abs(n.title.charCodeAt(0)) % tagPalette.length];
+
+    const tagsHtml = (n.tags || []).map(t => {
+      // sanitize class name: replace spaces/slashes
+      const safeClass = 'tag-' + t.replace(/[^\w\-]/g,'');
+      return `<span class="tag-pill ${safeClass}">${escapeHtml(t)}</span>`;
+    }).join(' ');
 
     art.innerHTML = `
       ${n.pinned ? '<div class="pinned-badge">📌 Angeheftet</div>' : ''}
       <div class="news-header">
-        <strong class="news-title">${escapeHtml(n.title)}</strong>
-        <span class="news-date">${formatDate(n.date)}</span>
+        <div style="min-width:0;flex:1;">
+          <h3 class="news-title">${escapeHtml(n.title)}</h3>
+        </div>
+        <div class="news-date">${fmtDate(n.date)}</div>
       </div>
-      <p class="news-summary">${escapeHtml(n.summary||'')}</p>
-      <div class="news-details" aria-hidden="true">
-        ${(n.content||[]).map(line=>`<div>• ${escapeHtml(line)}</div>`).join('')}
-      </div>
+
+      <div class="news-summary">${escapeHtml(n.summary || '')}</div>
+
       <div class="news-tags">
-        ${(n.tags||[]).map(t=>`<span class="tag-pill" style="border-color:${tagColor}">${escapeHtml(t)}</span>`).join(' ')}
+        ${tagsHtml}
       </div>
-      <button class="btn show-more">Mehr</button>
+
+      <div class="news-controls-row">
+        <button class="btn show-more">Mehr</button>
+      </div>
+
+      <div class="news-details" aria-hidden="true">
+        ${(n.content || []).map(line => `<div>${escapeHtml(line)}</div>`).join('')}
+      </div>
     `;
+
+    // enable clicking tag pills inside card to filter
+    art.querySelectorAll('.tag-pill').forEach(p => {
+      p.addEventListener('click', (e) => {
+        const tagText = p.textContent;
+        // set activeTag and update filter buttons UI
+        setActiveTag(tagText);
+        // reflect in filter bar (if exists)
+        highlightFilterButton(tagText);
+        render();
+        e.stopPropagation();
+      });
+    });
 
     const btn = art.querySelector('.show-more');
     const details = art.querySelector('.news-details');
-    btn.addEventListener('click', ()=>{
+    btn.addEventListener('click', (e) => {
       const open = details.classList.toggle('open');
       details.setAttribute('aria-hidden', !open);
       btn.textContent = open ? 'Weniger' : 'Mehr';
+      // ensure smooth open by setting maxHeight (CSS transition)
+      if(open) details.style.maxHeight = details.scrollHeight + 'px';
+      else details.style.maxHeight = '0px';
+      e.stopPropagation();
     });
 
     return art;
   }
 
+  // render list
   function render(){
     container.innerHTML = '';
-    const filtered = sortNews(allNews).filter(matchesFilter);
-    emptyEl.style.display = filtered.length ? 'none' : '';
+    if(!Array.isArray(allNews) || allNews.length === 0){
+      emptyEl.style.display = '';
+      emptyEl.textContent = 'Keine News vorhanden.';
+      return;
+    }
+
+    searchTerm = (searchInput?.value || '').trim();
+
+    const sorted = sortNews(allNews, sortSelect?.value || 'date-desc');
+    const filtered = sorted.filter(matchesFilter);
+
+    if(filtered.length === 0){
+      emptyEl.style.display = '';
+      emptyEl.textContent = 'Keine News gefunden.';
+      return;
+    } else {
+      emptyEl.style.display = 'none';
+    }
+
     filtered.forEach(n => container.appendChild(createCard(n)));
   }
 
+  // filter bar rendering (top)
   function renderFilters(tags){
+    if(!tagFiltersEl) return;
     tagFiltersEl.innerHTML = '';
+
     const allBtn = document.createElement('button');
     allBtn.className = 'filter-btn active';
     allBtn.textContent = 'Alle';
-    allBtn.addEventListener('click', ()=>{ activeTag=null; render(); setActiveFilterBtn(); });
+    allBtn.dataset.tag = '';
+    allBtn.addEventListener('click', () => {
+      setActiveTag(null);
+      setActiveFilterBtn();
+      render();
+    });
     tagFiltersEl.appendChild(allBtn);
-    tags.forEach(t=>{
-      const b = document.createElement('button');
-      b.className = 'filter-btn';
-      b.textContent = t;
-      b.dataset.tag = t;
-      b.addEventListener('click', ()=>{
+
+    tags.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.textContent = t;
+      btn.dataset.tag = t;
+      btn.addEventListener('click', () => {
         activeTag = activeTag === t ? null : t;
-        render();
         setActiveFilterBtn();
+        render();
       });
-      tagFiltersEl.appendChild(b);
+      tagFiltersEl.appendChild(btn);
     });
+
+    setActiveFilterBtn();
   }
+
   function setActiveFilterBtn(){
-    tagFiltersEl.querySelectorAll('.filter-btn').forEach(b=>{
+    if(!tagFiltersEl) return;
+    tagFiltersEl.querySelectorAll('.filter-btn').forEach(b => {
       const t = b.dataset.tag;
-      b.classList.toggle('active', !t && !activeTag || t && activeTag === t);
+      if((!t && !activeTag) || (t && activeTag === t)) b.classList.add('active');
+      else b.classList.remove('active');
     });
   }
 
-  searchInput?.addEventListener('input', e=>{
-    searchTerm = e.target.value.trim();
-    render();
-  });
-  sortSelect?.addEventListener('change', e=>{
-    sortMode = e.target.value;
-    render();
-  });
-
-  try {
-    const res = await fetch(newsUrl, {cache:'no-store'});
-    if(!res.ok) throw new Error('Netzwerkfehler');
-    const json = await res.json();
-    allNews = json.updates || json;
-    allNews.forEach(n=>n.date = n.date || '1970-01-01');
-
-    const tags = collectTags(allNews);
-    renderFilters(tags);
-    render();
-  } catch(err){
-    console.error('Fehler beim Laden der News:', err);
-    container.innerHTML = '<p class="muted">Fehler beim Laden der News.</p>';
+  function setActiveTag(tag){
+    activeTag = tag || null;
   }
+
+  function highlightFilterButton(tag){
+    if(!tagFiltersEl) return;
+    tagFiltersEl.querySelectorAll('.filter-btn').forEach(b => {
+      if(b.dataset.tag === tag) b.classList.add('active');
+      else b.classList.remove('active');
+    });
+  }
+
+  // events
+  searchInput?.addEventListener('input', () => {
+    render();
+  });
+
+  sortSelect?.addEventListener('change', () => {
+    render();
+  });
+
+  // initial load
+  (async function load(){
+    try {
+      const res = await fetch(newsUrl, { cache: 'no-store' });
+      if(!res.ok) throw new Error('Netzwerk-Fehler beim Laden der News');
+      const json = await res.json();
+      allNews = json.updates || json.news || json || [];
+
+      // ensure dates exist for sorting
+      allNews.forEach(n => { if(!n.date) n.date = '1970-01-01'; });
+
+      // collect tags, render filter UI
+      const tags = collectTags(allNews);
+      renderFilters(tags);
+
+      // initial render
+      render();
+    } catch(err){
+      console.error('Fehler beim Laden der News:', err);
+      if(emptyEl) {
+        emptyEl.style.display = '';
+        emptyEl.textContent = 'Fehler beim Laden der News.';
+      }
+    }
+  })();
+
 })();

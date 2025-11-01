@@ -1,13 +1,13 @@
-/* style-news.css - nur seiten-spezifisches CSS für News */
+/* style-news.css - GameCircl News (polished, dark/light aware) */
 
-/* Container & Grid */
-
+/* Allgemein */
 .main { 
   flex:1; 
   padding:28px; 
   overflow:auto; 
   display:flex;
   flex-direction:column;
+  align-items: center;
 }
 
 /* Footer unten halten */
@@ -15,115 +15,184 @@
   margin-top:auto; 
 }
 
+
+/* Container & Grid */
 .news-container {
   max-width: 1100px;
   margin: 0 auto 48px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 18px;
   padding: 0 18px;
   box-sizing: border-box;
+  align-items: start;
 }
 
-/* Karten */
+/* Card base */
 .news-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 16px;
   box-shadow: var(--card-shadow);
-  transition: transform .18s ease, box-shadow .18s ease;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  overflow: visible;
 }
 
+/* Hover */
 .news-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 18px 36px rgba(0,0,0,0.08);
+  box-shadow: 0 22px 44px rgba(0,0,0,0.08);
 }
 
-/* header row */
+/* Pinned styling */
+.news-card.pinned {
+  border: 2px solid rgba(76,103,255,0.95);
+  box-shadow: 0 28px 60px rgba(76,103,255,0.06);
+  position: relative;
+}
+.pinned-badge {
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  background: linear-gradient(90deg,#4a6cf7,#6b8cff);
+  color: #fff;
+  font-weight:700;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  box-shadow: 0 8px 18px rgba(75,108,255,0.12);
+}
+
+/* Header row */
 .news-header {
   display:flex;
+  align-items:flex-start;
   justify-content:space-between;
-  align-items:center;
   gap:12px;
+  flex-wrap:wrap;
+}
+.news-title {
+  font-size: 1.12rem;
+  margin: 0;
+  color: var(--text);
+  font-weight: 800;
+  line-height:1.1;
 }
 .news-date {
   font-size: 0.85rem;
   color: var(--muted);
   white-space:nowrap;
+  align-self:center;
 }
 
-/* Title & summary */
-.news-title {
-  font-size: 1.15rem;
-  margin: 2px 0;
-  font-weight:700;
-  color: var(--text);
-}
+/* summary */
 .news-summary {
   color: var(--muted);
-  line-height:1.5;
+  line-height:1.45;
   font-size:0.98rem;
+  margin: 4px 0 0;
 }
 
-/* details (collapsed by default) */
+/* details (collapsible) */
 .news-details {
-  margin-top: 8px;
-  display: none;
-  max-height: 0;
+  margin-top:8px;
   overflow: hidden;
-  transition: max-height 0.3s ease, opacity 0.3s ease;
+  max-height: 0;
+  transition: max-height 0.36s cubic-bezier(.2,.9,.2,1), opacity .24s ease;
   opacity: 0;
 }
 .news-details.open {
-  display: block;
-  max-height: 400px;
   opacity: 1;
+  max-height: 800px; /* generous max */
 }
 
+/* list bullets inside details */
+.news-details > div { margin:6px 0; font-size:0.95rem; color:var(--muted); }
+.news-details > div::before { content: "• "; color:var(--accent); font-weight:700; margin-right:6px; }
+
 /* tags row */
-.news-tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; }
+.news-tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
 .tag-pill {
   font-size: 0.75rem;
-  padding: 6px 8px;
+  padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid rgba(0,0,0,0.06);
   background: transparent;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: .03em;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: transform .12s, background .12s, color .12s;
+}
+.tag-pill:hover { transform: translateY(-2px); }
+.tag-pill.active {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  box-shadow: 0 10px 26px rgba(6,160,160,0.08);
 }
 
-/* tag colors - pickable */
-.tag.update { background: linear-gradient(90deg,#4a6cf7,#6b8cff); color:#fff; border:0; }
-.tag.feature { background: linear-gradient(90deg,#2ecc71,#22c55e); color:#fff; border:0; }
-.tag.fix { background: linear-gradient(90deg,#f97316,#f59e0b); color:#fff; border:0; }
-.tag.info { background: linear-gradient(90deg,#9b59b6,#6c5ce7); color:#fff; border:0; }
-.tag.content { background: linear-gradient(90deg,#f66,#f39); color:#fff; border:0; }
-
-/* pinned */
-.news-card.pinned {
-  border: 2px solid rgba(76, 103, 255, 0.9);
-  box-shadow: 0 20px 40px rgba(76,103,255,0.08);
+/* small controls row */
+.news-controls-row {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:8px;
 }
 
-/* controls */
-.news-controls input[type="search"] { /* already inline style in HTML - keep override safe */ }
+/* show-more button */
+.btn.show-more {
+  border:0;
+  background:transparent;
+  color:var(--accent);
+  font-weight:700;
+  cursor:pointer;
+  padding:8px 10px;
+  border-radius:8px;
+  transition: background .12s;
+}
+.btn.show-more:hover { background: rgba(6,160,160,0.06); }
+
+/* pinned small label used inside actions */
+.pinned-label {
+  font-weight:700;
+  font-size:0.78rem;
+  padding:6px 8px;
+  border-radius:999px;
+  color:#fff;
+  background: linear-gradient(90deg,#4a6cf7,#6b8cff);
+}
+
+/* tag color variants (examples) */
+.tag-UI { background: linear-gradient(90deg,#4a6cf7,#6b8cff); color:#fff; border:0; }
+.tag-Design { background: linear-gradient(90deg,#f66,#f39); color:#fff; border:0; }
+.tag-Navigation { background: linear-gradient(90deg,#2ecc71,#22c55e); color:#fff; border:0; }
+.tag-WOP, .tag-Gameplay { background: linear-gradient(90deg,#06A0A0,#2dd4bf); color:#fff; border:0; }
+.tag-Fix, .tag-Performance { background: linear-gradient(90deg,#f97316,#f59e0b); color:#fff; border:0; }
+.tag-Community, .tag-Beta { background: linear-gradient(90deg,#9b59b6,#6c5ce7); color:#fff; border:0; }
+
+/* meta small row */
+.meta-row { display:flex; gap:8px; align-items:center; font-size:0.9rem; color:var(--muted); }
+
+/* empty state */
+#newsEmpty { color:var(--muted); font-size:1rem; padding:40px 18px; text-align:center; }
+
+/* Responsive */
+@media (max-width:980px) {
+  .news-container { grid-template-columns: 1fr; gap:14px; }
+}
+
+/* subtle fade in for cards */
+.news-card { opacity: 0; transform: translateY(8px); animation: gcFadeIn .36s forwards; }
+@keyframes gcFadeIn { to { opacity:1; transform:none; } }
+
+/* small helper for tag buttons in filter bar (outside cards) */
 #tagFilters .filter-btn {
   padding:8px 10px;border-radius:999px;border:1px solid var(--border); background:transparent; cursor:pointer;
   font-size:0.85rem;color:var(--muted);
 }
 #tagFilters .filter-btn.active { background:var(--accent); color:white; border:0; transform:translateY(-1px); }
-
-/* responsive */
-@media (max-width: 980px) {
-  .news-container { grid-template-columns: 1fr; gap:14px; }
-  .news-card { padding:14px; }
-  .page-header { padding-top:18px; }
-}
-
-/* small niceties */
-.news-card .meta-row { display:flex; gap:8px; align-items:center; font-size:0.9rem; color:var(--muted); }
