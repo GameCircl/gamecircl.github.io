@@ -1,6 +1,6 @@
 /* script-news.js
    Lädt news.json, rendert Cards, Filter, Suche, Sortierung.
-   Ready-to-use mit JSON-Datastores/news.json (oder JSON-Datastores/news.json)
+   Ready-to-use mit JSON-Datastores/news.json
 */
 
 (function(){
@@ -16,7 +16,7 @@
     return;
   }
 
-  const newsUrl = 'JSON-Datastores/news.json'; // deine Struktur
+  const newsUrl = 'JSON-Datastores/news.json';
   let allNews = [];
   let activeTag = null;
   let searchTerm = '';
@@ -25,11 +25,27 @@
   const escapeHtml = s => (s||'').toString()
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
-  const fmtDate = dStr => {
+  // 💡 neue Datumsfunktion (unterstützt Strings und {from,to})
+  const fmtDate = d => {
+    if (!d) return '';
     try {
-      const dt = new Date(dStr + 'T00:00:00');
-      return dt.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' });
-    } catch(e){ return dStr; }
+      if (typeof d === 'string') {
+        const dt = new Date(d + 'T00:00:00');
+        return dt.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' });
+      }
+      if (typeof d === 'object' && d.from && d.to) {
+        const from = new Date(d.from + 'T00:00:00');
+        const to = new Date(d.to + 'T00:00:00');
+        return `${from.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' })} – ${to.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' })}`;
+      }
+      if (typeof d === 'object' && d.from) {
+        const from = new Date(d.from + 'T00:00:00');
+        return from.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' });
+      }
+      return '';
+    } catch(e){
+      return (d.from || d.to || d).toString();
+    }
   };
 
   const collectTags = list => {
@@ -38,19 +54,22 @@
     return Array.from(s).sort((a,b) => a.localeCompare(b,'de'));
   };
 
-  // sort: pinned always on top, then by date (default newest first)
+  // sort: pinned always on top, then by date
   function sortNews(list, mode = 'date-desc'){
     const copy = [...list];
-    const byDateDesc = (a,b) => new Date(b.date) - new Date(a.date);
-    const byDateAsc  = (a,b) => new Date(a.date) - new Date(b.date);
+    const getDateValue = d => {
+      if (typeof d === 'string') return new Date(d);
+      if (typeof d === 'object' && d.to) return new Date(d.to);
+      if (typeof d === 'object' && d.from) return new Date(d.from);
+      return new Date('1970-01-01');
+    };
 
-    // pinned always before non-pinned; then date order according to mode
+    const byDateDesc = (a,b) => getDateValue(b.date) - getDateValue(a.date);
+    const byDateAsc  = (a,b) => getDateValue(a.date) - getDateValue(b.date);
+
     if(mode === 'date-asc'){
       copy.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || byDateAsc(a,b));
-    } else if(mode === 'pinned-first') {
-      copy.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || byDateDesc(a,b));
     } else {
-      // default date-desc (but keep pinned on top)
       copy.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || byDateDesc(a,b));
     }
     return copy;
@@ -71,13 +90,13 @@
     art.className = 'news-card' + (n.pinned ? ' pinned' : '');
 
     const tagsHtml = (n.tags || []).map(t => {
-      // sanitize class name: replace spaces/slashes
       const safeClass = 'tag-' + t.replace(/[^\w\-]/g,'');
+      // 💡 keine Uppercase-Transformation & nicht klickbar
       return `<span class="tag-pill ${safeClass}">${escapeHtml(t)}</span>`;
     }).join(' ');
 
     art.innerHTML = `
-      ${n.pinned ? '<div class="pinned-badge">❗ NEU</div>' : ''}
+      ${n.pinned ? '<div class="pinned-badge">📌 Angeheftet</div>' : ''}
       <div class="news-header">
         <div style="min-width:0;flex:1;">
           <h3 class="news-title">${escapeHtml(n.title)}</h3>
@@ -100,28 +119,14 @@
       </div>
     `;
 
-    // enable clicking tag pills inside card to filter
-    art.querySelectorAll('.tag-pill').forEach(p => {
-      p.addEventListener('click', (e) => {
-        const tagText = p.textContent;
-        // set activeTag and update filter buttons UI
-        setActiveTag(tagText);
-        // reflect in filter bar (if exists)
-        highlightFilterButton(tagText);
-        render();
-        e.stopPropagation();
-      });
-    });
-
+    // 🟢 Button-Animation (sanftes Expand/Collapse)
     const btn = art.querySelector('.show-more');
     const details = art.querySelector('.news-details');
     btn.addEventListener('click', (e) => {
       const open = details.classList.toggle('open');
       details.setAttribute('aria-hidden', !open);
       btn.textContent = open ? 'Weniger' : 'Mehr';
-      // ensure smooth open by setting maxHeight (CSS transition)
-      if(open) details.style.maxHeight = details.scrollHeight + 'px';
-      else details.style.maxHeight = '0px';
+      details.style.maxHeight = open ? details.scrollHeight + 'px' : '0px';
       e.stopPropagation();
     });
 
@@ -153,7 +158,7 @@
     filtered.forEach(n => container.appendChild(createCard(n)));
   }
 
-  // filter bar rendering (top)
+  // filter bar rendering
   function renderFilters(tags){
     if(!tagFiltersEl) return;
     tagFiltersEl.innerHTML = '';
@@ -198,24 +203,11 @@
     activeTag = tag || null;
   }
 
-  function highlightFilterButton(tag){
-    if(!tagFiltersEl) return;
-    tagFiltersEl.querySelectorAll('.filter-btn').forEach(b => {
-      if(b.dataset.tag === tag) b.classList.add('active');
-      else b.classList.remove('active');
-    });
-  }
-
   // events
-  searchInput?.addEventListener('input', () => {
-    render();
-  });
+  searchInput?.addEventListener('input', () => render());
+  sortSelect?.addEventListener('change', () => render());
 
-  sortSelect?.addEventListener('change', () => {
-    render();
-  });
-
-  // initial load
+  // load
   (async function load(){
     try {
       const res = await fetch(newsUrl, { cache: 'no-store' });
@@ -223,14 +215,10 @@
       const json = await res.json();
       allNews = json.updates || json.news || json || [];
 
-      // ensure dates exist for sorting
       allNews.forEach(n => { if(!n.date) n.date = '1970-01-01'; });
 
-      // collect tags, render filter UI
       const tags = collectTags(allNews);
       renderFilters(tags);
-
-      // initial render
       render();
     } catch(err){
       console.error('Fehler beim Laden der News:', err);

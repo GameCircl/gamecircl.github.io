@@ -147,7 +147,7 @@
   border: 0;
   background: linear-gradient(150deg, #facc15, #8b5cf6);
   color: #fff;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.04em;
   cursor: default;
   user-select: none;
