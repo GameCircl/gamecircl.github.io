@@ -145,7 +145,7 @@
   padding: 6px 10px;
   border-radius: 999px;
   border: 0;
-  background: linear-gradient(150deg, #facc15, #8b5cf6);
+  background: linear-gradient(90deg, #4a6cf7, #6b8cff);
   color: #fff;
   text-transform: none;
   letter-spacing: 0.04em;
@@ -281,5 +281,9 @@
 }
 
 [data-theme="dark"] .filter-btn.active {
+  color: black;
+}
+
+[data-theme="dark"] .tag-pill {
   color: black;
 }
