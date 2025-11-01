@@ -21,7 +21,15 @@
   margin-top: 15px;
   border-radius:10px; 
   cursor:pointer; 
-  font-weight:600; }
+  font-weight:600;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color:#fff;
+  transition: all .2s ease;
+}
+.btn-more:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(6,160,160,.25);
+}
 
 /* Container & Grid */
 .news-container {
@@ -62,14 +70,14 @@
 
 /* Pinned */
 .news-card.pinned {
-  border: 2px solid var(--accent2);
-  box-shadow: 0 28px 60px rgba(76, 103, 255, 0.06);
+  border: 2px solid #00b8a9;
+  box-shadow: 0 24px 50px rgba(0, 184, 169, 0.12);
 }
 .pinned-badge {
   position: absolute;
   top: -10px;
   left: 18px;
-  background: linear-gradient(90deg,var(--accent),var(--accent2));
+  background: linear-gradient(90deg,#00b8a9,#0074e4);
   color: #fff;
   font-weight: 700;
   border-radius: 999px;
@@ -134,7 +142,6 @@
 
 /* Tags in Karten (nicht klickbar) */
 .news-tags {
-  
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -145,13 +152,14 @@
   padding: 6px 10px;
   border-radius: 999px;
   border: 0;
-  background: var(--accent);
+  background: linear-gradient(135deg,#00b8a9,#0074e4);
   color: #fff;
   text-transform: none;
   letter-spacing: 0.04em;
   cursor: default;
   user-select: none;
   pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0,184,169,0.15);
 }
 
 /* Controls-Bar */
@@ -234,11 +242,11 @@
   background: rgba(6, 160, 160, 0.06);
 }
 .filter-btn.active {
-  background: var(--accent);
+  background: linear-gradient(135deg,#00b8a9,#0074e4);
   color: #fff;
-  border: 0;
+  border: none;
   transform: translateY(-1px);
-  box-shadow: 0 10px 26px rgba(6, 160, 160, 0.08);
+  box-shadow: 0 10px 26px rgba(0, 184, 169, 0.2);
 }
 
 /* Reset-Button */
@@ -280,10 +288,19 @@
   }
 }
 
+/* Dark Mode Feinabstimmung */
 [data-theme="dark"] .filter-btn.active {
-  color: black;
+  background: linear-gradient(135deg,#00e0c3,#5c8eff);
+  box-shadow: 0 10px 26px rgba(0, 224, 195, 0.2);
+  color: #fff;
 }
 
 [data-theme="dark"] .tag-pill {
-  color: black;
+  background: linear-gradient(135deg,#00e0c3,#5c8eff);
+  color: #fff;
+}
+
+[data-theme="dark"] .news-card.pinned {
+  border-color: #00e0c3;
+  box-shadow: 0 24px 50px rgba(0, 224, 195, 0.12);
 }
