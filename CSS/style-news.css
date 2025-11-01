@@ -62,7 +62,7 @@
 
 /* Pinned */
 .news-card.pinned {
-  border: var(--accent2);
+  border: 2px solid var(--accent2);
   box-shadow: 0 28px 60px rgba(76, 103, 255, 0.06);
 }
 .pinned-badge {
@@ -145,7 +145,7 @@
   padding: 6px 10px;
   border-radius: 999px;
   border: 0;
-  background: linear-gradient(90deg,var(--accent),var(--accent2));
+  background: var(--accent);
   color: #fff;
   text-transform: none;
   letter-spacing: 0.04em;
