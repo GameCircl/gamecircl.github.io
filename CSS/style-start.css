@@ -188,7 +188,7 @@ body {
     width: 38px;
     height: 38px;
     border-radius: 10px;
-    background: #0074e4;
+    background: linear-gradient(90deg,#00b8a9,#0074e4);;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -329,9 +329,14 @@ body {
 }
 
 .btn.primary {
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    color: white;
+    background: linear-gradient(90deg,#00b8a9,#0074e4);;
+    color: #000000;
     box-shadow: var(--card-shadow);
+    text-decoration: none;
+}
+
+[data-theme="dark"] .btn.primary {
+    color: #fff;
 }
 
 .btn.primary:hover {
