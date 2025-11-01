@@ -1,6 +1,6 @@
 /* script-news.js
    Lädt news.json, rendert Cards, Filter, Suche, Sortierung.
-   Updated v2: collapsed cards, reset-button, no clickable tag-pills inside cards.
+   Ready-to-use mit JSON-Datastores/news.json (oder JSON-Datastores/news.json)
 */
 
 (function(){
@@ -10,7 +10,6 @@
   const tagFiltersEl = document.getElementById('tagFilters');
   const searchInput = document.getElementById('newsSearch');
   const sortSelect = document.getElementById('sortSelect');
-  const resetBtn = document.getElementById('resetFilters');
 
   if(!container) {
     console.warn('newsList container nicht gefunden – Abbruch script-news.js');
@@ -70,12 +69,10 @@
   function createCard(n){
     const art = document.createElement('article');
     art.className = 'news-card' + (n.pinned ? ' pinned' : '');
-    art.classList.add('collapsed'); // start collapsed so all cards have equal height
 
     const tagsHtml = (n.tags || []).map(t => {
       // sanitize class name: replace spaces/slashes
       const safeClass = 'tag-' + t.replace(/[^\w\-]/g,'');
-      // tag-pill is decorative now (pointer-events:none in CSS)
       return `<span class="tag-pill ${safeClass}">${escapeHtml(t)}</span>`;
     }).join(' ');
 
@@ -95,7 +92,7 @@
       </div>
 
       <div class="news-controls-row">
-        <button class="toggle-btn" aria-expanded="false">Mehr</button>
+        <button class="btn show-more">Mehr</button>
       </div>
 
       <div class="news-details" aria-hidden="true">
@@ -103,46 +100,30 @@
       </div>
     `;
 
-    // NOTE: tag-pill elements are decorative only (no click listeners)
-
-    const btn = art.querySelector('.toggle-btn');
-    const details = art.querySelector('.news-details');
-
-btn.addEventListener('click', (e) => {
-  const open = details.classList.toggle('open');
-  details.setAttribute('aria-hidden', !open);
-  btn.textContent = open ? 'Weniger' : 'Mehr';
-  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-
-  // sanfte Animation
-  if(open){
-    art.classList.remove('collapsed');
-    details.style.maxHeight = details.scrollHeight + 'px';
-
-    // nach Transition maxHeight auf "none" setzen, damit dynamischer Inhalt nicht abgeschnitten wird
-    const clearHeight = () => {
-      details.style.maxHeight = 'none';
-      details.removeEventListener('transitionend', clearHeight);
-    };
-    details.addEventListener('transitionend', clearHeight);
-  } else {
-    // dynamisch auf scrollHeight setzen, damit Übergang flüssig startet
-    details.style.maxHeight = details.scrollHeight + 'px';
-
-    // nächsten Frame warten, dann auf 0 setzen für smooth collapse
-    requestAnimationFrame(() => {
-      details.style.maxHeight = '0px';
+    // enable clicking tag pills inside card to filter
+    art.querySelectorAll('.tag-pill').forEach(p => {
+      p.addEventListener('click', (e) => {
+        const tagText = p.textContent;
+        // set activeTag and update filter buttons UI
+        setActiveTag(tagText);
+        // reflect in filter bar (if exists)
+        highlightFilterButton(tagText);
+        render();
+        e.stopPropagation();
+      });
     });
 
-    // collapsed wieder nach Transition setzen
-    const addCollapsed = () => {
-      art.classList.add('collapsed');
-      details.removeEventListener('transitionend', addCollapsed);
-    };
-    details.addEventListener('transitionend', addCollapsed);
-  }
-  e.stopPropagation();
-});
+    const btn = art.querySelector('.show-more');
+    const details = art.querySelector('.news-details');
+    btn.addEventListener('click', (e) => {
+      const open = details.classList.toggle('open');
+      details.setAttribute('aria-hidden', !open);
+      btn.textContent = open ? 'Weniger' : 'Mehr';
+      // ensure smooth open by setting maxHeight (CSS transition)
+      if(open) details.style.maxHeight = details.scrollHeight + 'px';
+      else details.style.maxHeight = '0px';
+      e.stopPropagation();
+    });
 
     return art;
   }
@@ -151,10 +132,8 @@ btn.addEventListener('click', (e) => {
   function render(){
     container.innerHTML = '';
     if(!Array.isArray(allNews) || allNews.length === 0){
-      if(emptyEl) {
-        emptyEl.style.display = '';
-        emptyEl.textContent = 'Keine News vorhanden.';
-      }
+      emptyEl.style.display = '';
+      emptyEl.textContent = 'Keine News vorhanden.';
       return;
     }
 
@@ -164,13 +143,11 @@ btn.addEventListener('click', (e) => {
     const filtered = sorted.filter(matchesFilter);
 
     if(filtered.length === 0){
-      if(emptyEl) {
-        emptyEl.style.display = '';
-        emptyEl.textContent = 'Keine News gefunden.';
-      }
+      emptyEl.style.display = '';
+      emptyEl.textContent = 'Keine News gefunden.';
       return;
     } else {
-      if(emptyEl) emptyEl.style.display = 'none';
+      emptyEl.style.display = 'none';
     }
 
     filtered.forEach(n => container.appendChild(createCard(n)));
@@ -237,19 +214,6 @@ btn.addEventListener('click', (e) => {
   sortSelect?.addEventListener('change', () => {
     render();
   });
-
-  // reset button functionality
-  if(resetBtn){
-    resetBtn.addEventListener('click', () => {
-      if(searchInput) searchInput.value = '';
-      if(sortSelect) sortSelect.value = 'date-desc';
-      setActiveTag(null);
-      setActiveFilterBtn();
-      render();
-      // optional: put focus back to search
-      if(searchInput) searchInput.focus();
-    });
-  }
 
   // initial load
   (async function load(){
