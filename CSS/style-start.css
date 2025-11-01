@@ -330,13 +330,9 @@ body {
 
 .btn.primary {
     background: linear-gradient(90deg,#00b8a9,#0074e4);;
-    color: #000000;
+    color: #ffffff;
     box-shadow: var(--card-shadow);
     text-decoration: none;
-}
-
-[data-theme="dark"] .btn.primary {
-    color: #fff;
 }
 
 .btn.primary:hover {
