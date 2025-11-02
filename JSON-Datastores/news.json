@@ -3,7 +3,7 @@
     {
       "id": "2025-11-01-1",
       "title": "Einführung der Seite '❗ Updates & News'",
-      "date": "2025-10-31 bis 2025-11-01",
+      "date": { "from": "2025-10-31", "to": "2025-11-01" },
       "type": "feature",
       "summary": "Neue Seite für Updates und News hinzugefügt; Verbesserungen am UI und Bugfixes.",
       "content": [
@@ -43,7 +43,7 @@
     {
       "id": "2025-10-05-1",
       "title": "Impressum-Seite hinzugefügt & Dateistruktur überarbeitet 📄",
-      "date": "2025-10-05 bis 2025-10-11",
+      "date": { "from": "2025-10-05", "to": "2025-10-11" },
       "type": "structure",
       "summary": "Einführung impressum.html; Umstrukturierung und Verbesserung der Dateien.",
       "content": [
@@ -84,7 +84,7 @@
     {
       "id": "2025-09-16-1",
       "title": "Bugfixes und Style-Verbesserungen 🛠️",
-      "date": "2025-09-16 bis 2025-09-24",
+      "date": { "from": "2025-09-16", "to": "2025-09-24" },
       "type": "fix",
       "summary": "Design verbessert, kleinere Bugfixes und weitere Features auf Home-Seite.",
       "content": [
