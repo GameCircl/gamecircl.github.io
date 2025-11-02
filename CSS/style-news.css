@@ -1,6 +1,15 @@
-/* style-news.css — GameCircl polished final */
+/* style-news.css — GameCircl polished final + smooth fade-in */
 
-/* Allgemein */
+/* 🌟 Smooth Fade-In Animation */
+@keyframes fadeInSmooth {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+html {
+  animation: fadeInSmooth 0.45s ease forwards;
+}
+
 .main { 
   flex:1; 
   padding:28px; 
@@ -8,6 +17,7 @@
   display:flex;
   flex-direction:column;
   align-items: center;
+  animation: fadeInSmooth 0.6s ease forwards;
 }
 
 /* Footer unten halten */
@@ -15,23 +25,23 @@
   margin-top:auto; 
 }
 
+/* "Mehr"-Button */
 .btn-more { 
-  border: 1px solid var(--border); /* dezenter Rand */
+  border: 1px solid var(--border);
   padding: 10px 18px; 
   margin-top: 15px;
   border-radius: 10px; 
   cursor: pointer; 
   font-weight: 600;
-  background: var(--surface); /* neutraler Hintergrund */
-  color: var(--text); /* dezente Textfarbe */
+  background: var(--surface);
+  color: var(--text);
   transition: all 0.2s ease;
 }
-
 .btn-more:hover {
-  background: linear-gradient(90deg,#00b8a9,#0074e4); /* beim Hover leicht betont */
+  background: linear-gradient(90deg,#00b8a9,#0074e4);
   color: #fff;
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08); /* subtiler Schatten */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 }
 
 /* Container & Grid */
@@ -59,6 +69,9 @@
   justify-content: flex-start;
   height: 100%;
   position: relative;
+  opacity: 0;
+  animation: fadeInSmooth 0.6s ease forwards;
+  animation-delay: calc(var(--card-index, 0) * 0.06s);
 }
 
 .news-card:hover {

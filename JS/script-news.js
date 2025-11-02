@@ -88,10 +88,12 @@
   function createCard(n){
     const art = document.createElement('article');
     art.className = 'news-card' + (n.pinned ? ' pinned' : '');
+    art.style.opacity = 0;
+    art.style.transform = 'translateY(15px)';
+    art.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
 
     const tagsHtml = (n.tags || []).map(t => {
       const safeClass = 'tag-' + t.replace(/[^\w\-]/g,'');
-      // 💡 keine Uppercase-Transformation & nicht klickbar
       return `<span class="tag-pill ${safeClass}">${escapeHtml(t)}</span>`;
     }).join(' ');
 
@@ -119,9 +121,13 @@
       </div>
     `;
 
-    // 🟢 Button-Animation (sanftes Expand/Collapse)
+    // sanftes Expand/Collapse Details
     const btn = art.querySelector('.show-more');
     const details = art.querySelector('.news-details');
+    details.style.maxHeight = '0px';
+    details.style.overflow = 'hidden';
+    details.style.transition = 'max-height 0.3s ease';
+
     btn.addEventListener('click', (e) => {
       const open = details.classList.toggle('open');
       details.setAttribute('aria-hidden', !open);
@@ -129,6 +135,12 @@
       details.style.maxHeight = open ? details.scrollHeight + 'px' : '0px';
       e.stopPropagation();
     });
+
+    // Pop-In Animation
+    setTimeout(() => {
+      art.style.opacity = 1;
+      art.style.transform = 'translateY(0)';
+    }, 50);
 
     return art;
   }
