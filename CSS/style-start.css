@@ -154,7 +154,7 @@ body {
 
 .nav-link:hover,
 .nav-link.active {
-    background: linear-gradient(135deg, rgba(6, 160, 160, 0.1), rgba(162, 155, 254, 0.1));
+    background: linear-gradient(135deg, rgba(6, 160, 160, 0.15), rgba(162, 155, 254, 0.15));
     color: var(--text);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
