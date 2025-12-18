@@ -162,6 +162,10 @@ function showGameInfo(m){
   gameInfoDesc.textContent = m.desc || '';
   gameInfoHow.textContent = m.how || 'Keine Anleitung verfügbar.';
   gameInfoPill.textContent = m.icon || '';
+  // Set pill background based on game colors (with fallback)
+  const _c1 = m.color || '#6c5ce7';
+  const _c2 = m.color2 || _c1;
+  gameInfoPill.style.background = `linear-gradient(90deg, ${_c1}, ${_c2})`;
   gameInfoTags.innerHTML = (m.tags || []).map(t => `<span class="tag-pill">${t}</span>`).join('');
   if (m.link) {
     gameInfoLink.href = m.link;

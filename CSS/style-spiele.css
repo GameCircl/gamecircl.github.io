@@ -250,7 +250,7 @@
   justify-content:center; 
   font-size:28px; 
   color:#fff; 
-  background:linear-gradient(90deg,var(--accent),var(--accent2)); 
+  background: linear-gradient(90deg,var(--accent),var(--accent2)); 
   margin-right: 5px;
 }
 
