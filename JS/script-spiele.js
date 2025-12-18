@@ -6,6 +6,11 @@ const qsa = s => Array.from(document.querySelectorAll(s));
 
 /* ---- DOM refs ---- */
 const gameList = qs('#game-list');
+const gamesSearch = qs('#gamesSearch');
+const gamesSort = qs('#gamesSort');
+const gameTagFilters = qs('#gameTagFilters');
+const resetGameFilters = qs('#resetGameFilters');
+const gamesEmpty = qs('#gamesEmpty');
 const yearEl = qs('#year');
 const sidebar = qs('#sidebar');
 const sidebarToggle = qs('#sidebarToggle');
@@ -64,19 +69,120 @@ function applyTheme(mode) {
 
 
 /* ====================
-   Load spiele.json and render cards
+   Load spiele.json and render cards (with Search/Filter/Sort)
 ==================== */
+let allGames = [];
+let activeTag = null;
+
+// Favorites (local)
+const favKey = 'gc-favs';
+let favs = new Set(JSON.parse(localStorage.getItem(favKey) || '[]'));
+function saveFavs(){ localStorage.setItem(favKey, JSON.stringify(Array.from(favs))); }
+function isFavorited(id){ return favs.has(id); }
+function toggleFavorite(id, btn){
+  if(!id) return;
+  if(favs.has(id)){ favs.delete(id); btn.classList.remove('active'); btn.setAttribute('aria-pressed','false'); }
+  else { favs.add(id); btn.classList.add('active'); btn.setAttribute('aria-pressed','true'); }
+  saveFavs();
+}
+
 async function loadSpiele() {
   try {
     const res = await fetch('JSON-Datastores/spiele.json', { cache: "no-store" });
     if (!res.ok) throw new Error('netzwerkfehler');
     const data = await res.json();
-    const list = data.spiele || data; 
-    renderSpiele(list);
+    const list = data.spiele || data;
+    allGames = list;
+    renderGameFilters(collectGameTags(allGames));
+    renderFilteredGames();
   } catch (err) {
     console.error('Fehler beim Laden der spiele.json', err);
     if (gameList) gameList.innerHTML = `<p class="muted">Fehler beim Laden der Spielmodi.</p>`;
   }
+}
+
+function collectGameTags(list){
+  const s = new Set();
+  (list || []).forEach(g => (g.tags || []).forEach(t => s.add(t)));
+  return Array.from(s).sort((a,b) => a.localeCompare(b,'de'));
+}
+
+function renderGameFilters(tags){
+  if(!gameTagFilters) return;
+  gameTagFilters.innerHTML = '';
+  const allBtn = document.createElement('button');
+  allBtn.className = 'filter-btn active';
+  allBtn.textContent = 'Alle';
+  allBtn.dataset.tag = '';
+  allBtn.addEventListener('click', () => {
+    activeTag = null;
+    setActiveFilterBtn();
+    renderFilteredGames();
+  });
+  gameTagFilters.appendChild(allBtn);
+
+  tags.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.textContent = t;
+    btn.dataset.tag = t;
+    btn.addEventListener('click', () => {
+      activeTag = activeTag === t ? null : t;
+      setActiveFilterBtn();
+      renderFilteredGames();
+    });
+    gameTagFilters.appendChild(btn);
+  });
+
+  setActiveFilterBtn();
+}
+
+function setActiveFilterBtn(){
+  if(!gameTagFilters) return;
+  gameTagFilters.querySelectorAll('.filter-btn').forEach(b => {
+    const t = b.dataset.tag;
+    if((!t && !activeTag) || (t && activeTag === t)) b.classList.add('active');
+    else b.classList.remove('active');
+  });
+}
+
+function renderFilteredGames(){
+  if(!allGames) return;
+  const term = (gamesSearch?.value || '').trim().toLowerCase();
+  const sortMode = gamesSort?.value || 'title-asc';
+  let filtered = allGames.filter(g => {
+    if (activeTag && !(g.tags || []).includes(activeTag)) return false;
+    if (!term) return true;
+    const hay = ((g.title||'') + ' ' + (g.short||'') + ' ' + (g.desc||'') + ' ' + (g.tags||[]).join(' ')).toLowerCase();
+    return hay.includes(term);
+  });
+
+  // sorting — 'default' leaves original JSON order; fallback is title-asc
+  if (sortMode === 'title-asc') filtered.sort((a,b)=>a.title.localeCompare(b.title,'de'));
+  else if (sortMode === 'title-desc') filtered.sort((a,b)=>b.title.localeCompare(a.title,'de'));
+  else if (sortMode === 'time-asc') filtered.sort((a,b)=> parseTime(a.time) - parseTime(b.time));
+  else if (sortMode === 'time-desc') filtered.sort((a,b)=> parseTime(b.time) - parseTime(a.time));
+  // else if sortMode === 'default' do nothing (keep JSON order)
+
+
+  if (filtered.length === 0) {
+    if (gameList) gameList.innerHTML = '';
+    if (gamesEmpty) gamesEmpty.style.display = '';
+    return;
+  } else {
+    if (gamesEmpty) gamesEmpty.style.display = 'none';
+  }
+
+  renderSpiele(filtered);
+}
+
+function parseTime(t){
+  if(!t) return 0;
+  const m = t.match(/(\d+)\s*-?\s*(\d+)?/);
+  if(!m) return 0;
+  const a = parseInt(m[1],10);
+  const b = m[2] ? parseInt(m[2],10) : a;
+  return (a + b)/2;
 }
 
 function renderSpiele(list){
@@ -86,20 +192,28 @@ function renderSpiele(list){
     const el = document.createElement('article');
     el.className = 'card';
     el.style.animationDelay = (i*60) + 'ms';
+    el.dataset.id = m.id || '';
 
     const color1 = m.color || '#6c5ce7';
     const color2 = m.color2 || color1;
 
+    // expose CSS vars for per-card accents
+    el.style.setProperty('--accent1', color1);
+    el.style.setProperty('--accent2', color2);
+
     el.innerHTML = `
       <div class="card-top-bg" style="background:linear-gradient(180deg, ${color1}22, ${color2}22);">
         <div class="card-title-wrapper">
-          <div class="pill" style="background:linear-gradient(90deg, ${color1}, ${color2});">${m.icon || ''}</div>
+          <div class="pill" style="background:linear-gradient(90deg, ${color1}, ${color2});" aria-hidden="true">${m.icon || ''}</div>
           <div style="display:flex;flex-direction:column">
             <h3>${m.title}</h3>
             <div class="short">${m.short || m.desc}</div>
           </div>
         </div>
-        <button class="card-info-btn" title="Anleitung anzeigen">ℹ️</button>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="fav-btn" title="Als Favorit markieren" aria-pressed="${isFavorited(m.id) ? 'true' : 'false'}">${isFavorited(m.id) ? '★' : '☆'}</button>
+          <button class="card-info-btn" title="Anleitung anzeigen" aria-label="Anleitung für ${m.title}">ℹ️</button>
+        </div>
       </div>
       <div class="card-line"></div>
       <div class="card-body">
@@ -112,11 +226,18 @@ function renderSpiele(list){
           <div>⏱ ${m.time}</div>
           <div>⚙️ ${m.difficulty}</div>
         </div>
-        <div>
-          <button class="card-start" style="background:linear-gradient(90deg, ${color1}, ${color2});">▶ Spiel starten</button>
+        <div class="card-actions">
+          <button class="card-start" style="background:linear-gradient(90deg, ${color1}, ${color2});" aria-label="${m.title} starten">▶ Spiel starten</button>
         </div>
       </div>
     `;
+
+    // Favorite button
+    const favBtn = el.querySelector('.fav-btn');
+    if(favBtn){
+      if(isFavorited(m.id)) favBtn.classList.add('active');
+      favBtn.addEventListener('click', (e) => { toggleFavorite(m.id, favBtn); e.stopPropagation(); });
+    }
 
     // Start button — wenn eine Spielseite vorhanden ist, navigiere dorthin
     const startBtn = el.querySelector('.card-start');
@@ -136,6 +257,11 @@ function renderSpiele(list){
     gameList.appendChild(el);
   });
 }
+
+// Events
+gamesSearch?.addEventListener('input', () => renderFilteredGames());
+gamesSort?.addEventListener('change', () => renderFilteredGames());
+resetGameFilters?.addEventListener('click', () => { activeTag = null; gamesSearch.value = ''; gamesSort.value = 'title-asc'; setActiveFilterBtn(); renderFilteredGames(); });
 
 
 

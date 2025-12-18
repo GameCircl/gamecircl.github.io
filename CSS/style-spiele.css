@@ -2,6 +2,82 @@
    Spiele-Seite — komplett überarbeitet
 ------------------------- */
 
+/* Controls Bar: Suche / Sort / Tag-Filter */
+#gamesControls {
+  width: 100%;
+  max-width: 1100px;
+  margin: 12px auto 0;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+#gamesControls .controls-top {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+#gamesControls input[type="search"] {
+  flex: 1;
+  min-width: 220px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+#gamesControls select {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+#gamesControls .controls-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+#gameTagFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.filter-btn {
+  font-size: 0.83rem;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.filter-btn:hover {
+  background: rgba(6, 160, 160, 0.06);
+}
+.filter-btn.active {
+  background: linear-gradient(135deg,#00b8a9,#0074e4);
+  color: #fff;
+  border: none;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(0, 184, 169, 0.2);
+}
+#resetGameFilters {
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s;
+  font-weight: 600;
+}
+
 /* Card grid padding override for full-width look */
 .games {
   padding: 0 8px;
@@ -18,7 +94,7 @@
 }
 
 /* -------------------------
-   CARD
+   CARD (verbessert: Look & Interactions)
 ------------------------- */
 .card {
   display: flex;
@@ -27,19 +103,97 @@
   background: var(--surface);
   border-radius: 14px;
   padding: 0;
-  min-height: 340px; /* feste Höhe für alle Karten */
+  min-height: 360px; /* erhöht: einheitliche Kartenhöhe */
   border: 1px solid var(--border);
-  box-shadow: var(--card-shadow);
-  transition: transform .18s ease, box-shadow .18s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
   position: relative;
   overflow: hidden;
+  outline: none;
 }
 
-/* hover effect */
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 28px 56px rgba(0,0,0,0.18);
+/* subtle hover & focus — REVERTED TO NO CARD HOVER */
+.card:hover,
+.card:focus-within {
+  transform: none;
+  box-shadow: var(--card-shadow);
+  border-color: var(--border);
 }
+
+/* Start button hover — REMOVED as requested */
+
+/* Reset button hover (kept) */
+#resetGameFilters:hover {
+  background: linear-gradient(90deg,#00b8a9,#0074e4);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0,184,169,0.12);
+}
+
+/* Sort select hover/focus (kept) */
+#gamesControls select:hover, #gamesControls select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(6,160,160,0.08);
+  outline: none;
+} 
+
+
+/* CARD TOP */
+.card-top-bg {
+  border-radius: 14px 14px 0 0;
+  padding: 18px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  gap: 8px;
+  /* allow custom accents via CSS vars */
+}
+
+.card-top-bg .pill {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 22px;
+  flex-shrink: 0;
+  transition: transform .18s ease;
+}
+.card:hover .pill { transform: translateY(-6px) scale(1.02); }
+
+.card-line { height: 1px; background: rgba(0,0,0,0.04); margin: 8px 0; position: relative; z-index:1; }
+
+.card-body { padding: 12px 16px 14px 16px; flex: 1; color: var(--muted); font-size: 14px; line-height:1.45; }
+
+/* tags styling kept */
+.tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px }
+
+/* CARD FOOTER & ACTIONS */
+.card-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; padding: 10px 16px 16px 16px; }
+.meta { color: var(--muted); font-size: 13px; display:flex; gap:10px; align-items:center }
+
+.card-actions { display:flex; gap:10px; align-items:center }
+.card-start { padding: 10px 14px; border-radius: 10px; font-weight: 700; color: white; border: 0; cursor:pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.12); transition: transform .12s ease, opacity .12s ease }
+.card-start:active { transform: translateY(1px); }
+.card-start:focus { outline: 3px solid rgba(6,160,160,0.16); }
+
+/* Favorite button */
+.fav-btn { border: 0; background: transparent; padding:8px; border-radius:8px; cursor:pointer; font-size:18px; transition: transform .12s ease, color .12s ease; color: var(--muted) }
+.fav-btn:hover { transform: scale(1.05); }
+.fav-btn.active { color: #ffd166; transform: scale(1.12); }
+.fav-btn:focus { outline: 3px solid rgba(255,209,102,0.15); }
+
+/* Info button */
+.card-info-btn { background: transparent; border: none; cursor: pointer; font-size: 18px; padding: 6px; border-radius: 8px; }
+.card-info-btn:hover { background: rgba(0,0,0,0.03); }
+
+/* small responsive tweaks */
+@media (max-width:720px){ .card { min-height: 260px; } .card-footer { flex-direction: column; align-items:flex-start } }
+
 
 /* -------------------------
    CARD TOP — farbiger Bereich + Titel + Info
@@ -213,7 +367,7 @@
    Responsive
 ------------------------- */
 @media (max-width:900px){
-  .card { min-height: 300px; }
+  .card { min-height: 320px; }
 }
 
 @media (max-width:720px){

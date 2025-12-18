@@ -87,9 +87,33 @@
         </header>
 
         <section class="games">
+          <!-- Controls: Suche / Sort / Tag-Filter -->
+          <div id="gamesControls" class="controls-bar">
+            <div class="controls-top">
+              <input id="gamesSearch" type="search" placeholder="🔍 Suche Spiele, Tags, Stichwörter...">
+              <select id="gamesSort" aria-label="Sortierung Spiele">
+                <option value="default">🔀 Standard (JSON)</option>
+                <option value="title-asc">🔤 Titel A → Z</option>
+                <option value="title-desc">🔤 Titel Z → A</option>
+                <option value="time-asc">⏱ Kurz → Lang</option>
+                <option value="time-desc">⏱ Lang → Kurz</option>
+              </select>
+            </div>
+
+            <div class="controls-bottom">
+              <div id="gameTagFilters">
+                <!-- dynamische Tag-Buttons -->
+              </div>
+              <button id="resetGameFilters">🔄 Alle zurücksetzen</button>
+            </div>
+          </div>
+
           <div class="card-grid" id="game-list">
             <!-- dynamische Karten (aus spiele.json) -->
           </div>
+
+          <div id="gamesEmpty" style="display:none;text-align:center;color:var(--muted);padding:40px 18px;">Keine Spiele gefunden.</div>
+
         </section>
 
       </section>

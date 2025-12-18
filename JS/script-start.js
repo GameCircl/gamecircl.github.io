@@ -29,6 +29,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { threshold: 0.15 });
 
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Transform nav-links into icon + label for collapse behavior
+  try {
+    document.querySelectorAll('.nav-link').forEach(a => {
+      if (a.querySelector('.icon')) return; // already transformed
+      const txt = a.textContent.trim();
+      const parts = txt.split(/\s+/);
+      const first = parts[0] || '';
+      const rest = parts.slice(1).join(' ') || txt;
+      a.innerHTML = `<span class="icon">${first}</span><span class="label">${rest}</span>`;
+      a.setAttribute('title', rest);
+      a.setAttribute('aria-label', rest);
+    });
+  } catch (e) { console.warn('nav transform failed', e); }
+
+// Sidebar collapse button removed (per user request). No collapse toggle is added programmatically.
+    // If collapse behavior is wanted again later, reintroduce the toggle here.
+
 });
 
 /* -------------------------
