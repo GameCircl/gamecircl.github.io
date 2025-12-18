@@ -1,6 +1,21 @@
 {
   "updates": [
     {
+      "id": "2025-12-18-1",
+      "title": "Design-Überarbeitung (Modernisierung) & Neue Funktionen für Spieleseite 🎨",
+      "date": "2025-12-18",
+      "type": "feature; style",
+      "summary": "Modernisiertes Design für ein frisches Aussehen (neue Hovereffekte, Icons in der Sidebar erneuert)\nNeue Funktionen für die Spieleseite hinzugefügt.",
+      "content": [
+        "Icons, Farben und Schrift in der Sidebar aktualisiert für moderneres Aussehen",
+        "Neue Hover-Effekte auf Cards und anderen Elementen (Sidebar, Spieleseite, ...)",
+        "Seite 'Spiele': Suchleiste, Sortieroptionen und Tag-Filter hinzugefügt für bessere Navigation durch die Spiele",
+        "Favoriten-Funktion für Spiele hinzugefügt, um Lieblingsspiele zu markieren und schnell darauf zuzugreifen"
+      ],
+      "tags": ["Feature", "Design", "Bugfixes"],
+      "pinned": true
+    },
+    {
       "id": "2025-11-01-1",
       "title": "Einführung der Seite '❗ Updates & News'",
       "date": { "from": "2025-10-31", "to": "2025-11-01" },
@@ -12,7 +27,7 @@
         "Kleinere Bugfixes und Performance-Verbesserungen."
       ],
       "tags": ["Feature", "Design", "Bugfixes"],
-      "pinned": true
+      "pinned": false
     },
     {
       "id": "2025-10-26-1",

@@ -116,6 +116,9 @@ html {
   font-weight: 800;
   line-height: 1.15;
   color: var(--text);
+  /* allow JSON titles with newlines (\n) to render as line breaks */
+  white-space: pre-line;
+  word-break: break-word;
 }
 .news-date {
   font-size: 0.9rem;
@@ -130,6 +133,8 @@ html {
   line-height: 1.45;
   font-size: 0.97rem;
   margin-top: 4px;
+  white-space: pre-line;
+  word-break: break-word;
 }
 
 /* Details */
@@ -139,6 +144,8 @@ html {
   max-height: 0;
   transition: max-height 0.36s cubic-bezier(.2, .9, .2, 1), opacity 0.3s ease;
   opacity: 0;
+  white-space: pre-line;
+  word-break: break-word;
 }
 .news-details.open {
   opacity: 1;
