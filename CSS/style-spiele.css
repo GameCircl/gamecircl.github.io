@@ -211,7 +211,7 @@
 .card-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; padding: 10px 16px 16px 16px; }
 .meta { color: var(--muted); font-size: 13px; display:flex; gap:10px; align-items:center }
 
-.card-actions { display:flex; gap:10px; align-items:center }
+.card-actions { display:flex; gap:10px; align-items:center; margin-top: 18px; }
 .card-start { padding: 10px 14px; border-radius: 10px; font-weight: 700; color: white; border: 0; cursor:pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.12); transition: transform .12s ease, opacity .12s ease }
 .card-start:active { transform: translateY(1px); }
 .card-start:focus { outline: 3px solid rgba(6,160,160,0.16); }
