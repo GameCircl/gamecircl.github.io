@@ -10,6 +10,7 @@ const gamesSearch = qs('#gamesSearch');
 const gamesSort = qs('#gamesSort');
 const gameTagFilters = qs('#gameTagFilters');
 const resetGameFilters = qs('#resetGameFilters');
+const gamesFavToggle = qs('#gamesFavToggle');
 const gamesEmpty = qs('#gamesEmpty');
 const yearEl = qs('#year');
 const sidebar = qs('#sidebar');
@@ -32,8 +33,35 @@ const exportStats = qs('#exportStats');
 const importStats = qs('#importStats');
 const importFile = qs('#importFile');
 
-/* set year */
-if (yearEl) yearEl.textContent = new Date().getFullYear();
+document.addEventListener("DOMContentLoaded", () => {
+  // Jahr automatisch einfügen
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Transform nav-links into icon (SVG) + label for a modern look
+  try {
+    const iconMap = {
+      'index.html': '<i class="bx bx-home-alt-2"></i> ',
+      'spiele.html': '<i class="bx bx-joystick"></i> ',
+      'news.html': '<i class="bx bx-news"></i> ',
+      'ueber.html': '<i class="bx bx-info-circle"></i> ',
+      'impressum.html': '<i class="bx bx-file"></i> '
+    };
+
+    document.querySelectorAll('.nav-link').forEach(a => {
+      if (a.querySelector('.icon')) return; // already transformed
+      const href = (a.getAttribute('href') || '').split('/').pop();
+      const label = a.textContent.trim().replace(/^[^\s]+\s*/, '');
+      const svg = iconMap[href] || '';
+      a.innerHTML = `<span class="icon" aria-hidden="true">${svg || label.charAt(0)}</span><span class="label">${label}</span>`;
+      a.setAttribute('title', label);
+      a.setAttribute('aria-label', label);
+    });
+  } catch (e) { console.warn('nav transform failed', e); }
+
+// Sidebar collapse button removed (per user request). No collapse toggle is added programmatically.
+    // If collapse behavior is wanted again later, reintroduce the toggle here.
+
+});
 
 /* ====================
    THEME (auto/light/dark)
@@ -81,9 +109,38 @@ function saveFavs(){ localStorage.setItem(favKey, JSON.stringify(Array.from(favs
 function isFavorited(id){ return favs.has(id); }
 function toggleFavorite(id, btn){
   if(!id) return;
-  if(favs.has(id)){ favs.delete(id); btn.classList.remove('active'); btn.setAttribute('aria-pressed','false'); }
-  else { favs.add(id); btn.classList.add('active'); btn.setAttribute('aria-pressed','true'); }
+  if(favs.has(id)){
+    favs.delete(id);
+    btn.classList.remove('active');
+    btn.setAttribute('aria-pressed','false');
+  } else {
+    favs.add(id);
+    btn.classList.add('active');
+    btn.setAttribute('aria-pressed','true');
+  }
+  // pulse feedback
+  btn.classList.add('pulse');
+  setTimeout(()=>btn.classList.remove('pulse'), 380);
+
   saveFavs();
+  // update UI and re-filter if necessary
+  updateFavToggleUI();
+  if (favFilter) renderFilteredGames();
+}
+
+/* --- Favoriten‑Filter (Nur Favoriten) --- */
+const favFilterKey = 'gc-fav-filter';
+let favFilter = false;
+function saveFavFilter(){ localStorage.setItem(favFilterKey, favFilter ? '1' : '0'); }
+function loadFavFilter(){ favFilter = localStorage.getItem(favFilterKey) === '1'; updateFavToggleUI(); }
+function updateFavToggleUI(){ if(!gamesFavToggle) return; const count = favs.size; gamesFavToggle.setAttribute('aria-pressed', favFilter ? 'true' : 'false'); gamesFavToggle.textContent = `⭐ Nur Favoriten (${count})`; gamesFavToggle.classList.toggle('active', favFilter); }
+if (gamesFavToggle) {
+  gamesFavToggle.addEventListener('click', ()=>{
+    favFilter = !favFilter;
+    saveFavFilter();
+    updateFavToggleUI();
+    renderFilteredGames();
+  });
 }
 
 async function loadSpiele() {
@@ -151,6 +208,8 @@ function renderFilteredGames(){
   const term = (gamesSearch?.value || '').trim().toLowerCase();
   const sortMode = gamesSort?.value || 'title-asc';
   let filtered = allGames.filter(g => {
+    // Favoriten-Filter: wenn aktiv, nur Spiele beachten, die in favs sind
+    if (favFilter && !isFavorited(g.id)) return false;
     if (activeTag && !(g.tags || []).includes(activeTag)) return false;
     if (!term) return true;
     const hay = ((g.title||'') + ' ' + (g.short||'') + ' ' + (g.desc||'') + ' ' + (g.tags||[]).join(' ')).toLowerCase();
@@ -261,12 +320,24 @@ function renderSpiele(list){
 // Events
 gamesSearch?.addEventListener('input', () => renderFilteredGames());
 gamesSort?.addEventListener('change', () => renderFilteredGames());
-resetGameFilters?.addEventListener('click', () => { activeTag = null; gamesSearch.value = ''; gamesSort.value = 'title-asc'; setActiveFilterBtn(); renderFilteredGames(); });
+resetGameFilters?.addEventListener('click', () => {
+  activeTag = null;
+  gamesSearch.value = '';
+  gamesSort.value = 'title-asc';
+  // Reset favorite filter as requested (Option 1)
+  favFilter = false;
+  saveFavFilter();
+  setActiveFilterBtn();
+  updateFavToggleUI();
+  renderFilteredGames();
+});
 
 
 
 /* initialize */
 loadSpiele();
+loadFavFilter();
+updateFavToggleUI();
 
 /* -------------------------
    GAME INFO MODAL (custom) — öffnet ein eigenes Fenster statt alert()

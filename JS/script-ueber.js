@@ -19,14 +19,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // Jahr automatisch einfügen
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Fade-in beim Scrollen
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('visible');
-    });
-  }, { threshold: 0.15 });
+  // Transform nav-links into icon (SVG) + label for a modern look
+  try {
+    const iconMap = {
+      'index.html': '<i class="bx bx-home-alt-2"></i> ',
+      'spiele.html': '<i class="bx bx-joystick"></i> ',
+      'news.html': '<i class="bx bx-news"></i> ',
+      'ueber.html': '<i class="bx bx-info-circle"></i> ',
+      'impressum.html': '<i class="bx bx-file"></i> '
+    };
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    document.querySelectorAll('.nav-link').forEach(a => {
+      if (a.querySelector('.icon')) return; // already transformed
+      const href = (a.getAttribute('href') || '').split('/').pop();
+      const label = a.textContent.trim().replace(/^[^\s]+\s*/, '');
+      const svg = iconMap[href] || '';
+      a.innerHTML = `<span class="icon" aria-hidden="true">${svg || label.charAt(0)}</span><span class="label">${label}</span>`;
+      a.setAttribute('title', label);
+      a.setAttribute('aria-label', label);
+    });
+  } catch (e) { console.warn('nav transform failed', e); }
+
+// Sidebar collapse button removed (per user request). No collapse toggle is added programmatically.
+    // If collapse behavior is wanted again later, reintroduce the toggle here.
+
 });
 
 

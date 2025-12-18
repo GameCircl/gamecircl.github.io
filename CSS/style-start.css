@@ -130,8 +130,11 @@ body {
 
 /* Nav link icon + label (collapse button removed) */
 .nav-link { display:flex; gap:10px; align-items:center }
-.nav-link .icon { width:22px; display:inline-block; text-align:center }
+.nav-link .icon { width:28px; display:flex; align-items:center; justify-content:center; color:var(--muted); transition: transform 0.16s ease, color 0.16s ease }
+.nav-link .icon svg { width:20px; height:20px; display:block }
 .nav-link .label { display:inline-block }
+.nav-link:hover .icon { transform: translateY(-2px) scale(1.04); color:var(--accent) }
+
 
 /* Note: sidebar collapse functionality and button removed as requested */
 
