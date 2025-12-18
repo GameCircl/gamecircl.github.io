@@ -118,14 +118,19 @@ function renderSpiele(list){
       </div>
     `;
 
-    // Start button
-    el.querySelector('.card-start').addEventListener('click', () => {
-      alert(`Spiel "${m.title}" starten!`);
+    // Start button — wenn eine Spielseite vorhanden ist, navigiere dorthin
+    const startBtn = el.querySelector('.card-start');
+    startBtn.addEventListener('click', () => {
+      if (m.link) {
+        window.location.href = m.link;
+      } else {
+        alert(`Spiel "${m.title}" starten!`);
+      }
     });
 
-    // Info button
+    // Info button — öffnet das neue eigene Modal
     el.querySelector('.card-info-btn').addEventListener('click', () => {
-      alert(m.how || 'Keine Anleitung verfügbar.');
+      showGameInfo(m);
     });
 
     gameList.appendChild(el);
@@ -137,6 +142,58 @@ function renderSpiele(list){
 /* initialize */
 loadSpiele();
 
+/* -------------------------
+   GAME INFO MODAL (custom) — öffnet ein eigenes Fenster statt alert()
+------------------------- */
+const gameInfoModal = qs('#gameInfoModal');
+const gameInfoClose = qs('#gameInfoClose');
+const gameInfoTitle = qs('#gameInfoTitle');
+const gameInfoShort = qs('#gameInfoShort');
+const gameInfoDesc = qs('#gameInfoDesc');
+const gameInfoHow = qs('#gameInfoHow');
+const gameInfoTags = qs('#gameInfoTags');
+const gameInfoPill = qs('#gameInfoPill');
+const gameInfoLink = qs('#gameInfoLink');
+
+function showGameInfo(m){
+  if(!gameInfoModal) return alert(m.how || m.desc || 'Keine Details verfügbar.');
+  gameInfoTitle.textContent = m.title || '';
+  gameInfoShort.textContent = m.short || '';
+  gameInfoDesc.textContent = m.desc || '';
+  gameInfoHow.textContent = m.how || 'Keine Anleitung verfügbar.';
+  gameInfoPill.textContent = m.icon || '';
+  gameInfoTags.innerHTML = (m.tags || []).map(t => `<span class="tag-pill">${t}</span>`).join('');
+  if (m.link) {
+    gameInfoLink.href = m.link;
+    gameInfoLink.classList.remove('hidden');
+  } else {
+    gameInfoLink.classList.add('hidden');
+  }
+  gameInfoModal.classList.remove('hidden');
+  setTimeout(()=> gameInfoModal.classList.add('show'), 10);
+  gameInfoModal.setAttribute('aria-hidden','false');
+}
+
+if (gameInfoClose) {
+  gameInfoClose.addEventListener('click', ()=> {
+    gameInfoModal.classList.remove('show');
+    setTimeout(()=> gameInfoModal.classList.add('hidden'), 240);
+    gameInfoModal.setAttribute('aria-hidden','true');
+  });
+}
+
+// ESC: close modals
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape'){
+    if (gameInfoModal && !gameInfoModal.classList.contains('hidden')) {
+      gameInfoClose.click();
+    }
+    if (modal && !modal.classList.contains('hidden')) {
+      modalClose.click();
+    }
+  }
+});
+
 
 
 /* -------------------------
@@ -146,12 +203,12 @@ loadSpiele();
 if(sidebarToggle){
   sidebarToggle.addEventListener('click', ()=>{
     sidebar.classList.add('open');
-    sidebarOverlayEl.classList.remove('hidden');
+    sidebarOverlay.classList.remove('hidden');
     sidebarToggle.classList.add('hide'); // ← NEU
   });
-  sidebarOverlayEl.addEventListener('click', ()=>{
+  sidebarOverlay.addEventListener('click', ()=>{
     sidebar.classList.remove('open');
-    sidebarOverlayEl.classList.add('hidden');
+    sidebarOverlay.classList.add('hidden');
     sidebarToggle.classList.remove('hide'); // ← NEU
   });
 }
@@ -183,13 +240,13 @@ document.addEventListener('touchmove', (e) => {
     // Swipe nach rechts -> öffnen
     if (diffX > 70 && !sidebar.classList.contains('open')) {
       sidebar.classList.add('open');
-      sidebarOverlayEl.classList.remove('hidden');
+      sidebarOverlay.classList.remove('hidden');
     }
 
     // Swipe nach links -> schließen
     if (diffX < -70 && sidebar.classList.contains('open')) {
       sidebar.classList.remove('open');
-      sidebarOverlayEl.classList.add('hidden');
+      sidebarOverlay.classList.add('hidden');
     }
   }
 });
@@ -340,31 +397,3 @@ if (importStats && importFile) {
 }
 
 
-/* -------------------------
-   LOGIN MODAL
-------------------------- */
-openLogin.addEventListener('click', ()=>{
-  modal.classList.remove('hidden');
-  modal.classList.add('show');
-  modal.setAttribute('aria-hidden','false');
-});
-
-modalClose.addEventListener('click', ()=>{
-  modal.classList.remove('show');
-  setTimeout(()=> modal.classList.add('hidden'), 250);
-  modal.setAttribute('aria-hidden','true');
-});
-
-saveUser.addEventListener('click', ()=>{
-  const name = usernameInput.value.trim();
-  if(!name) return alert('Bitte Name eingeben');
-  localStorage.setItem('gc_user', name);
-  miniName.textContent = name;
-  modal.classList.remove('show');
-  setTimeout(()=> modal.classList.add('hidden'), 250);
-});
-
-logoutBtn.addEventListener('click', ()=>{
-  localStorage.removeItem('gc_user');
-  miniName.textContent = 'Gast';
-});

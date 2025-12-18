@@ -23,7 +23,7 @@
   <meta name="msapplication-TileImage" content="bilder/ms-icon-144x144.png">
   <meta name="theme-color" content="#09FFFF">
 
-  <title>🎮 Spiele – GameCircl</title>
+  <title>Spiele – GameCircl</title>
 
   <!-- Basisstyles (deine start-css) -->
   <link rel="stylesheet" href="CSS/style-start.css" />
@@ -132,6 +132,36 @@
           <button id="exportStats" class="btn">Export (JSON)</button>
           <button id="importStats" class="btn">Import (JSON)</button>
           <input id="importFile" type="file" accept="application/json" class="hidden" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME INFO MODAL (öffnet bei Klick auf ℹ️ in den Karten) -->
+  <div id="gameInfoModal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-panel modal-game-info">
+      <button class="modal-close" id="gameInfoClose">✕</button>
+
+      <div class="game-info-content">
+        <div class="game-info-hero">
+          <div class="game-info-pill" id="gameInfoPill">🎮</div>
+          <div>
+            <h3 id="gameInfoTitle">Titel</h3>
+            <div class="short" id="gameInfoShort"></div>
+          </div>
+        </div>
+
+        <hr />
+
+        <p id="gameInfoDesc"></p>
+
+        <h4 class="anleitung">Anleitung</h4>
+        <p id="gameInfoHow"></p>
+
+        <div class="tags" id="gameInfoTags"></div>
+
+        <div style="margin-top:12px;text-align:right">
+          <a id="gameInfoLink" class="btn primary" href="#">Zur Spielseite</a>
         </div>
       </div>
     </div>

@@ -191,6 +191,54 @@
         "color": "#9b59b6",
         "color2": "#8e44ad",
         "link": "spiel-weristderluegner.html"
+    },
+    {
+      "id": "moviepitch",
+      "title": "Movie Pitch",
+      "short": "Verkaufe deine Idee!",
+      "desc": "In kurzen Pitches müssen Spieler einen Filmidee überzeugend präsentieren — kreativ und lustig.",
+      "how": "Reihum pitcht jeder eine Filmidee; die Gruppe vergibt Punkte.",
+      "tags": ["Kreativ","Pitch","Film"],
+      "players": "3-8 Spieler",
+      "time": "10-30 Min",
+      "difficulty": "Einfach",
+      "icon": "🎬",
+      "rating": 4,
+      "color": "#ff9ff3",
+      "color2": "#feca57",
+      "link": "spiel-moviepitch.html"
+    },
+    {
+      "id": "chainstory",
+      "title": "Kettengeschichte",
+      "short": "Gemeinsam spinnen",
+      "desc": "Spieler bauen nacheinander eine Geschichte auf — und es wird immer absurder.",
+      "how": "Jeder fügt einen Satz hinzu; wer die Geschichte am besten weiterführt, gewinnt die Runde.",
+      "tags": ["Story","Kreativ","Party"],
+      "players": "3-12 Spieler",
+      "time": "10-20 Min",
+      "difficulty": "Einfach",
+      "icon": "🧵",
+      "rating": 4,
+      "color": "#00b894",
+      "color2": "#55efc4",
+      "link": "spiel-chainstory.html"
+    },
+    {
+      "id": "emoji-charades",
+      "title": "Emoji Charades",
+      "short": "Erkläre mit Emojis",
+      "desc": "Versuche, Begriffe mittels einer Reihe von Emojis darzustellen — die anderen müssen raten.",
+      "how": "Ein Spieler wählt ein Wort und stellt es mit 3–5 Emojis dar; die Gruppe rät.",
+      "tags": ["Raten","Emoji","Schnell"],
+      "players": "3-8 Spieler",
+      "time": "5-15 Min",
+      "difficulty": "Einfach",
+      "icon": "🧩",
+      "rating": 4,
+      "color": "#f0932b",
+      "color2": "#f6e58d",
+      "link": "spiel-emoji-charades.html"
     }
   ]
 }
