@@ -2,128 +2,231 @@
    Spiele-Seite — komplett überarbeitet
 ------------------------- */
 
-/* Controls Bar: Suche / Sort / Tag-Filter */
+/* ────────────── SPIELE-SEITE — PREMIUM DESIGN ────────────── */
+
+/* ────────────── HERO SECTION ────────────── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+  padding: 80px 0 60px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -15%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero .badge {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(0, 204, 204, 0.1));
+  color: #00cccc;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 16px;
+  animation: fadeInSmooth 0.6s ease forwards;
+}
+
+.hero .title {
+  font-size: 4rem;
+  font-weight: 900;
+  margin-bottom: 18px;
+  line-height: 1.1;
+  animation: fadeInSmooth 0.7s ease forwards 0.1s both;
+}
+
+.hero .gradient {
+  background: linear-gradient(135deg, #00ffff, #00cccc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero .subtitle {
+  font-size: 1.15rem;
+  color: var(--muted);
+  margin-bottom: 28px;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeInSmooth 0.7s ease forwards 0.2s both;
+}
+
+/* ────────────── CONTROLS BAR (Premium) ────────────── */
 #gamesControls {
   width: 100%;
-  max-width: 1100px;
-  margin: 12px auto 0;
-  padding: 0 8px;
+  margin: 40px auto 0;
+  padding: 0;
   box-sizing: border-box;
+  animation: fadeInSmooth 0.8s ease forwards 0.3s both;
 }
+
 #gamesControls .controls-top {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  margin-bottom: 16px;
 }
+
+#gamesControls input[type="search"],
+#gamesControls select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
 #gamesControls input[type="search"] {
   flex: 1;
-  min-width: 220px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
-  font-size: 0.95rem;
+  min-width: 240px;
 }
-#gamesControls select {
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
+
+#gamesControls input[type="search"]:focus,
+#gamesControls select:focus {
+  outline: none;
+  border-color: #00ffff;
+  box-shadow: 0 8px 24px rgba(0, 255, 255, 0.15);
   background: var(--surface);
-  color: var(--text);
-  font-size: 0.95rem;
 }
+
 #gamesControls .controls-bottom {
   display: flex;
   align-items: center;
-  gap: 8px;
-  justify-content: space-between;
-  margin-top: 8px;
-}
-#gamesControls .controls-bottom .controls-right { display:flex; gap:8px; align-items:center; justify-content:flex-end }
-
-/* Favoriten-Filter Button */
-.fav-filter-btn {
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  font-weight: 700;
-  transition: all 0.16s ease;
-}
-.fav-filter-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0,0,0,0.06); }
-.fav-filter-btn.active, .fav-filter-btn[aria-pressed="true"] {
-  background: linear-gradient(90deg, var(--accent), var(--accent2, var(--accent)));
-  color: #fff;
-  border-color: transparent;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
 }
 
+#gamesControls .controls-bottom .controls-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ────────────── TAG FILTER BUTTONS ────────────── */
 #gameTagFilters {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
+  justify-content: center;
 }
+
 .filter-btn {
-  font-size: 0.83rem;
-  padding: 8px 12px;
+  font-size: 0.85rem;
+  padding: 8px 14px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  transition: all 0.18s ease;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
+
 .filter-btn:hover {
-  background: rgba(6, 160, 160, 0.06);
+  background: rgba(0, 255, 255, 0.1);
+  border-color: rgba(0, 255, 255, 0.3);
+  transform: translateY(-2px);
 }
+
 .filter-btn.active {
-  background: linear-gradient(135deg,#00b8a9,#0074e4);
-  color: #fff;
+  background: linear-gradient(135deg, #00ffff, #00cccc);
+  color: #000;
   border: none;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 26px rgba(0, 184, 169, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 255, 255, 0.2);
 }
-#resetGameFilters {
-  padding: 8px 14px;
+
+/* ────────────── RESET & FAVORITES BUTTONS ────────────── */
+#resetGameFilters,
+.fav-filter-btn {
+  padding: 10px 16px;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  transition: all 0.18s;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-/* Card grid padding override for full-width look */
+#resetGameFilters:hover,
+.fav-filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 255, 255, 0.3);
+}
+
+.fav-filter-btn.active,
+.fav-filter-btn[aria-pressed="true"] {
+  background: linear-gradient(135deg, #00ffff, #00cccc);
+  color: #000;
+  border: none;
+  box-shadow: 0 8px 24px rgba(0, 255, 255, 0.25);
+}
+
+#resetGameFilters:active,
+.fav-filter-btn:active {
+  transform: translateY(0);
+}
+
+/* ────────────── GAMES CONTAINER ────────────── */
 .games {
-  padding: 0 8px;
+  padding: 0;
+  margin: 48px 0;
 }
 
-/* grid uses the same class used auf der Startseite (card-grid) */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
-  margin-top: 24px;
-  margin-bottom: 24px;
-  padding: 8px;
+  gap: 24px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  animation: fadeInSmooth 0.8s ease forwards 0.4s both;
 }
 
-/* -------------------------
-   CARD (verbessert: Look & Interactions)
-------------------------- */
+/* ────────────── CARD DESIGN (Premium) ────────────── */
 @keyframes cardPop {
-  from { opacity: 0; transform: translateY(10px) scale(.995); }
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
   to { opacity: 1; transform: none; }
 }
 
-@keyframes favPulse { 
+@keyframes favPulse {
   0% { transform: scale(1); }
-  30% { transform: scale(1.18); }
+  30% { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
 
@@ -132,207 +235,122 @@
   flex-direction: column;
   justify-content: space-between;
   background: var(--surface);
-  border-radius: 14px;
-  padding: 0;
-  min-height: 360px; /* erhöht: einheitliche Kartenhöhe */
-  border: 1px solid var(--border);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  position: relative;
+  border-radius: 16px;
   overflow: hidden;
-  outline: none;
-  animation: fadeInSmooth 0.6s ease forwards, cardPop 420ms cubic-bezier(.2,.9,.2,1) both;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  min-height: 380px;
+  animation: fadeInSmooth 0.6s ease forwards, cardPop 450ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
 }
 
-.fav-btn.pulse { animation: favPulse 380ms ease; }
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.15s; }
+.card:nth-child(3) { animation-delay: 0.2s; }
+.card:nth-child(4) { animation-delay: 0.25s; }
 
-
-/* subtle hover & focus — REVERTED TO NO CARD HOVER */
-.card:hover,
-.card:focus-within {
-  transform: none;
-  box-shadow: var(--card-shadow);
-  border-color: var(--border);
+.card:hover {
+  transform: translateY(-12px);
+  border-color: rgba(0, 255, 255, 0.4);
+  box-shadow: 0 24px 48px rgba(0, 255, 255, 0.15);
 }
 
-/* Start button hover — REMOVED as requested */
+.fav-btn.pulse { animation: favPulse 380ms ease-out; }
 
-/* Reset button hover (kept) */
-#resetGameFilters:hover {
-  background: linear-gradient(90deg,#00b8a9,#0074e4);
-  color: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(0,184,169,0.12);
-}
-
-/* Sort select hover/focus (kept) */
-#gamesControls select:hover, #gamesControls select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 8px 24px rgba(6,160,160,0.08);
-  outline: none;
-} 
-
-
-/* CARD TOP */
+/* ────────────── CARD TOP (Colored Header) ────────────── */
 .card-top-bg {
-  border-radius: 14px 14px 0 0;
-  padding: 18px 16px;
+  position: relative;
+  padding: 24px 20px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
-  gap: 8px;
-  /* allow custom accents via CSS vars */
+  gap: 12px;
 }
 
-.card-top-bg .pill {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 800;
-  font-size: 22px;
-  flex-shrink: 0;
-  transition: transform .18s ease;
-}
-.card:hover .pill { transform: translateY(-6px) scale(1.02); }
-
-.card-line { height: 1px; background: rgba(0,0,0,0.04); margin: 8px 0; position: relative; z-index:1; }
-
-.card-body { padding: 12px 16px 14px 16px; flex: 1; color: var(--muted); font-size: 14px; line-height:1.45; }
-
-/* tags styling kept */
-.tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px }
-
-/* CARD FOOTER & ACTIONS */
-.card-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; padding: 10px 16px 16px 16px; }
-.meta { color: var(--muted); font-size: 13px; display:flex; gap:10px; align-items:center }
-
-.card-actions { display:flex; gap:10px; align-items:center; margin-top: 18px; }
-.card-start { padding: 10px 14px; border-radius: 10px; font-weight: 700; color: white; border: 0; cursor:pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.12); transition: transform .12s ease, opacity .12s ease }
-.card-start:active { transform: translateY(1px); }
-.card-start:focus { outline: 3px solid rgba(6,160,160,0.16); }
-
-/* Favorite button */
-.fav-btn { border: 0; background: transparent; padding:8px; border-radius:8px; cursor:pointer; font-size:18px; transition: transform .12s ease, color .12s ease; color: var(--muted) }
-.fav-btn:hover { transform: scale(1.05); }
-.fav-btn.active { color: #ffd166; transform: scale(1.12); }
-.fav-btn:focus { outline: 3px solid rgba(255,209,102,0.15); }
-
-/* Info button */
-.card-info-btn { background: transparent; border: none; cursor: pointer; font-size: 18px; padding: 6px; border-radius: 8px; }
-.card-info-btn:hover { background: rgba(0,0,0,0.03); }
-
-/* small responsive tweaks */
-@media (max-width:720px){ .card { min-height: 260px; } .card-footer { flex-direction: column; align-items:flex-start } }
-
-
-/* -------------------------
-   CARD TOP — farbiger Bereich + Titel + Info
-------------------------- */
-.card-top-bg {
-  border-radius: 14px 14px 0 0;
-  padding: 20px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
-
-/* Oberer farbiger Bereich (Hintergrund) */
-.card-top-color {
+.card-top-bg::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 80px; /* feste Höhe für farbige Box */
+  right: 0;
+  height: 100%;
+  background: linear-gradient(135deg, var(--accent1, #00ffff), var(--accent2, #00cccc));
+  opacity: 0.12;
   z-index: 0;
-  border-radius: 14px 14px 0 0;
-  background: linear-gradient(90deg,var(--accent),var(--accent2)); /* dynamisch per JS */
 }
 
-/* Titel und Icon */
 .card-title-wrapper {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   position: relative;
   z-index: 1;
+  flex: 1;
 }
 
 .pill {
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  font-size: 28px;
+  background: linear-gradient(135deg, var(--accent1, #00ffff), var(--accent2, #00cccc));
+  color: white;
   font-weight: 800;
-  font-size: 20px;
   flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transition: all 0.25s ease;
+}
+
+.card:hover .pill {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
 .card h3 {
-  margin: 0;
-  font-size: 20px;
-  letter-spacing: -0.2px;
+  margin: 0 0 6px 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
 }
 
 .card .short {
-  margin-top: 6px;
-  font-size: 14px;
+  margin: 0;
+  font-size: 13px;
   color: var(--muted);
+  font-weight: 500;
 }
 
-/* -------------------------
-   Trennlinie
-------------------------- */
+/* ────────────── CARD DIVIDER ────────────── */
 .card-line {
   height: 1px;
-  background: rgba(0,0,0,0.08);
-  margin: 8px 0;
+  background: linear-gradient(90deg, rgba(0, 255, 255, 0.3), transparent);
+  margin: 12px 0;
   position: relative;
   z-index: 1;
 }
 
-/* -------------------------
-   Info-Button
-------------------------- */
-.card-info-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-  padding: 4px;
-  border-radius: 6px;
-  transition: background 0.15s ease;
-  position: relative;
-  z-index: 1;
-}
-.card-info-btn:hover {
-  background: rgba(0,0,0,0.05);
-}
-
-/* -------------------------
-   BODY
-------------------------- */
+/* ────────────── CARD BODY ────────────── */
 .card-body {
-  padding: 0 16px 16px 16px;
+  padding: 0 20px 16px 20px;
   flex: 1;
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.6;
   position: relative;
   z-index: 1;
 }
 
-/* -------------------------
-   TAGS
-------------------------- */
+.card-body p {
+  margin: 0 0 12px 0;
+}
+
+/* ────────────── TAGS ────────────── */
 .tags {
   display: flex;
   gap: 8px;
@@ -341,23 +359,27 @@
 }
 
 .tag-pill {
-  padding: 6px 10px;
+  padding: 6px 11px;
   border-radius: 999px;
   font-size: 12px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.09), rgba(255,255,255,0.09));
-  color: var(--muted);
+  font-weight: 500;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(0, 204, 204, 0.1));
+  color: var(--text);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  transition: all 0.2s ease;
 }
 
-/* -------------------------
-   CARD FOOTER
-------------------------- */
+.tag-pill:hover {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.25), rgba(0, 204, 204, 0.15));
+  border-color: rgba(0, 255, 255, 0.4);
+}
+
+/* ────────────── CARD FOOTER & ACTIONS ────────────── */
 .card-footer {
-  margin-top: 14px;
-  display: block;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 0 16px 16px 16px;
+  padding: 16px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   position: relative;
   z-index: 1;
 }
@@ -366,93 +388,308 @@
   color: var(--muted);
   font-size: 13px;
   display: flex;
-  gap: 10px;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-weight: 500;
+}
+
+.card-actions {
+  display: flex;
   align-items: center;
+  gap: 10px;
+  margin-top: 8px;
 }
 
 .card-start {
-  padding: 10px 14px;
+  flex: 1;
+  padding: 11px 16px;
   border-radius: 10px;
   font-weight: 700;
-  color: black;
-  border: 0;
+  font-size: 14px;
+  color: white;
+  border: none;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-  transition: transform .12s ease;
-}
-.card-start:active { transform: translateY(1px); }
-
-/* -------------------------
-   CARD RATING
-------------------------- */
-.card-rating { 
-  color: #f6c84c; 
-  font-weight: 700; 
+  background: linear-gradient(135deg, var(--accent1, #00ffff), var(--accent2, #00cccc));
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease;
 }
 
-/* -------------------------
-   Lightmode Card absetzen
-------------------------- */
-:root[data-theme="light"] .card {
-  background: #fff;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+.card-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
-/* -------------------------
-   Responsive
-------------------------- */
-@media (max-width:900px){
-  .card { min-height: 320px; }
+.card-start:active {
+  transform: translateY(0);
 }
 
-@media (max-width:720px){
-  .card { min-height:260px; }
-  .card-grid { gap:12px; padding:6px; }
+/* ────────────── FAVORITE BUTTON ────────────── */
+.fav-btn {
+  border: 0;
+  background: transparent;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s ease;
+  color: var(--muted);
+  flex-shrink: 0;
 }
 
-/* -------------------------
-   Sonstiges / Fallbacks
-------------------------- */
-.pill.fallback { 
-  background: linear-gradient(90deg,var(--accent),var(--accent2)); 
+.fav-btn:hover {
+  transform: scale(1.1);
+  color: #ffb800;
 }
 
-/* -------------------------
-   GAME INFO MODAL
-------------------------- */
-.modal-game-info { max-width: 760px; width: 94%; padding: 18px; box-sizing: border-box; }
-.modal-game-info .game-info-content { color: var(--muted); }
-
-.game-info-hero { 
-  display:flex; 
-  gap: 12px; 
-  align-items:center; 
-  margin-bottom: 14px;
+.fav-btn.active {
+  color: #ffd166;
+  transform: scale(1.15);
 }
 
-.game-info-pill { 
-  width:64px; 
-  height:64px; 
-  border-radius: 12px; 
-  display:flex; 
-  align-items:center; 
-  justify-content:center; 
-  font-size:28px; 
-  color:#fff; 
-  background: linear-gradient(90deg,var(--accent),var(--accent2)); 
-  margin-right: 5px;
+/* ────────────── INFO BUTTON ────────────── */
+.card-info-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 6px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
 
-.modal.show .modal-panel, .modal-game-info.show { transform: translateY(0); opacity: 1; }
-@media (max-width:720px){ .modal-game-info { width: 96%; padding: 12px; } .game-info-pill { width:54px; height:54px; } }
-
-#gameInfoDesc{
-  margin-top: 14px;
-  margin-bottom: 14px;
-  line-height: 1.6;
+.card-info-btn:hover {
+  background: rgba(0, 255, 255, 0.1);
+  transform: scale(1.05);
 }
 
-#gameInfoLink { 
-  text-decoration:none; 
-  color:white; 
+/* ────────────── EMPTY STATE ────────────── */
+#gamesEmpty {
+  text-align: center;
+  color: var(--muted);
+  padding: 80px 20px;
+  font-size: 18px;
+  animation: fadeInSmooth 0.6s ease forwards;
+}
+
+/* ────────────── GAME INFO MODAL (Premium) ────────────── */
+.modal-game-info {
+  max-width: 760px;
+  width: 94%;
+  padding: 28px;
+  box-sizing: border-box;
+}
+
+.modal-game-info .game-info-content {
+  color: var(--text);
+}
+
+.game-info-hero {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.game-info-pill {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: white;
+  background: linear-gradient(135deg, var(--accent1, #00ffff), var(--accent2, #00cccc));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.modal-game-info h3 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0 0 6px 0;
+}
+
+.modal-game-info .short {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.modal-game-info h4 {
+  font-size: 1.1rem;
+  margin: 20px 0 12px 0;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.modal-game-info p {
+  line-height: 1.7;
+  color: var(--text);
+}
+
+#gameInfoDesc {
+  margin-bottom: 16px;
+}
+
+#gameInfoHow {
+  color: var(--muted);
+  background: rgba(0, 255, 255, 0.05);
+  padding: 14px 16px;
+  border-radius: 10px;
+  border-left: 3px solid #00ffff;
+}
+
+.modal-game-info .tags {
+  margin-top: 16px;
+}
+
+#gameInfoLink {
+  text-decoration: none;
+  color: white;
+}
+
+.modal.show .modal-panel,
+.modal-game-info.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ────────────── DARK MODE ────────────── */
+[data-theme="dark"] .card {
+  background: #121212;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] #gamesControls input[type="search"],
+[data-theme="dark"] #gamesControls select {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ────────────── RESPONSIVE ────────────── */
+@media (max-width: 1200px) {
+  .hero {
+    padding: 60px 0 40px;
+  }
+
+  .hero .title {
+    font-size: 3.2rem;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 0 30px;
+  }
+
+  .hero .title {
+    font-size: 2.4rem;
+  }
+
+  .hero .subtitle {
+    font-size: 1rem;
+  }
+
+  #gamesControls .controls-top {
+    flex-direction: column;
+  }
+
+  #gamesControls input[type="search"],
+  #gamesControls select {
+    width: 100%;
+  }
+
+  #gamesControls .controls-bottom {
+    flex-direction: column;
+  }
+
+  #gamesControls .controls-bottom .controls-right {
+    width: 100%;
+  }
+
+  #gameTagFilters {
+    width: 100%;
+  }
+
+  #resetGameFilters,
+  .fav-filter-btn {
+    width: 100%;
+  }
+
+  .card {
+    min-height: 340px;
+  }
+
+  .card-grid {
+    gap: 16px;
+    grid-template-columns: 1fr;
+  }
+
+  .modal-game-info {
+    width: 96%;
+    padding: 20px;
+  }
+
+  .game-info-pill {
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 30px 0 20px;
+  }
+
+  .hero .title {
+    font-size: 1.8rem;
+  }
+
+  .hero .badge {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  #gamesControls {
+    margin-top: 24px;
+  }
+
+  #gamesControls input[type="search"] {
+    min-width: 100%;
+  }
+
+  .card {
+    min-height: 320px;
+  }
+
+  .pill {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+  }
+
+  .card h3 {
+    font-size: 1.1rem;
+  }
+
+  .card-footer {
+    padding: 12px 16px 16px 16px;
+  }
+
+  .card-actions {
+    flex-direction: column;
+  }
+
+  .card-start {
+    width: 100%;
+  }
 }
