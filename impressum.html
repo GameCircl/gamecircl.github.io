@@ -24,10 +24,8 @@
 
   <title>Impressum & Datenschutz — GameCircl</title>
   <link rel="stylesheet" href="CSS/style-start.css" />
-  <link rel="stylesheet" href="CSS/style-impressum.css" />      
-    
-  <!----======== Boxicons CSS ======== -->
-    <link href='https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="CSS/style-impressum.css" />
+  <link href='https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -37,7 +35,7 @@
     <button id="sidebarToggle" class="floating-hamburger" aria-label="Menü öffnen">☰</button>
     
     <!-- SIDEBAR -->
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar">
       <div class="logo-row">
         <div class="logo">
           <div class="logo-mark">GC</div>
@@ -80,58 +78,238 @@
     <main class="main">
       <section id="page-impressum" class="page">
         <header class="hero">
-          <p class="badge">Rechtliches & Datenschutz</p>
+          <p class="badge">📜 Rechtliches & Datenschutz</p>
           <h1 class="title"><span class="gradient">Impressum & Datenschutz</span></h1>
           <p class="subtitle">Transparenz und Sicherheit sind uns wichtig. Hier findest du alle relevanten Angaben zu GameCircl.</p>
         </header>
 
-        <div class="legal-wrapper">
-        <section class="legal-section fade-in">
-          <h2>📜 Impressum</h2>
-          <p><strong>Angaben gemäß § 5 TMG</strong></p>
-          <p><em><u>Kontakt</u></em><br>
-          Pixelstorm Interactive Development Group<br>
-          Leitender Entwickler: Julian Kaiser<br>
-          Novalisstraße 2<br>
-          06295 Lutherstadt Eisleben<br>
-          Sachsen-Anhalt, Deutschland<br>
-          Telefon: 0151 28 93 82 40<br>
-          E-Mail: pixelstorm-interactive.development@outlook.com</p>
-
-          <p><strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</strong><br>
-          Julian Kaiser, Pixelstorm Interactive</p>
-
-          <p class="muted small">Alle Angaben ohne Gewähr. Dieses Projekt dient nicht-kommerziellen Zwecken.</p>
-        </section>
-
-        <section class="legal-section fade-in">
-          <h2>🔒 Datenschutz</h2>
-          <p>GameCircl speichert keine personenbezogenen Daten auf externen Servern. 
-          Sämtliche Spielstände, Statistiken und Namen verbleiben ausschließlich lokal im Browser des Nutzers.</p>
-
-          <p><strong>Verwendung von Cookies:</strong><br>
-          Diese Webseite nutzt ausschließlich funktionale Cookies, um den Dark-/Light-Mode und lokale Statistiken zu speichern. 
-          Keine Tracking- oder Marketing-Cookies werden verwendet.</p>
-
-          <p><strong>Datenübertragung:</strong><br>
-          Beim Besuch dieser Website werden keine personenbezogenen Daten an Dritte übermittelt. 
-          Eine verschlüsselte Verbindung (HTTPS) sorgt für Sicherheit.</p>
-
-          <p><strong>Kontaktmöglichkeit:</strong><br>
-          Bei Fragen oder Hinweisen zum Datenschutz schreib uns gern per E-Mail an:<br>
-          <a href="mailto:pixelstorm-interactive.development@outlook.com">pixelstorm-interactive.development@outlook.com</a></p>
-        </section>
+        <!-- Quick Navigation -->
+        <div class="legal-nav fade-in">
+          <a href="#impressum" class="legal-nav-btn">Impressum</a>
+          <a href="#datenschutz" class="legal-nav-btn">Datenschutz</a>
+          <a href="#kontakt" class="legal-nav-btn">Kontakt</a>
+          <a href="#rechtliches" class="legal-nav-btn">Rechtliches</a>
         </div>
+
+        <!-- IMPRESSUM SECTION -->
+        <section id="impressum" class="legal-section fade-in">
+          <div class="section-header">
+            <h2>📋 Impressum</h2>
+            <p class="section-subtitle">Angaben gemäß § 5 TMG (Telemediengesetz)</p>
+          </div>
+
+          <div class="legal-content">
+            <div class="info-card">
+              <h3>🏢 Anbieter</h3>
+              <div class="info-item">
+                <strong>Pixelstorm Interactive Development Group</strong><br>
+                <span class="sub-text">Leitender Entwickler:</span><br>
+                <strong>Julian Kaiser</strong>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h3>📍 Adresse</h3>
+              <div class="info-item">
+                Novalisstraße 2<br>
+                06295 Lutherstadt Eisleben<br>
+                Sachsen-Anhalt, Deutschland
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h3>📞 Kontaktdaten</h3>
+              <div class="info-item copy-item">
+                <strong>Telefon:</strong><br>
+                <span class="copy-text">0151 28 93 82 40</span>
+                <button class="copy-btn" title="In Zwischenablage kopieren">📋</button>
+              </div>
+              <div class="info-item copy-item">
+                <strong>E-Mail:</strong><br>
+                <span class="copy-text">pixelstorm-interactive.development@outlook.com</span>
+                <button class="copy-btn" title="In Zwischenablage kopieren">📋</button>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h3>⚖️ Verantwortung</h3>
+              <div class="info-item">
+                <strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</strong><br>
+                Julian Kaiser, Pixelstorm Interactive Development Group
+              </div>
+            </div>
+          </div>
+
+          <div class="legal-notice">
+            <strong>ℹ️ Hinweis:</strong> Dieses Projekt dient nicht-kommerziellen, privaten Zwecken und wird in der Freizeit entwickelt.
+          </div>
+        </section>
+
+        <!-- DATENSCHUTZ SECTION -->
+        <section id="datenschutz" class="legal-section fade-in">
+          <div class="section-header">
+            <h2>🔒 Datenschutz</h2>
+            <p class="section-subtitle">Wie wir mit deinen Daten umgehen</p>
+          </div>
+
+          <div class="legal-content">
+            <div class="info-card">
+              <h3>💾 Datenspeicherung</h3>
+              <p>GameCircl speichert <strong>keine personenbezogenen Daten auf externen Servern</strong>. Sämtliche Spielstände, Statistiken und Benutzernamen verbleiben ausschließlich lokal im Browser deines Geräts.</p>
+              <div class="highlight-box">
+                ✅ <strong>100% lokal gespeichert</strong> — Nur auf deinem Gerät
+              </div>
+            </div>
+
+            <div class="info-card">
+              <h3>🍪 Cookies & Speicher</h3>
+              <p>Diese Webseite nutzt ausschließlich <strong>funktionale Cookies und LocalStorage</strong>, um folgende Daten lokal zu speichern:</p>
+              <ul class="feature-list">
+                <li>🌙 Dein Theme-Modus (Auto / Hell / Dunkel)</li>
+                <li>📊 Deine Spielstatistiken & Favoriten</li>
+                <li>👤 Dein Spieler-Profil (lokal)</li>
+              </ul>
+              <p class="sub-text">❌ <strong>Keine Tracking- oder Marketing-Cookies</strong></p>
+            </div>
+
+            <div class="info-card">
+              <h3>🛡️ Sicherheit & Verschlüsselung</h3>
+              <p>Diese Website verwendet:</p>
+              <ul class="feature-list">
+                <li>🔐 <strong>HTTPS-Verschlüsselung</strong> für sichere Datenübertragung</li>
+                <li>🚫 <strong>Keine externen Datenserver</strong></li>
+                <li>📱 <strong>Browser-basierte Speicherung</strong> mit LocalStorage API</li>
+              </ul>
+            </div>
+
+            <div class="info-card">
+              <h3>📤 Datenübertragung an Dritte</h3>
+              <p><strong>Beim Besuch dieser Website werden keine personenbezogenen Daten an Dritte übermittelt.</strong></p>
+              <p class="sub-text">Es werden auch keine Cookies an Tracker, Analytics-Services oder Werbenetze gesendet.</p>
+            </div>
+
+            <div class="info-card">
+              <h3>🗑️ Daten löschen</h3>
+              <p>Du kannst deine lokal gespeicherten Daten jederzeit löschen:</p>
+              <ul class="feature-list">
+                <li>Öffne die <strong>Developer Tools</strong> (F12)</li>
+                <li>Gehe zu <strong>Application → Local Storage</strong></li>
+                <li>Lösche den Eintrag für diese Domain</li>
+                <li>Oder: Leere deinen Browser-Cache</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="legal-notice warning">
+            <strong>⚠️ Wichtig:</strong> Beim Löschen von Cookies und LocalStorage gehen deine lokalen Spielstatistiken und Einstellungen verloren!
+          </div>
+        </section>
+
+        <!-- KONTAKT SECTION -->
+        <section id="kontakt" class="legal-section fade-in">
+          <div class="section-header">
+            <h2>💬 Kontakt & Support</h2>
+            <p class="section-subtitle">Fragen oder Feedback?</p>
+          </div>
+
+          <div class="legal-content">
+            <div class="info-card">
+              <h3>📧 E-Mail</h3>
+              <p>Bei Fragen zum Datenschutz, Bugs, oder Verbesserungsvorschlägen:</p>
+              <a href="mailto:pixelstorm-interactive.development@outlook.com" class="contact-link">
+                ✉️ pixelstorm-interactive.development@outlook.com
+              </a>
+            </div>
+
+            <div class="info-card">
+              <h3>☎️ Telefon</h3>
+              <p>Schnelle Fragen? Ruf uns an:</p>
+              <a href="tel:+491512893824" class="contact-link">
+                📞 +49 151 28 93 82 40
+              </a>
+            </div>
+
+            <div class="info-card">
+              <h3>⏱️ Antwortzeit</h3>
+              <p>Wir versuchen, auf Anfragen innerhalb von <strong>2-3 Werktagen</strong> zu antworten. Da dies ein Hobby-Projekt ist, kann es manchmal etwas dauern. 😊</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- RECHTLICHES SECTION -->
+        <section id="rechtliches" class="legal-section fade-in">
+          <div class="section-header">
+            <h2>⚖️ Rechtliches & Haftungsausschluss</h2>
+            <p class="section-subtitle">Wichtige rechtliche Hinweise</p>
+          </div>
+
+          <div class="legal-content">
+            <div class="info-card">
+              <h3>📝 Haftung für Inhalte</h3>
+              <p>Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte dieser Website. Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten verantwortlich.</p>
+              <p class="sub-text">Solltest du einen Fehler oder unangemessenen Inhalt finden, kontaktiere uns gerne.</p>
+            </div>
+
+            <div class="info-card">
+              <h3>🔗 Haftung für Links</h3>
+              <p>GameCircl enthält Links zu externen Websites. Wir sind nicht verantwortlich für:</p>
+              <ul class="feature-list">
+                <li>Den Inhalt verlinkter Webseiten</li>
+                <li>Änderungen auf verlinkten Seiten</li>
+                <li>Datenschutzverstöße oder illegale Inhalte auf fremden Seiten</li>
+              </ul>
+              <p class="sub-text">Die Verantwortung liegt bei den Betreibern der verlinkten Seiten.</p>
+            </div>
+
+            <div class="info-card">
+              <h3>📜 Urheberrecht & Lizenzen</h3>
+              <p>Alle Inhalte dieser Website (Text, Bilder, Code) unterliegen den deutschen Urheberrechtsgesetzen.</p>
+              <ul class="feature-list">
+                <li>🎨 Design & Code: © Pixelstorm Interactive</li>
+                <li>📝 Inhalte: © Pixelstorm Interactive</li>
+                <li>🔤 Icons: Boxicons (kostenlos nutzbar)</li>
+              </ul>
+            </div>
+
+            <div class="info-card">
+              <h3>🎮 Spielregeln & Inhalte</h3>
+              <p>Alle Spielregeln und Inhalte auf GameCircl sind für den <strong>privaten, nicht-kommerziellen Gebrauch</strong> bestimmt.</p>
+              <p class="sub-text">Die Nutzung für kommerzielle Zwecke ist ohne schriftliche Genehmigung nicht gestattet.</p>
+            </div>
+
+            <div class="info-card">
+              <h3>⚠️ Änderungsvorbehalt</h3>
+              <p>Wir behalten uns das Recht vor, diese Website und ihre Inhalte jederzeit ohne Ankündigung zu ändern, zu ergänzen oder zu löschen.</p>
+            </div>
+          </div>
+
+          <div class="legal-notice">
+            <strong>✓ Stand:</strong> Januar <span id="year"></span>
+          </div>
+        </section>
+
       </section>
 
-        <footer class="footer">
-          <small>© <span id="year"></span> Pixelstorm Interactive Development Group — made with ❤️</small>
-        </footer>
+      <footer class="footer">
+        <small>© <span id="year"></span> Pixelstorm Interactive Development Group — made with ❤️ | <a href="impressum.html">Impressum</a> • <a href="impressum.html#datenschutz">Datenschutz</a></small>
+      </footer>
     </main>
+  </div>
+
+  <!-- LOGIN / STATISTICS MODAL (wie auf anderen Seiten) -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h3 id="modalTitle">Login & Statistiken</h3>
+      <br>
+      <div id="loginArea"></div>
+      <hr />
+      <br>
+      <div id="statsArea"></div>
+    </div>
   </div>
 
   <script src="JS/script-impressum.js"></script>
   <script src="JS/script-start.js"></script>
 </body>
-
 </html>

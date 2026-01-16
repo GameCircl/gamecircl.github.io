@@ -243,9 +243,5 @@ startBtn?.addEventListener('click', ()=>{
 });
 
 learnMore?.addEventListener('click', ()=>{
-  window.location.href = "über.html";
-});
-
-homeBtn?.addEventListener('click', ()=>{
-  window.location.href = "index.html";
+  window.location.href = "ueber.html";
 });
