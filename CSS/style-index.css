@@ -194,6 +194,15 @@
   margin-top: 48px;
 }
 
+/* ────────────── FEATURED GAMES CARD GRID ────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
 /* ────────────── WHY SECTION ────────────── */
 .why-section {
   margin: 120px 0 80px;
@@ -302,6 +311,10 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 8px;
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .stat-label {
@@ -359,6 +372,21 @@
   border: 1px solid rgba(0, 255, 255, 0.1);
   border-radius: 12px;
   overflow: hidden;
+  transition: all 0.25s ease;
+  animation: slideInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+.faq-item:nth-child(1) { animation-delay: 0.1s; }
+.faq-item:nth-child(2) { animation-delay: 0.15s; }
+.faq-item:nth-child(3) { animation-delay: 0.2s; }
+.faq-item:nth-child(4) { animation-delay: 0.25s; }
+.faq-item:nth-child(5) { animation-delay: 0.3s; }
+.faq-item:nth-child(6) { animation-delay: 0.35s; }
+
+.faq-item:hover {
+  border-color: rgba(0, 255, 255, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 255, 255, 0.1);
 }
 
 .faq-toggle {
@@ -374,10 +402,37 @@
   font-weight: 600;
   color: var(--text);
   transition: all 0.3s ease;
+  position: relative;
 }
 
-.faq-toggle:hover {
-  background: rgba(0, 255, 255, 0.05);
+.faq-toggle::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00ffff, #00cccc);
+  transition: width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.faq-toggle.active::before {
+  width: 100%;
+}
+
+.faq-toggle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #00ffff, transparent);
+  transition: width 0.3s ease;
+}
+
+.faq-toggle.active::after {
+  width: 100%;
 }
 
 .faq-question {
@@ -412,26 +467,32 @@
   line-height: 1.6;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  transition: max-height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.4s ease,
+              padding 0.4s ease;
+  opacity: 0;
+}
+
+.faq-answer.visible {
+  max-height: 500px;
+  opacity: 1;
+  padding-bottom: 24px;
 }
 
 .faq-answer p {
   margin: 0;
+  color: var(--text);
 }
 
 .faq-answer a {
   color: #00ffff;
-  text-decoration: none;
   font-weight: 600;
+  text-decoration: none;
 }
 
 .faq-answer a:hover {
   text-decoration: underline;
-}
-
-.faq-answer.visible {
-  max-height: 300px;
-  padding-bottom: 24px;
+  text-decoration-color: #00ffff;
 }
 
 /* ────────────── FADE-IN ANIMATION ────────────── */
@@ -473,10 +534,26 @@
   min-height: 340px;
 }
 
-.featured-card:nth-child(1) { animation-delay: 0.1s; }
-.featured-card:nth-child(2) { animation-delay: 0.2s; }
-.featured-card:nth-child(3) { animation-delay: 0.3s; }
-.featured-card:nth-child(4) { animation-delay: 0.4s; }
+.featured-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--card-color-1, #00ffff), var(--card-color-2, #00cccc));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.featured-card:hover::after {
+  opacity: 0.08;
+}
+
+.featured-card:nth-child(1) { animation-delay: 0.1s !important; }
+.featured-card:nth-child(2) { animation-delay: 0.2s !important; }
+.featured-card:nth-child(3) { animation-delay: 0.3s !important; }
+.featured-card:nth-child(4) { animation-delay: 0.4s !important; }
 
 .featured-card:hover {
   transform: translateY(-12px);
@@ -608,6 +685,23 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-card-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.4s ease;
+}
+
+.featured-card-btn:hover::before {
+  left: 100%;
 }
 
 .featured-card-btn:hover {
@@ -767,4 +861,128 @@
     width: 100%;
     text-align: center;
   }
+}
+
+/* ────────────── RESPONSIVE GRID ────────────── */
+@media (max-width: 1400px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+}
+
+@media (max-width: 640px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ────────────── ENHANCED ANIMATIONS ────────────── */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.featured-card {
+  animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+}
+
+.featured-card:nth-child(1) { animation-delay: 0.1s !important; }
+.featured-card:nth-child(2) { animation-delay: 0.2s !important; }
+.featured-card:nth-child(3) { animation-delay: 0.3s !important; }
+.featured-card:nth-child(4) { animation-delay: 0.4s !important; }
+
+.section-header {
+  animation: slideInDown 0.6s ease forwards;
+}
+
+.section-header h2 {
+  animation: slideInDown 0.7s ease forwards 0.1s both;
+}
+
+.section-header p {
+  animation: slideInDown 0.7s ease forwards 0.2s both;
+}
+
+/* ────────────── FAQ IMPROVEMENTS ────────────── */
+.faq-item {
+  animation: slideInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+.faq-item:nth-child(1) { animation-delay: 0.1s; }
+.faq-item:nth-child(2) { animation-delay: 0.15s; }
+.faq-item:nth-child(3) { animation-delay: 0.2s; }
+.faq-item:nth-child(4) { animation-delay: 0.25s; }
+.faq-item:nth-child(5) { animation-delay: 0.3s; }
+.faq-item:nth-child(6) { animation-delay: 0.35s; }
+
+.faq-toggle {
+  position: relative;
+}
+
+.faq-toggle::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00ffff, #00cccc);
+  transition: width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.faq-toggle.active::before {
+  width: 100%;
+}
+
+.faq-answer {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.4s ease,
+              padding 0.4s ease;
+}
+
+.faq-answer.visible {
+  max-height: 500px;
+  opacity: 1;
+  padding-bottom: 24px;
 }

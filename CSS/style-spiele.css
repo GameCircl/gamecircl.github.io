@@ -1,19 +1,18 @@
-/* -------------------------
-   Spiele-Seite — komplett überarbeitet
-------------------------- */
-
-/* ────────────── SPIELE-SEITE — PREMIUM DESIGN ────────────── */
+/* ────────────────────────────────────────
+   SPIELE-SEITE — KOMPLETT ÜBERARBEITET
+──────────────────────────────────────── */
 
 /* ────────────── HERO SECTION ────────────── */
 .hero {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
+  gap: 24px;
   align-items: center;
-  padding: 80px 0 60px;
+  padding: 60px 0 40px;
   position: relative;
   overflow: hidden;
   text-align: center;
+  animation: slideInDown 0.6s ease;
 }
 
 .hero::before {
@@ -23,7 +22,7 @@
   right: -15%;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent);
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.08), transparent);
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
@@ -44,15 +43,15 @@
   font-weight: 600;
   font-size: 13px;
   margin-bottom: 16px;
-  animation: fadeInSmooth 0.6s ease forwards;
+  animation: slideInDown 0.6s ease 0.1s both;
 }
 
 .hero .title {
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: 900;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
   line-height: 1.1;
-  animation: fadeInSmooth 0.7s ease forwards 0.1s both;
+  animation: slideInDown 0.6s ease 0.2s both;
 }
 
 .hero .gradient {
@@ -63,100 +62,106 @@
 }
 
 .hero .subtitle {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   color: var(--muted);
-  margin-bottom: 28px;
+  margin: 0 auto;
   line-height: 1.6;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  animation: fadeInSmooth 0.7s ease forwards 0.2s both;
+  max-width: 650px;
+  animation: slideInDown 0.6s ease 0.3s both;
+}
+
+/* ────────────── GAMES SECTION ────────────── */
+.games {
+  padding: 0;
+  margin: 40px 0 80px 0;
 }
 
 /* ────────────── CONTROLS BAR (Premium) ────────────── */
 #gamesControls {
   width: 100%;
-  margin: 40px auto 0;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
-  animation: fadeInSmooth 0.8s ease forwards 0.3s both;
+  animation: slideInUp 0.6s ease 0.4s both;
 }
 
-#gamesControls .controls-top {
+.controls-bar {
+  background: var(--surface);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 28px;
+}
+
+.controls-top {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  justify-content: center;
   margin-bottom: 16px;
+  align-items: stretch;
 }
 
-#gamesControls input[type="search"],
-#gamesControls select {
+.controls-top input[type="search"],
+.controls-top select {
   padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: transparent;
   color: var(--text);
   font-size: 0.95rem;
   font-weight: 500;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-#gamesControls input[type="search"] {
+.controls-top input[type="search"] {
   flex: 1;
-  min-width: 240px;
+  min-width: 200px;
 }
 
-#gamesControls input[type="search"]:focus,
-#gamesControls select:focus {
+.controls-top select {
+  min-width: 160px;
+}
+
+.controls-top input[type="search"]:focus,
+.controls-top select:focus {
   outline: none;
   border-color: #00ffff;
-  box-shadow: 0 8px 24px rgba(0, 255, 255, 0.15);
-  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.1);
 }
 
-#gamesControls .controls-bottom {
+.controls-bottom {
   display: flex;
   align-items: center;
   gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-
-#gamesControls .controls-bottom .controls-right {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
   flex-wrap: wrap;
 }
 
-/* ────────────── TAG FILTER BUTTONS ────────────── */
 #gameTagFilters {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
-  justify-content: center;
+  flex: 1;
+  min-width: 180px;
 }
 
 .filter-btn {
   font-size: 0.85rem;
   padding: 8px 14px;
   border-radius: 999px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(0, 255, 255, 0.2);
   background: transparent;
-  color: var(--muted);
+  color: var(--text);
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .filter-btn:hover {
-  background: rgba(0, 255, 255, 0.1);
-  border-color: rgba(0, 255, 255, 0.3);
+  background: rgba(0, 255, 255, 0.08);
+  border-color: rgba(0, 255, 255, 0.4);
   transform: translateY(-2px);
 }
 
@@ -164,30 +169,36 @@
   background: linear-gradient(135deg, #00ffff, #00cccc);
   color: #000;
   border: none;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 255, 255, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 255, 255, 0.25);
 }
 
-/* ────────────── RESET & FAVORITES BUTTONS ────────────── */
+.controls-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 #resetGameFilters,
 .fav-filter-btn {
   padding: 10px 16px;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: transparent;
-  color: var(--muted);
+  color: var(--text);
   cursor: pointer;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  white-space: nowrap;
 }
 
 #resetGameFilters:hover,
 .fav-filter-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   border-color: rgba(0, 255, 255, 0.3);
+  background: rgba(0, 255, 255, 0.06);
 }
 
 .fav-filter-btn.active,
@@ -195,78 +206,79 @@
   background: linear-gradient(135deg, #00ffff, #00cccc);
   color: #000;
   border: none;
-  box-shadow: 0 8px 24px rgba(0, 255, 255, 0.25);
+  box-shadow: 0 6px 20px rgba(0, 255, 255, 0.25);
 }
 
-#resetGameFilters:active,
-.fav-filter-btn:active {
-  transform: translateY(0);
-}
-
-/* ────────────── GAMES CONTAINER ────────────── */
-.games {
-  padding: 0;
-  margin: 48px 0;
-}
-
+/* ────────────── CARD GRID ────────────── */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
-  margin-top: 32px;
-  margin-bottom: 32px;
-  animation: fadeInSmooth 0.8s ease forwards 0.4s both;
+  margin-top: 0;
+  margin-bottom: 0;
+  animation: fadeInSmooth 0.8s ease 0.5s both;
 }
 
 /* ────────────── CARD DESIGN (Premium) ────────────── */
-@keyframes cardPop {
-  from { opacity: 0; transform: translateY(10px) scale(0.98); }
-  to { opacity: 1; transform: none; }
-}
-
-@keyframes favPulse {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+@keyframes cardSlide {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   background: var(--surface);
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--border);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
-  min-height: 380px;
-  animation: fadeInSmooth 0.6s ease forwards, cardPop 450ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+  min-height: 420px;
+  animation: cardSlide 0.5s ease forwards;
 }
 
 .card:nth-child(1) { animation-delay: 0.1s; }
 .card:nth-child(2) { animation-delay: 0.15s; }
 .card:nth-child(3) { animation-delay: 0.2s; }
 .card:nth-child(4) { animation-delay: 0.25s; }
+.card:nth-child(5) { animation-delay: 0.3s; }
+.card:nth-child(6) { animation-delay: 0.35s; }
 
 .card:hover {
-  transform: translateY(-12px);
-  border-color: rgba(0, 255, 255, 0.4);
-  box-shadow: 0 24px 48px rgba(0, 255, 255, 0.15);
+  transform: translateY(-10px);
+  border-color: rgba(0, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 255, 255, 0.12);
 }
 
-.fav-btn.pulse { animation: favPulse 380ms ease-out; }
+.card.pulse .fav-btn {
+  animation: favPulse 400ms ease-out;
+}
+
+@keyframes favPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
 
 /* ────────────── CARD TOP (Colored Header) ────────────── */
 .card-top-bg {
   position: relative;
-  padding: 24px 20px;
+  padding: 20px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  background: linear-gradient(135deg, var(--accent1, #00ffff), var(--accent2, #00cccc));
+  opacity: 1;
 }
 
 .card-top-bg::before {
@@ -276,312 +288,355 @@
   left: 0;
   right: 0;
   height: 100%;
-  background: linear-gradient(135deg, var(--accent1, #00ffff), var(--accent2, #00cccc));
-  opacity: 0.12;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
   z-index: 0;
 }
 
 .card-title-wrapper {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   position: relative;
   z-index: 1;
   flex: 1;
+  min-width: 0;
 }
 
 .pill {
-  width: 60px;
-  height: 60px;
-  border-radius: 14px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
-  background: linear-gradient(135deg, var(--accent1, #00ffff), var(--accent2, #00cccc));
+  font-size: 24px;
+  background: rgba(255, 255, 255, 0.2);
   color: white;
   font-weight: 800;
   flex-shrink: 0;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   transition: all 0.25s ease;
 }
 
 .card:hover .pill {
-  transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .card h3 {
-  margin: 0 0 6px 0;
-  font-size: 1.2rem;
+  margin: 0 0 4px 0;
+  font-size: 1.15rem;
   font-weight: 800;
-  color: var(--text);
+  color: white;
   line-height: 1.2;
 }
 
 .card .short {
   margin: 0;
-  font-size: 13px;
-  color: var(--muted);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
+}
+
+/* ────────────── ACTION BUTTONS ────────────── */
+.card-top-bg > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.fav-btn,
+.card-info-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fav-btn:hover,
+.card-info-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.1);
+}
+
+.fav-btn.active {
+  background: rgba(255, 193, 7, 0.4);
+  color: #ffd166;
 }
 
 /* ────────────── CARD DIVIDER ────────────── */
 .card-line {
   height: 1px;
-  background: linear-gradient(90deg, rgba(0, 255, 255, 0.3), transparent);
-  margin: 12px 0;
-  position: relative;
-  z-index: 1;
+  background: var(--border);
+  margin: 0;
 }
 
 /* ────────────── CARD BODY ────────────── */
 .card-body {
-  padding: 0 20px 16px 20px;
+  padding: 16px 18px;
   flex: 1;
   color: var(--muted);
   font-size: 14px;
   line-height: 1.6;
-  position: relative;
-  z-index: 1;
-}
-
-.card-body p {
-  margin: 0 0 12px 0;
-}
-
-/* ────────────── TAGS ────────────── */
-.tags {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-
-.tag-pill {
-  padding: 6px 11px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 500;
-  background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(0, 204, 204, 0.1));
-  color: var(--text);
-  border: 1px solid rgba(0, 255, 255, 0.2);
-  transition: all 0.2s ease;
-}
-
-.tag-pill:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 255, 0.25), rgba(0, 204, 204, 0.15));
-  border-color: rgba(0, 255, 255, 0.4);
-}
-
-/* ────────────── CARD FOOTER & ACTIONS ────────────── */
-.card-footer {
-  padding: 16px 20px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  position: relative;
-  z-index: 1;
+}
+
+.card-body p {
+  margin: 0;
+  color: var(--text);
+}
+
+.tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.tag-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(0, 255, 255, 0.1);
+  color: var(--text);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tag-pill:hover {
+  background: rgba(0, 255, 255, 0.2);
+  border-color: rgba(0, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ────────────── CARD FOOTER ────────────── */
+.card-footer {
+  padding: 12px 18px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border);
 }
 
 .meta {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
   display: flex;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
   font-weight: 500;
 }
 
 .card-actions {
   display: flex;
-  align-items: center;
   gap: 10px;
-  margin-top: 8px;
+  align-items: center;
 }
 
 .card-start {
   flex: 1;
-  padding: 11px 16px;
+  padding: 12px 14px;
   border-radius: 10px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   color: white;
   border: none;
   cursor: pointer;
   background: linear-gradient(135deg, var(--accent1, #00ffff), var(--accent2, #00cccc));
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   transition: all 0.2s ease;
 }
 
 .card-start:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
 }
 
 .card-start:active {
   transform: translateY(0);
 }
 
-/* ────────────── FAVORITE BUTTON ────────────── */
-.fav-btn {
-  border: 0;
-  background: transparent;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: all 0.2s ease;
-  color: var(--muted);
-  flex-shrink: 0;
-}
-
-.fav-btn:hover {
-  transform: scale(1.1);
-  color: #ffb800;
-}
-
-.fav-btn.active {
-  color: #ffd166;
-  transform: scale(1.15);
-}
-
-/* ────────────── INFO BUTTON ────────────── */
-.card-info-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-  padding: 6px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.card-info-btn:hover {
-  background: rgba(0, 255, 255, 0.1);
-  transform: scale(1.05);
-}
-
 /* ────────────── EMPTY STATE ────────────── */
 #gamesEmpty {
   text-align: center;
   color: var(--muted);
-  padding: 80px 20px;
+  padding: 100px 20px;
   font-size: 18px;
-  animation: fadeInSmooth 0.6s ease forwards;
+  grid-column: 1 / -1;
+  animation: fadeInSmooth 0.6s ease;
 }
 
-/* ────────────── GAME INFO MODAL (Premium) ────────────── */
+/* ────────────── GAME INFO MODAL ────────────── */
 .modal-game-info {
-  max-width: 760px;
-  width: 94%;
+  max-width: 720px;
+  width: 96%;
   padding: 28px;
   box-sizing: border-box;
+  animation: slideInDown 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.modal-game-info .game-info-content {
+.game-info-content {
   color: var(--text);
 }
 
 .game-info-hero {
   display: flex;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 20px;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  animation: scaleIn 0.4s ease;
 }
 
 .game-info-pill {
-  width: 72px;
-  height: 72px;
-  border-radius: 16px;
+  width: 76px;
+  height: 76px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 36px;
   color: white;
   background: linear-gradient(135deg, var(--accent1, #00ffff), var(--accent2, #00cccc));
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
 .modal-game-info h3 {
   font-size: 1.8rem;
-  font-weight: 800;
+  font-weight: 900;
   margin: 0 0 6px 0;
+  background: linear-gradient(135deg, var(--accent1, #00ffff), var(--accent2, #00cccc));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .modal-game-info .short {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--muted);
   margin: 0;
+  font-weight: 500;
 }
 
 .modal-game-info h4 {
   font-size: 1.1rem;
-  margin: 20px 0 12px 0;
+  margin: 24px 0 12px 0;
   color: var(--text);
-  font-weight: 700;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-game-info h4::before {
+  content: '📖';
 }
 
 .modal-game-info p {
   line-height: 1.7;
   color: var(--text);
-}
-
-#gameInfoDesc {
-  margin-bottom: 16px;
+  margin: 0 0 14px 0;
+  font-size: 14px;
 }
 
 #gameInfoHow {
-  color: var(--muted);
-  background: rgba(0, 255, 255, 0.05);
+  color: var(--text);
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(0, 204, 204, 0.08));
   padding: 14px 16px;
-  border-radius: 10px;
+  border-radius: 12px;
   border-left: 3px solid #00ffff;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .modal-game-info .tags {
-  margin-top: 16px;
+  margin-top: 18px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  animation: slideInUp 0.5s ease 0.1s both;
+}
+
+.modal-game-info .tag-pill {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(0, 204, 204, 0.1));
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
 }
 
 #gameInfoLink {
+  display: inline-block;
+  margin-top: 20px;
   text-decoration: none;
-  color: white;
+  animation: slideInUp 0.5s ease 0.2s both;
 }
 
-.modal.show .modal-panel,
-.modal-game-info.show {
-  transform: translateY(0);
-  opacity: 1;
+/* ────────────── LOADING STATE ────────────── */
+.card.loading {
+  opacity: 0.6;
 }
 
-/* ────────────── DARK MODE ────────────── */
-[data-theme="dark"] .card {
-  background: #121212;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="dark"] #gamesControls input[type="search"],
-[data-theme="dark"] #gamesControls select {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+/* ────────────── ERROR STATE ────────────── */
+.error-state {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  padding: 32px 20px;
+  grid-column: 1 / -1;
+  text-align: center;
 }
 
 /* ────────────── RESPONSIVE ────────────── */
 @media (max-width: 1200px) {
-  .hero {
-    padding: 60px 0 40px;
-  }
-
   .hero .title {
-    font-size: 3.2rem;
+    font-size: 2.8rem;
   }
 
   .card-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .controls-bar {
+    padding: 16px;
+  }
+
+  .controls-bottom {
+    flex-direction: column;
+  }
+
+  #gameTagFilters {
+    width: 100%;
+    order: 2;
+  }
+
+  .controls-right {
+    width: 100%;
+    order: 3;
+    justify-content: flex-start;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 }
 
@@ -591,61 +646,49 @@
   }
 
   .hero .title {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
   }
 
   .hero .subtitle {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
-  #gamesControls .controls-top {
+  .controls-top {
     flex-direction: column;
+    gap: 10px;
   }
 
-  #gamesControls input[type="search"],
-  #gamesControls select {
-    width: 100%;
-  }
-
-  #gamesControls .controls-bottom {
-    flex-direction: column;
-  }
-
-  #gamesControls .controls-bottom .controls-right {
-    width: 100%;
-  }
-
-  #gameTagFilters {
-    width: 100%;
-  }
-
-  #resetGameFilters,
-  .fav-filter-btn {
+  .controls-top input,
+  .controls-top select {
     width: 100%;
   }
 
   .card {
-    min-height: 340px;
+    min-height: 400px;
   }
 
   .card-grid {
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
-    grid-template-columns: 1fr;
   }
 
   .modal-game-info {
-    width: 96%;
+    width: 95%;
     padding: 20px;
   }
 
   .game-info-pill {
     width: 64px;
     height: 64px;
-    font-size: 28px;
+    font-size: 32px;
+  }
+
+  .modal-game-info h3 {
+    font-size: 1.5rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .hero {
     padding: 30px 0 20px;
   }
@@ -654,42 +697,83 @@
     font-size: 1.8rem;
   }
 
-  .hero .badge {
-    font-size: 12px;
+  .controls-bar {
+    padding: 12px;
+    margin-bottom: 20px;
+  }
+
+  .controls-top {
+    gap: 8px;
+  }
+
+  .controls-bottom {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #gameTagFilters {
+    width: 100%;
+  }
+
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .controls-right {
+    width: 100%;
+    gap: 8px;
+  }
+
+  #resetGameFilters,
+  .fav-filter-btn {
+    flex: 1;
     padding: 8px 12px;
+    font-size: 12px;
   }
 
-  #gamesControls {
-    margin-top: 24px;
-  }
-
-  #gamesControls input[type="search"] {
-    min-width: 100%;
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .card {
-    min-height: 320px;
+    min-height: 380px;
+  }
+
+  .card-top-bg {
+    padding: 14px;
   }
 
   .pill {
-    width: 52px;
-    height: 52px;
-    font-size: 24px;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
   }
 
   .card h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
+  }
+
+  .card .short {
+    font-size: 11px;
+  }
+
+  .card-body {
+    padding: 14px 12px;
+    font-size: 13px;
   }
 
   .card-footer {
-    padding: 12px 16px 16px 16px;
+    padding: 10px 12px 12px 12px;
   }
 
-  .card-actions {
-    flex-direction: column;
+  .meta {
+    font-size: 11px;
   }
 
   .card-start {
-    width: 100%;
+    padding: 10px 12px;
+    font-size: 12px;
   }
 }

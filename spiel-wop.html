@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="bilder/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="bilder/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="bilder/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="bilder/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="bilder/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="bilder/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="bilder/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="bilder/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="bilder/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="bilder/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="bilder/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="bilder/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="bilder/favicon-16x16.png">
+  <link rel="manifest" href="bilder/manifest.json">
+  <meta name="msapplication-TileColor" content="#09FFFF">
+  <meta name="msapplication-TileImage" content="bilder/ms-icon-144x144.png">
+  <meta name="theme-color" content="#09FFFF">
+
+  <title>Wahrheit oder Pflicht – GameCircl</title>
+  <link rel="stylesheet" href="CSS/style-start.css" />
+  <link rel="stylesheet" href="CSS/style-wop.css" />
+  <link href='https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+  <div class="app" id="app">
+
+    <button id="sidebarToggle" class="floating-hamburger" aria-label="Menü öffnen">☰</button>
+    
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar">
+      <div class="logo-row">
+        <div class="logo">
+          <div class="logo-mark">GC</div>
+          <div class="logo-text">GameCircl <small>Gesellschaftsspiele</small></div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="index.html" class="nav-link">🏠 Home</a>
+        <a href="spiele.html" class="nav-link">🎮 Spiele</a>
+        <a href="news.html" class="nav-link">❗ Updates & News</a>
+        <a href="ueber.html" class="nav-link">ℹ️ Über GameCircl</a>
+        <a href="impressum.html" class="nav-link">📜 Impressum</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="theme-row" id="themeRow">
+          <div class="theme-points">
+            <span data-mode="auto">Auto</span>
+            <span data-mode="light">Hell</span>
+            <span data-mode="dark">Dunkel</span>
+            <div class="theme-marker" id="themeMarker"></div>
+          </div>
+        </div>
+        <div class="status-mini" id="miniStatus" title="Bereit zum Spielen">
+          <div class="avatar">G</div>
+          <div class="status-text">
+            <div class="name" id="miniName">GameCircl</div>
+            <div class="sub">Bereit zum Spielen!</div>
+          </div>
+          <button class="settings-btn" id="openLogin" title="Login / Statistiken">⚙️</button>
+        </div>
+      </div>
+    </aside>
+
+    <div id="sidebarOverlay" class="overlay hidden"></div>
+
+    <main class="main">
+      <section id="page-wop" class="page">
+        
+        <!-- GAME STATE: SETUP -->
+        <div id="gameSetup" class="game-state">
+          <header class="game-header">
+            <a href="spiele.html" class="back-btn">← Zurück zu Spielen</a>
+            <div class="game-title">
+              <h1>⚡ Wahrheit oder Pflicht</h1>
+              <p>Das absolut beste Party-Spiel für Freunde, Familie & neue Bekannte!</p>
+            </div>
+          </header>
+
+          <!-- Player Setup Section -->
+          <section class="setup-section">
+            <h2>👥 Spieler hinzufügen</h2>
+            <div class="player-input-group">
+              <div style="flex: 1; min-width: 160px;">
+                <input type="text" id="playerName" placeholder="Spieler-Name" maxlength="30" />
+              </div>
+              
+              <!-- Gender Selection as Button Group (NO DEFAULT) -->
+              <div class="gender-selector">
+                <button class="gender-btn" data-gender="any" title="Alle Kategorien">👥 Alle</button>
+                <button class="gender-btn" data-gender="male" title="Männlich">♂️ Mann</button>
+                <button class="gender-btn" data-gender="female" title="Weiblich">♀️ Frau</button>
+                <button class="gender-btn" data-gender="neutral" title="Neutral">⚪ Neutral</button>
+              </div>
+
+              <button id="addPlayerBtn" class="btn primary">➕ Spieler hinzufügen</button>
+            </div>
+
+            <div id="playersList" class="players-list">
+              <!-- Dynamisch gefüllt -->
+            </div>
+
+            <div class="setup-info">
+              <p>💡 <strong>Tipp:</strong> Mindestens 2 Spieler, maximal 12 für bestes Spielerlebnis!</p>
+            </div>
+          </section>
+
+          <!-- Rounds Selection -->
+          <section class="setup-section">
+            <h2>⏱️ Anzahl der Runden</h2>
+            <p class="section-desc">Wähle, wie lange das Spiel dauern soll:</p>
+            
+            <div class="rounds-selector">
+              <label class="rounds-option active" data-mode="limited" data-rounds="10">
+                <input type="radio" name="rounds" value="10" checked>
+                <span class="rounds-label">10 Runden</span>
+                <p>Schnelle Runde (15-30 Min)</p>
+              </label>
+              <label class="rounds-option" data-mode="limited" data-rounds="20">
+                <input type="radio" name="rounds" value="20">
+                <span class="rounds-label">20 Runden</span>
+                <p>Standard (30-60 Min)</p>
+              </label>
+              <label class="rounds-option" data-mode="limited" data-rounds="50">
+                <input type="radio" name="rounds" value="50">
+                <span class="rounds-label">50 Runden</span>
+                <p>Marathon (90+ Min)</p>
+              </label>
+              <label class="rounds-option" data-mode="unlimited" data-rounds="0">
+                <input type="radio" name="rounds" value="0">
+                <span class="rounds-label">∞ Unbegrenzt</span>
+                <p>Spielen bis zum Stopp</p>
+              </label>
+            </div>
+          </section>
+
+          <!-- Categories Selection -->
+          <section class="setup-section">
+            <h2>🎯 Fragen-Kategorien</h2>
+            <p class="section-desc">Wähle die Kategorien aus, aus denen Fragen gestellt werden sollen:</p>
+            
+            <div id="categoriesGrid" class="categories-grid">
+              <!-- Dynamisch gefüllt -->
+            </div>
+
+            <div class="category-info">
+              <span id="selectedCategoryCount">0</span> / <span id="totalCategoryCount">6</span> Kategorien ausgewählt
+            </div>
+          </section>
+
+          <!-- Regional/Language Selection -->
+          <section class="setup-section">
+            <h2>🌍 Region & Sprache</h2>
+            <p class="section-desc">Wähle, welche Fragen-Sets dir passen:</p>
+            
+            <div class="region-selector">
+              <label class="region-option active" data-region="de-de">
+                <input type="radio" name="region" value="de-de" checked>
+                <span class="region-label">🇩🇪 Deutsch (Deutschland)</span>
+                <p>Klassische deutsche Fragen & Aufgaben</p>
+              </label>
+              <label class="region-option" data-region="de-at">
+                <input type="radio" name="region" value="de-at">
+                <span class="region-label">🇦🇹 Deutsch (Österreich)</span>
+                <p>Mit österreichischen Besonderheiten</p>
+              </label>
+              <label class="region-option" data-region="de-ch">
+                <input type="radio" name="region" value="de-ch">
+                <span class="region-label">🇨🇭 Deutsch (Schweiz)</span>
+                <p>Mit schweizer Flair & Humor</p>
+              </label>
+            </div>
+          </section>
+
+          <!-- Start Game Button -->
+          <div class="setup-actions">
+            <button id="startGameBtn" class="btn primary large" disabled>🎮 Spiel starten</button>
+          </div>
+        </div>
+
+        <!-- GAME STATE: PLAYING -->
+        <div id="gamePlay" class="game-state hidden">
+          <header class="game-header game-header-compact">
+            <a href="#" onclick="if(confirm('Spiel wirklich beenden?')) resetGame(); return false;" class="back-btn">⏹️ Spiel beenden</a>
+            <h1>⚡ Wahrheit oder Pflicht</h1>
+          </header>
+
+          <div class="game-container">
+            <!-- Current Player Info -->
+            <div class="current-player-card">
+              <div class="player-avatar" id="playerAvatar"></div>
+              <h2 id="playerNameDisplay"></h2>
+              <p id="playerRound" class="round-info"></p>
+            </div>
+
+            <!-- Choice Buttons -->
+            <div class="choice-buttons">
+              <button id="truthBtn" class="choice-btn choice-truth" onclick="selectChoice('truth')">
+                <span class="choice-icon">❓</span>
+                <span class="choice-label">Wahrheit</span>
+                <span class="choice-desc">Ehrlich antworten!</span>
+              </button>
+              <button id="dareBtn" class="choice-btn choice-dare" onclick="selectChoice('dare')">
+                <span class="choice-icon">⚡</span>
+                <span class="choice-label">Pflicht</span>
+                <span class="choice-desc">Trau dich!</span>
+              </button>
+            </div>
+
+            <!-- Question Display -->
+            <div id="questionContainer" class="question-container hidden">
+              <div class="question-card">
+                <div class="question-type" id="questionType"></div>
+                <p class="question-text" id="questionText"></p>
+                <div class="question-actions">
+                  <button id="nextQuestionBtn" class="btn primary">Nächster Spieler ➜</button>
+                  <button id="penaltyBtn" class="btn" style="display:none;">🔥 Strafaufgabe</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Round Progress -->
+            <div class="game-progress">
+              <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+              </div>
+              <p id="progressText" class="progress-text"></p>
+            </div>
+          </div>
+
+          <!-- Stats Sidebar -->
+          <aside class="game-stats">
+            <h3>📊 Spieler</h3>
+            <div id="gameStats" class="stats-list">
+              <!-- Dynamisch gefüllt -->
+            </div>
+          </aside>
+        </div>
+
+        <!-- GAME STATE: FINISHED -->
+        <div id="gameFinished" class="game-state hidden">
+          <header class="game-header">
+            <h1>🎉 Spiel beendet!</h1>
+            <p>Danke für eine großartige Runde!</p>
+          </header>
+
+          <div class="results-container">
+            <div id="resultsList" class="results-list">
+              <!-- Dynamisch gefüllt -->
+            </div>
+
+            <div class="finish-actions">
+              <button id="playAgainBtn" class="btn primary large">🎮 Nochmal spielen</button>
+              <a href="spiele.html" class="btn secondary large">Zurück zu Spielen</a>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <footer class="footer">
+        <small>© <span id="year"></span> Pixelstorm Interactive Development Group — made with ❤️</small>
+      </footer>
+    </main>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h3>Login & Statistiken</h3>
+      <br>
+      <div id="loginArea">
+        <label>Benutzername<input type="text" id="username" placeholder="Dein Name" /></label>
+        <div class="login-actions">
+          <button id="saveUser" class="btn primary">Speichern</button>
+          <button id="logoutBtn" class="btn secondary">Ausloggen</button>
+        </div>
+        <p class="muted">Deine Daten bleiben lokal in diesem Browser.</p>
+      </div>
+      <hr /><br>
+      <div id="statsArea">
+        <h4>Statistiken</h4>
+        <div id="statsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="JS/script-start.js"></script>
+  <script src="JS/script-wop.js"></script>
+</body>
+</html>

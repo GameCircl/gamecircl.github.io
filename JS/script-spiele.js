@@ -146,15 +146,25 @@ if (gamesFavToggle) {
 async function loadSpiele() {
   try {
     const res = await fetch('JSON-Datastores/spiele.json', { cache: "no-store" });
-    if (!res.ok) throw new Error('netzwerkfehler');
+    if (!res.ok) throw new Error('Server error: ' + res.status);
     const data = await res.json();
     const list = data.spiele || data;
+    if (!Array.isArray(list)) throw new Error('Invalid data format');
+    
     allGames = list;
     renderGameFilters(collectGameTags(allGames));
     renderFilteredGames();
   } catch (err) {
     console.error('Fehler beim Laden der spiele.json', err);
-    if (gameList) gameList.innerHTML = `<p class="muted">Fehler beim Laden der Spielmodi.</p>`;
+    if (gameList) {
+      gameList.innerHTML = `
+        <div class="error-state" style="grid-column:1/-1;">
+          <p style="font-size:18px;color:var(--text);margin-bottom:8px;">⚠️ Fehler beim Laden</p>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">${err.message}</p>
+          <button onclick="location.reload()" style="padding:10px 18px;background:linear-gradient(135deg,#00ffff,#00cccc);color:#000;border:none;border-radius:10px;cursor:pointer;font-weight:700;">🔄 Neu laden</button>
+        </div>
+      `;
+    }
   }
 }
 
@@ -354,43 +364,67 @@ const gameInfoLink = qs('#gameInfoLink');
 
 function showGameInfo(m){
   if(!gameInfoModal) return alert(m.how || m.desc || 'Keine Details verfügbar.');
+  
+  // Animate in
+  gameInfoModal.classList.remove('hidden');
+  gameInfoModal.setAttribute('aria-hidden','false');
+  
+  // Content
   gameInfoTitle.textContent = m.title || '';
   gameInfoShort.textContent = m.short || '';
   gameInfoDesc.textContent = m.desc || '';
   gameInfoHow.textContent = m.how || 'Keine Anleitung verfügbar.';
   gameInfoPill.textContent = m.icon || '';
-  // Set pill background based on game colors (with fallback)
+  
+  // Colors
   const _c1 = m.color || '#6c5ce7';
   const _c2 = m.color2 || _c1;
   gameInfoPill.style.background = `linear-gradient(90deg, ${_c1}, ${_c2})`;
+  
+  // Tags
   gameInfoTags.innerHTML = (m.tags || []).map(t => `<span class="tag-pill">${t}</span>`).join('');
+  
+  // Link
   if (m.link) {
     gameInfoLink.href = m.link;
     gameInfoLink.classList.remove('hidden');
   } else {
     gameInfoLink.classList.add('hidden');
   }
-  gameInfoModal.classList.remove('hidden');
-  setTimeout(()=> gameInfoModal.classList.add('show'), 10);
-  gameInfoModal.setAttribute('aria-hidden','false');
+  
+  // Trigger animation
+  setTimeout(() => gameInfoModal.classList.add('show'), 10);
 }
 
 if (gameInfoClose) {
   gameInfoClose.addEventListener('click', ()=> {
     gameInfoModal.classList.remove('show');
-    setTimeout(()=> gameInfoModal.classList.add('hidden'), 240);
-    gameInfoModal.setAttribute('aria-hidden','true');
+    setTimeout(()=> {
+      gameInfoModal.classList.add('hidden');
+      gameInfoModal.setAttribute('aria-hidden','true');
+    }, 240);
   });
 }
 
-// ESC: close modals
+// Improved ESC handling
 document.addEventListener('keydown', (e)=>{
   if(e.key === 'Escape'){
-    if (gameInfoModal && !gameInfoModal.classList.contains('hidden')) {
-      gameInfoClose.click();
+    // Close game info modal first
+    if (gameInfoModal && gameInfoModal.classList.contains('show')) {
+      gameInfoModal.classList.remove('show');
+      setTimeout(() => {
+        gameInfoModal.classList.add('hidden');
+        gameInfoModal.setAttribute('aria-hidden','true');
+      }, 240);
+      return;
     }
-    if (modal && !modal.classList.contains('hidden')) {
-      modalClose.click();
+    // Then close login modal
+    if (modal && modal.classList.contains('show')) {
+      modal.classList.remove('show');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden','true');
+      }, 240);
     }
   }
 });
@@ -500,13 +534,15 @@ if (saveUser) {
   });
 }
 
+// Improve logout
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
-    if (confirm('Lokales Profil entfernen?')) {
-      localStorage.removeItem('gc-user');
-      loadProfileUI();
+    if (confirm('Lokales Profil wirklich entfernen?')) {
+      localStorage.removeItem('gc_user');
+      loadUserUI();
       renderStats();
-      modal.classList.add('hidden');
+      modal.classList.remove('show');
+      setTimeout(() => modal.classList.add('hidden'), 240);
     }
   });
 }

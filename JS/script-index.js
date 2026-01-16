@@ -9,19 +9,27 @@ function initFAQ() {
   faqToggles.forEach(toggle => {
     toggle.addEventListener('click', () => {
       const answer = toggle.nextElementSibling;
+      const icon = toggle.querySelector('.faq-icon');
       const isOpen = toggle.classList.contains('active');
       
       // Schließe alle anderen
-      document.querySelectorAll('.faq-toggle').forEach(t => {
-        if (t !== toggle) {
+      faqToggles.forEach(t => {
+        if (t !== toggle && t.classList.contains('active')) {
           t.classList.remove('active');
-          t.nextElementSibling.classList.remove('visible');
+          t.nextElementSibling?.classList.remove('visible');
         }
       });
       
-      // Toggle aktuelle
+      // Toggle diese Antwort
       toggle.classList.toggle('active');
-      answer.classList.toggle('visible');
+      answer?.classList.toggle('visible');
+      
+      // Smooth scroll zur Antwort, falls geöffnet
+      if (!isOpen && answer) {
+        setTimeout(() => {
+          answer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+      }
     });
   });
 }
@@ -100,14 +108,23 @@ let allGames = [];
 async function loadFeaturedGames() {
   try {
     const res = await fetch('JSON-Datastores/spiele.json', { cache: "no-store" });
-    if (!res.ok) throw new Error('Netzwerkfehler');
+    if (!res.ok) throw new Error('Network error: ' + res.status);
     const data = await res.json();
     allGames = data.spiele || data;
+    if (!Array.isArray(allGames)) throw new Error('Invalid data format');
     renderFeaturedGames();
   } catch (err) {
     console.error('Fehler beim Laden der spiele.json', err);
     const gameList = document.getElementById('game-list');
-    if (gameList) gameList.innerHTML = '<p class="muted">Fehler beim Laden der Spiele.</p>';
+    if (gameList) {
+      gameList.innerHTML = `
+        <div class="error-state" style="grid-column:1/-1;padding:60px 20px;text-align:center;">
+          <p style="font-size:18px;color:var(--muted);margin-bottom:12px;">⚠️ Fehler beim Laden der Spiele</p>
+          <p style="font-size:13px;color:var(--muted);">${err.message}</p>
+          <button onclick="location.reload()" style="margin-top:16px;padding:10px 18px;background:linear-gradient(135deg,#00ffff,#00cccc);color:#000;border:none;border-radius:10px;cursor:pointer;font-weight:700;">🔄 Neu laden</button>
+        </div>
+      `;
+    }
   }
 }
 
@@ -117,9 +134,10 @@ function renderFeaturedGames() {
   
   gameList.innerHTML = '';
   
-  // Shuffle und erste 4 nehmen
-  const shuffled = [...allGames].sort(() => 0.5 - Math.random());
-  const featured = shuffled.slice(0, 4);
+  // Sortiere nach Popularität und nehme die Top 4
+  const featured = [...allGames]
+    .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+    .slice(0, 4);
   
   featured.forEach((game, i) => {
     const card = document.createElement('article');
@@ -153,12 +171,16 @@ function renderFeaturedGames() {
       
       <div class="featured-card-footer">
         <div class="featured-card-rating">${stars}</div>
-        <button class="featured-card-btn" data-link="${game.link || '#'}">▶ Spielen</button>
+        <button class="featured-card-btn" data-link="${game.link || '#'}" data-title="${game.title}" title="Starte ${game.title}">▶ Spielen</button>
       </div>
     `;
     
     card.querySelector('.featured-card-btn').addEventListener('click', () => {
-      if (game.link) window.location.href = game.link;
+      if (game.link) {
+        window.location.href = game.link;
+      } else {
+        alert(`Spiel "${game.title}" wird bald verfügbar sein!`);
+      }
     });
     
     gameList.appendChild(card);
