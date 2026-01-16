@@ -93,62 +93,79 @@ const revealElements = () => {
 
 document.addEventListener('DOMContentLoaded', revealElements);
 
-/* ────────────── FEATURED GAMES LADEN ────────────── */
-let homeGames = [];
+/* ====== FEATURED GAMES (Startseite) ====== */
 
-fetch('JSON-Datastores/spiele.json')
-  .then(res => res.json())
-  .then(data => {
-    const allGames = data.spiele || [];
-    // Nur Spiele mit vollständigen Daten (mit icon, rating, etc.)
-    homeGames = allGames.filter(g => g.icon && g.rating).slice(0, 4);
+let allGames = [];
+
+async function loadFeaturedGames() {
+  try {
+    const res = await fetch('JSON-Datastores/spiele.json', { cache: "no-store" });
+    if (!res.ok) throw new Error('Netzwerkfehler');
+    const data = await res.json();
+    allGames = data.spiele || data;
     renderFeaturedGames();
-  })
-  .catch(err => console.error('Fehler beim Laden:', err));
+  } catch (err) {
+    console.error('Fehler beim Laden der spiele.json', err);
+    const gameList = document.getElementById('game-list');
+    if (gameList) gameList.innerHTML = '<p class="muted">Fehler beim Laden der Spiele.</p>';
+  }
+}
 
 function renderFeaturedGames() {
   const gameList = document.getElementById('game-list');
-  if (!gameList) return;
+  if (!gameList || !allGames.length) return;
   
   gameList.innerHTML = '';
   
-  homeGames.forEach((game, i) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.style.animationDelay = `${i * 0.1}s`;
+  // Shuffle und erste 4 nehmen
+  const shuffled = [...allGames].sort(() => 0.5 - Math.random());
+  const featured = shuffled.slice(0, 4);
+  
+  featured.forEach((game, i) => {
+    const card = document.createElement('article');
+    card.className = 'featured-card';
+    card.style.setProperty('--card-color-1', game.color || '#00ffff');
+    card.style.setProperty('--card-color-2', game.color2 || game.color || '#00cccc');
     
-    const tags = (game.tags || []).slice(0, 2).map(t => `<span class="tag-badge">${t}</span>`).join('');
+    const stars = '★'.repeat(game.rating || 5) + '☆'.repeat(5 - (game.rating || 5));
     
     card.innerHTML = `
-      <div class="card-header">
-        <div class="game-icon" style="background: linear-gradient(135deg, ${game.color}, ${game.color2}); width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
-          ${game.icon}
-        </div>
-        <div class="game-title">
-          <h3>${game.title}</h3>
-          <p>${game.short || ''}</p>
-        </div>
-      </div>
-      
-      <div class="card-body">
-        <p>${game.desc}</p>
-      </div>
-      
-      <div class="card-meta">
-        <div class="tags-row">
-          ${tags}
-        </div>
-        <div class="rating">
-          ${'★'.repeat(game.rating)}${'☆'.repeat(5 - game.rating)}
+      <div class="featured-card-top">
+        <div class="featured-card-header">
+          <div class="featured-card-icon">${game.icon || '🎮'}</div>
+          <div class="featured-card-title-group">
+            <h3>${game.title}</h3>
+            <p class="short">${game.short || ''}</p>
+          </div>
         </div>
       </div>
       
-      <div class="card-footer">
-        <small>${game.players} • ${game.time}</small>
-        <a href="${game.link}" class="btn-play">→ Spielen</a>
+      <div class="featured-card-divider"></div>
+      
+      <div class="featured-card-body">
+        <p class="featured-card-desc">${game.desc}</p>
+        <div class="featured-card-meta">
+          <div class="featured-card-meta-item">👥 ${game.players}</div>
+          <div class="featured-card-meta-item">⏱ ${game.time}</div>
+          <div class="featured-card-meta-item">⚙️ ${game.difficulty}</div>
+        </div>
+      </div>
+      
+      <div class="featured-card-footer">
+        <div class="featured-card-rating">${stars}</div>
+        <button class="featured-card-btn" data-link="${game.link || '#'}">▶ Spielen</button>
       </div>
     `;
+    
+    card.querySelector('.featured-card-btn').addEventListener('click', () => {
+      if (game.link) window.location.href = game.link;
+    });
     
     gameList.appendChild(card);
   });
 }
+
+/* Initialize */
+document.addEventListener('DOMContentLoaded', () => {
+  loadFeaturedGames();
+});
