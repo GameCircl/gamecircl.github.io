@@ -276,13 +276,15 @@
 
 /* ────────────── CATEGORIES GRID ────────────── */
 .categories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 14px;
 }
 
 .category-btn {
+  display:inline-flex;
+  width: 200px;
   padding: 14px 10px;
   border-radius: 12px;
   border: 2px solid rgba(0, 255, 255, 0.2);

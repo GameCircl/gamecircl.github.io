@@ -208,12 +208,17 @@ function removePlayer(index) {
 /* ────── CATEGORIES ────── */
 function loadCategories() {
   const categories = [
-    { name: 'Liebe & Beziehungen', id: 'Liebe & Beziehungen', emoji: '💕' },
-    { name: 'Körper & Gesundheit', id: 'Körper & Gesundheit', emoji: '💪' },
-    { name: 'Geheimnisse', id: 'Geheimnisse', emoji: '🤐' },
-    { name: 'Abenteuer', id: 'Abenteuer', emoji: '🚀' },
-    { name: 'Peinlich', id: 'Peinlich', emoji: '😳' },
-    { name: 'Mutprobe', id: 'Mutprobe', emoji: '⚡' }
+    { name: 'Chill & Locker', id: 'Chill & Locker', emoji: '🧃' },
+    { name: 'Party & Action', id: 'Party & Action', emoji: '🎉' },
+    { name: 'Peinlich & Cringe', id: 'Peinlich & Cringe', emoji: '😳' },
+    { name: 'Persönlich & Tief', id: 'Persönlich & Tief', emoji: '❤️' },
+    { name: 'Flirty & Teasing', id: 'Flirty & Teasing', emoji: '😏' },
+    { name: 'Spicy & Hot', id: 'Spicy & Hot', emoji: '🔥' },
+    { name: 'Dirty / Versaut', id: 'Dirty / Versaut', emoji: '😈' },
+    { name: 'Kinky & Fetish', id: 'Kinky & Fetish', emoji: '⛓️' },
+    { name: 'Extrem Hardcore (18+)', id: 'Extrem Hardcore', emoji: '💥' },
+    { name: 'Mutprobe', id: 'Mutprobe', emoji: '💪' },
+    { name: 'Für Paare', id: 'Für Paare', emoji: '💑' }
   ];
 
   const grid = qs('#categoriesGrid');
@@ -221,7 +226,7 @@ function loadCategories() {
 
   categories.forEach(cat => {
     const btn = document.createElement('button');
-    btn.className = 'category-btn active';
+    btn.className = 'category-btn';
     btn.textContent = `${cat.emoji} ${cat.name}`;
     btn.dataset.id = cat.id;
     btn.addEventListener('click', function() {
@@ -321,12 +326,12 @@ function selectChoice(type) {
   const penaltyBtn = qs('#penaltyBtn');
   if (penaltyBtn) {
     penaltyBtn.dataset.type = type;
-    penaltyBtn.textContent = type === 'truth' ? '🔥 Strafaufgabe' : '🔥 Strafrage';
+    penaltyBtn.textContent = type === 'truth' ? '🔥 Strafaufgabe' : '🔥 Straffrage';
     penaltyBtn.style.display = 'block';
   }
 }
 
-/* ────── GET RANDOM QUESTION ────── */
+/* ────── GET RANDOM QUESTION (with gender filter) ────── */
 function getRandomQuestion(type) {
   const categories = gameState.selectedCategories || [];
   
@@ -337,7 +342,16 @@ function getRandomQuestion(type) {
   let allQuestions = [];
   categories.forEach(catId => {
     const catQuestions = questionsData[type]?.[catId] || [];
-    allQuestions = allQuestions.concat(catQuestions);
+    // Filter by gender preferences
+    catQuestions.forEach(q => {
+      const question = typeof q === 'string' ? q : q.text;
+      const genders = (typeof q === 'object' && q.genders) ? q.genders : ['any'];
+      
+      // Check if gender matches (for future implementation)
+      if (genders.includes('any') || genders.includes(currentGender)) {
+        allQuestions.push(question);
+      }
+    });
   });
 
   if (allQuestions.length === 0) {
@@ -370,7 +384,7 @@ function showPenalty() {
   const penalty = penaltyQuestions[Math.floor(Math.random() * penaltyQuestions.length)];
   
   qs('#questionText').textContent = penalty;
-  qs('#questionType').textContent = type === 'truth' ? '🔥 STRAFAUFGABE' : '🔥 STRAFRAGE';
+  qs('#questionType').textContent = type === 'truth' ? '🔥 STRAFAUFGABE' : '🔥 STRAFFRAGE';
   qs('#questionContainer').dataset.isPenalty = 'true';
   
   // Verstecke Penalty Button nach dem Klick

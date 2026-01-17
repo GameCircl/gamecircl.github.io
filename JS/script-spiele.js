@@ -260,13 +260,12 @@ function renderSpiele(list){
   list.forEach((m,i) => {
     const el = document.createElement('article');
     el.className = 'card';
-    el.style.animationDelay = (i*60) + 'ms';
+    el.style.animationDelay = (i*50) + 'ms';
     el.dataset.id = m.id || '';
 
     const color1 = m.color || '#6c5ce7';
     const color2 = m.color2 || color1;
 
-    // expose CSS vars for per-card accents
     el.style.setProperty('--accent1', color1);
     el.style.setProperty('--accent2', color2);
 
@@ -293,7 +292,6 @@ function renderSpiele(list){
         <div class="meta info-left">
           <div>👥 ${m.players}</div>
           <div>⏱ ${m.time}</div>
-          <div>⚙️ ${m.difficulty}</div>
         </div>
         <div class="card-actions">
           <button class="card-start" style="background:linear-gradient(90deg, ${color1}, ${color2});" aria-label="${m.title} starten">▶ Spiel starten</button>
@@ -301,24 +299,26 @@ function renderSpiele(list){
       </div>
     `;
 
-    // Favorite button
     const favBtn = el.querySelector('.fav-btn');
     if(favBtn){
       if(isFavorited(m.id)) favBtn.classList.add('active');
-      favBtn.addEventListener('click', (e) => { toggleFavorite(m.id, favBtn); e.stopPropagation(); });
+      favBtn.addEventListener('click', (e) => { 
+        toggleFavorite(m.id, favBtn); 
+        e.stopPropagation(); 
+      });
     }
 
-    // Start button — wenn eine Spielseite vorhanden ist, navigiere dorthin
     const startBtn = el.querySelector('.card-start');
     startBtn.addEventListener('click', () => {
       if (m.link) {
+        // Speichere Spiel-Info bevor du navigierst
+        sessionStorage.setItem('gc-wop-game', m.id);
         window.location.href = m.link;
       } else {
         alert(`Spiel "${m.title}" starten!`);
       }
     });
 
-    // Info button — öffnet das neue eigene Modal
     el.querySelector('.card-info-btn').addEventListener('click', () => {
       showGameInfo(m);
     });
