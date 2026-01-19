@@ -86,11 +86,8 @@
 }
 
 .controls-bar {
-  background: var(--surface);
   padding: 20px;
   border-radius: 16px;
-  border: 1px solid var(--border);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   margin-bottom: 28px;
   transition: all 0.3s ease;
 }
