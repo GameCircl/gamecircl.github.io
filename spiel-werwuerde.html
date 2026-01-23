@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0984e3">
+  <title>Wer würde eher — GameCircl</title>
+  <link rel="stylesheet" href="CSS/style-start.css" />
+  <link rel="stylesheet" href="CSS/style-wop.css" />
+  
+</head>
+<body>
+  <div class="app">
+    <button id="sidebarToggle" class="floating-hamburger">☰</button>
+    
+    <aside class="sidebar" id="sidebar">
+      <div class="logo-row">
+        <div class="logo">
+          <div class="logo-mark">GC</div>
+          <div class="logo-text">GameCircl <small>Gesellschaftsspiele</small></div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="index.html" class="nav-link">🏠 Home</a>
+        <a href="spiele.html" class="nav-link active">🎮 Spiele</a>
+        <a href="news.html" class="nav-link">❗ News</a>
+        <a href="ueber.html" class="nav-link">ℹ️ Über</a>
+        <a href="impressum.html" class="nav-link">📜 Impressum</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="theme-row">
+          <div class="theme-points">
+            <span data-mode="auto">Auto</span>
+            <span data-mode="light">Hell</span>
+            <span data-mode="dark">Dunkel</span>
+            <div class="theme-marker" id="themeMarker"></div>
+          </div>
+        </div>
+        <div class="status-mini" id="miniStatus">
+          <div class="avatar" id="miniAvatar">G</div>
+          <div class="status-text">
+            <div class="name" id="miniName">GameCircl</div>
+            <div class="sub">Spielbereit!</div>
+          </div>
+          <button class="settings-btn" id="openLogin">⚙️</button>
+        </div>
+      </div>
+    </aside>
+
+    <div id="sidebarOverlay" class="overlay hidden"></div>
+
+    <main class="main">
+      <section class="page">
+        <header class="game-header">
+          <a href="spiele.html" class="back-btn">← Zurück zu Spielen</a>
+          <div class="game-title">
+            <h1>👥 Wer würde eher</h1>
+            <p>Erratet, wer am ehesten bestimmte Dinge tun würde!</p>
+          </div>
+        </header>
+
+        <!-- SETUP MODAL -->
+        <div id="gameSetup" class="game-state">
+          <section class="setup-section fade-in">
+            <h2>⚙️ Spiel einrichten</h2>
+            <p class="section-desc">Gib deine Spielernamen ein und starte das Spiel!</p>
+
+            <div class="player-input-group">
+              <input type="text" id="playerName" placeholder="Spieler hinzufügen..." />
+              <button id="addPlayerBtn" class="btn primary">➕ Hinzufügen</button>
+            </div>
+
+            <div id="playersList" class="players-list"></div>
+
+            <div class="setup-section fade-in" style="margin-top: 20px;">
+              <h3>⏱️ Runden</h3>
+              <div class="rounds-selector">
+                <label class="rounds-option">
+                  <input type="radio" name="rounds" value="limited" data-mode="limited" data-rounds="5" checked />
+                  <div class="rounds-label">5 Runden</div>
+                  <p>Kurz & knackig</p>
+                </label>
+                <label class="rounds-option active">
+                  <input type="radio" name="rounds" value="limited" data-mode="limited" data-rounds="10" checked />
+                  <div class="rounds-label">10 Runden</div>
+                  <p>Standard</p>
+                </label>
+                <label class="rounds-option">
+                  <input type="radio" name="rounds" value="limited" data-mode="limited" data-rounds="20" />
+                  <div class="rounds-label">20 Runden</div>
+                  <p>Marathon</p>
+                </label>
+                <label class="rounds-option">
+                  <input type="radio" name="rounds" value="unlimited" data-mode="unlimited" />
+                  <div class="rounds-label">∞ Unbegrenzt</div>
+                  <p>Kein Limit</p>
+                </label>
+              </div>
+            </div>
+
+            <div class="setup-actions">
+              <button id="startGameBtn" class="btn primary large" disabled>🎮 Spiel starten</button>
+            </div>
+          </section>
+        </div>
+
+        <!-- GAME PLAY -->
+        <div id="gamePlay" class="game-state hidden">
+          <div class="current-player-card">
+            <div class="player-avatar" id="playerAvatar"></div>
+            <h2 id="playerNameDisplay"></h2>
+            <p id="playerRound" class="round-info"></p>
+          </div>
+
+          <div class="question-container">
+            <div class="question-card">
+              <div class="question-type" id="questionType">👥 WER WÜRDE EHER</div>
+              <p class="question-text" id="questionText"></p>
+              <div class="question-actions">
+                <button id="nextQuestionBtn" class="btn primary">Nächster Spieler ➜</button>
+                <button id="rerollBtn" class="btn secondary">🔄 Andere Frage</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="game-progress">
+            <div class="progress-bar">
+              <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <p id="progressText" class="progress-text"></p>
+          </div>
+        </div>
+
+        <!-- GAME FINISHED -->
+        <div id="gameFinished" class="game-state hidden">
+          <div style="text-align: center; padding: 60px 20px;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 16px;">🎉 Spiel vorbei!</h2>
+            <p style="color: var(--muted); margin-bottom: 32px; font-size: 16px;">Danke für die Runden Lacher!</p>
+            <div id="resultsList" class="results-list"></div>
+            <div class="finish-actions">
+              <button id="playAgainBtn" class="btn primary large">🎮 Nochmal spielen</button>
+              <a href="spiele.html" class="btn secondary large">← Zurück</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <small>© <span id="year"></span> GameCircl — made with ❤️</small>
+      </footer>
+    </main>
+  </div>
+
+  <script src="JS/script-werwuerde.js"></script>
+</body>
+</html>
