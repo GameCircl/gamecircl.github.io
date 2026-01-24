@@ -187,7 +187,103 @@ function renderFeaturedGames() {
   });
 }
 
-/* Initialize */
+/* ────────────── INDEX PAGE SPECIFIC ────────────── */
+
+const qs = s => document.querySelector(s);
+const qsa = s => Array.from(document.querySelectorAll(s));
+
 document.addEventListener('DOMContentLoaded', () => {
+  /* ────────────── FEATURED GAMES LADEN ────────────── */
   loadFeaturedGames();
+
+  /* ────────────── FAQ TOGGLE ────────────── */
+  setupFAQ();
+
+  /* ────────────── INTERSECTION OBSERVER FÜR FADE-IN ────────────── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 });
+
+/* ────────────── FEATURED GAMES LADEN ────────────── */
+async function loadFeaturedGames() {
+  try {
+    const res = await fetch('JSON-Datastores/spiele.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('Fehler beim Laden');
+    const data = await res.json();
+    const list = data.spiele || [];
+    
+    // Nimm die 4 populärsten Spiele
+    const featured = list
+      .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+      .slice(0, 4);
+    
+    renderFeaturedGames(featured);
+  } catch (err) {
+    console.error('Fehler:', err);
+  }
+}
+
+function renderFeaturedGames(games) {
+  const gameList = qs('#game-list');
+  if (!gameList) return;
+  
+  gameList.innerHTML = games.map((g, i) => `
+    <article class="featured-card" style="--card-color-1:${g.color}; --card-color-2:${g.color2}; animation-delay:${i * 100}ms">
+      <div class="featured-card-top">
+        <div class="featured-card-header">
+          <div class="featured-card-icon">${g.icon || '🎮'}</div>
+          <div class="featured-card-title-group">
+            <h3>${g.title}</h3>
+            <div class="short">${g.short || ''}</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="featured-card-divider"></div>
+      
+      <div class="featured-card-body">
+        <p class="featured-card-desc">${g.desc}</p>
+        <div class="featured-card-meta">
+          <div class="featured-card-meta-item">👥 ${g.players}</div>
+          <div class="featured-card-meta-item">⏱ ${g.time}</div>
+        </div>
+      </div>
+      
+      <div class="featured-card-footer">
+        <div class="featured-card-rating">${'⭐'.repeat(g.rating || 5)}</div>
+        <a href="${g.link}" class="featured-card-btn">Spielen →</a>
+      </div>
+    </article>
+  `).join('');
+}
+
+/* ────────────── FAQ TOGGLE ────────────── */
+function setupFAQ() {
+  const faqToggles = qsa('.faq-toggle');
+  
+  faqToggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const item = toggle.closest('.faq-item');
+      const answer = item.querySelector('.faq-answer');
+      
+      // Toggle active class
+      toggle.classList.toggle('active');
+      answer.classList.toggle('visible');
+      
+      // Schließe andere offene FAQs (optional)
+      // faqToggles.forEach(t => {
+      //   if (t !== toggle) {
+      //     t.classList.remove('active');
+      //     t.closest('.faq-item').querySelector('.faq-answer').classList.remove('visible');
+      //   }
+      // });
+    });
+  });
+}

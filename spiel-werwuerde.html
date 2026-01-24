@@ -3,32 +3,54 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0984e3">
-  <title>Wer würde eher — GameCircl</title>
+
+  <link rel="apple-touch-icon" sizes="57x57" href="bilder/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="bilder/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="bilder/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="bilder/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="bilder/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="bilder/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="bilder/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="bilder/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="bilder/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="bilder/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="bilder/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="bilder/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="bilder/favicon-16x16.png">
+  <link rel="manifest" href="bilder/manifest.json">
+  <meta name="msapplication-TileColor" content="#09FFFF">
+  <meta name="msapplication-TileImage" content="bilder/ms-icon-144x144.png">
+  <meta name="theme-color" content="#09FFFF">
+
+  <title>Wer würde eher...? – GameCircl</title>
   <link rel="stylesheet" href="CSS/style-start.css" />
   <link rel="stylesheet" href="CSS/style-wop.css" />
   
 </head>
+
 <body>
-  <div class="app">
-    <button id="sidebarToggle" class="floating-hamburger">☰</button>
+  <div class="app" id="app">
+
+    <button id="sidebarToggle" class="floating-hamburger" aria-label="Menü öffnen">☰</button>
     
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar">
       <div class="logo-row">
         <div class="logo">
           <div class="logo-mark">GC</div>
           <div class="logo-text">GameCircl <small>Gesellschaftsspiele</small></div>
         </div>
       </div>
+
       <nav class="nav">
         <a href="index.html" class="nav-link">🏠 Home</a>
-        <a href="spiele.html" class="nav-link active">🎮 Spiele</a>
-        <a href="news.html" class="nav-link">❗ News</a>
-        <a href="ueber.html" class="nav-link">ℹ️ Über</a>
+        <a href="spiele.html" class="nav-link">🎮 Spiele</a>
+        <a href="news.html" class="nav-link">❗ Updates & News</a>
+        <a href="ueber.html" class="nav-link">ℹ️ Über GameCircl</a>
         <a href="impressum.html" class="nav-link">📜 Impressum</a>
       </nav>
+
       <div class="sidebar-bottom">
-        <div class="theme-row">
+        <div class="theme-row" id="themeRow">
           <div class="theme-points">
             <span data-mode="auto">Auto</span>
             <span data-mode="light">Hell</span>
@@ -36,13 +58,13 @@
             <div class="theme-marker" id="themeMarker"></div>
           </div>
         </div>
-        <div class="status-mini" id="miniStatus">
-          <div class="avatar" id="miniAvatar">G</div>
+        <div class="status-mini" id="miniStatus" title="Bereit zum Spielen">
+          <div class="avatar">G</div>
           <div class="status-text">
             <div class="name" id="miniName">GameCircl</div>
-            <div class="sub">Spielbereit!</div>
+            <div class="sub">Bereit zum Spielen!</div>
           </div>
-          <button class="settings-btn" id="openLogin">⚙️</button>
+          <button class="settings-btn" id="openLogin" title="Login / Statistiken">⚙️</button>
         </div>
       </div>
     </aside>
@@ -50,58 +72,93 @@
     <div id="sidebarOverlay" class="overlay hidden"></div>
 
     <main class="main">
-      <section class="page">
-        <header class="game-header">
-          <a href="spiele.html" class="back-btn">← Zurück zu Spielen</a>
-          <div class="game-title">
-            <h1>👥 Wer würde eher</h1>
-            <p>Erratet, wer am ehesten bestimmte Dinge tun würde!</p>
-          </div>
-        </header>
-
-        <!-- SETUP MODAL -->
+      <section id="page-wop" class="page">
+        
+        <!-- GAME STATE: SETUP -->
         <div id="gameSetup" class="game-state">
-          <section class="setup-section fade-in">
-            <h2>⚙️ Spiel einrichten</h2>
-            <p class="section-desc">Gib deine Spielernamen ein und starte das Spiel!</p>
+          <header class="game-header">
+            <a href="spiele.html" class="back-btn">← Zurück zu Spielen</a>
+            <div class="game-title">
+              <h1>👥 Wer würde eher...?</h1>
+              <p>Erratet, wer am ehesten bestimmte Dinge tun würde!</p>
+            </div>
+          </header>
 
+          <!-- Player Setup Section -->
+          <section class="setup-section">
+            <h2>👥 Spieler hinzufügen</h2>
             <div class="player-input-group">
-              <input type="text" id="playerName" placeholder="Spieler hinzufügen..." />
-              <button id="addPlayerBtn" class="btn primary">➕ Hinzufügen</button>
-            </div>
-
-            <div id="playersList" class="players-list"></div>
-
-            <div class="setup-section fade-in" style="margin-top: 20px;">
-              <h3>⏱️ Runden</h3>
-              <div class="rounds-selector">
-                <label class="rounds-option">
-                  <input type="radio" name="rounds" value="limited" data-mode="limited" data-rounds="5" checked />
-                  <div class="rounds-label">5 Runden</div>
-                  <p>Kurz & knackig</p>
-                </label>
-                <label class="rounds-option active">
-                  <input type="radio" name="rounds" value="limited" data-mode="limited" data-rounds="10" checked />
-                  <div class="rounds-label">10 Runden</div>
-                  <p>Standard</p>
-                </label>
-                <label class="rounds-option">
-                  <input type="radio" name="rounds" value="limited" data-mode="limited" data-rounds="20" />
-                  <div class="rounds-label">20 Runden</div>
-                  <p>Marathon</p>
-                </label>
-                <label class="rounds-option">
-                  <input type="radio" name="rounds" value="unlimited" data-mode="unlimited" />
-                  <div class="rounds-label">∞ Unbegrenzt</div>
-                  <p>Kein Limit</p>
-                </label>
+              <div style="flex: 1; min-width: 160px;">
+                <input type="text" id="playerName" placeholder="Spieler-Name" maxlength="30" />
               </div>
+              
+              <!-- Gender Selection as Button Group (NO DEFAULT) -->
+              <div class="gender-selector">
+                <button class="gender-btn" data-gender="any" title="Alle Kategorien">👥 Alle</button>
+                <button class="gender-btn" data-gender="male" title="Männlich">♂️ Mann</button>
+                <button class="gender-btn" data-gender="female" title="Weiblich">♀️ Frau</button>
+                <button class="gender-btn" data-gender="neutral" title="Neutral">⚪ Divers</button>
+              </div>
+
+              <button id="addPlayerBtn" class="btn primary">➕ Spieler hinzufügen</button>
             </div>
 
-            <div class="setup-actions">
-              <button id="startGameBtn" class="btn primary large" disabled>🎮 Spiel starten</button>
+            <div id="playersList" class="players-list">
+              <!-- Dynamisch gefüllt -->
+            </div>
+
+            <div class="setup-info">
+              <p>💡 <strong>Tipp:</strong> Mindestens 3 Spieler, maximal 10 für bestes Spielerlebnis!</p>
             </div>
           </section>
+
+          <!-- Rounds Selection -->
+          <section class="setup-section">
+            <h2>⏱️ Anzahl der Runden</h2>
+            <p class="section-desc">Wähle, wie lange das Spiel dauern soll:</p>
+            
+            <div class="rounds-selector">
+              <label class="rounds-option active" data-mode="limited" data-rounds="5">
+                <input type="radio" name="rounds" value="5" checked>
+                <span class="rounds-label">5 Runden</span>
+                <p>Kurz und knackig</p>
+              </label>
+              <label class="rounds-option" data-mode="limited" data-rounds="10">
+                <input type="radio" name="rounds" value="10">
+                <span class="rounds-label">10 Runden</span>
+                <p>Standard</p>
+              </label>
+              <label class="rounds-option" data-mode="limited" data-rounds="20">
+                <input type="radio" name="rounds" value="20">
+                <span class="rounds-label">20 Runden</span>
+                <p>Marathon</p>
+              </label>
+              <label class="rounds-option" data-mode="unlimited" data-rounds="0">
+                <input type="radio" name="rounds" value="0">
+                <span class="rounds-label">∞ Unbegrenzt</span>
+                <p>Kein Limit</p>
+              </label>
+            </div>
+          </section>
+
+          <!-- Categories Selection -->
+          <section class="setup-section">
+            <h2>🎯 Fragen-Kategorien</h2>
+            <p class="section-desc">Wähle die Kategorien aus, aus denen Fragen gestellt werden sollen:</p>
+            
+            <div id="categoriesGrid" class="categories-grid">
+              <!-- Dynamisch gefüllt -->
+            </div>
+
+            <div class="category-info">
+              <span id="selectedCategoryCount">0</span> / <span id="totalCategoryCount">11</span> Kategorien ausgewählt
+            </div>
+          </section>
+
+          <!-- Start Game Button -->
+          <div class="setup-actions">
+            <button id="startGameBtn" class="btn primary large" disabled>🎮 Spiel starten</button>
+          </div>
         </div>
 
         <!-- GAME PLAY -->

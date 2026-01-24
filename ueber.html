@@ -1,43 +1,30 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="apple-touch-icon" sizes="57x57" href="bilder/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="bilder/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="bilder/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="bilder/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="bilder/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="bilder/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="bilder/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="bilder/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="bilder/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192"  href="bilder/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="bilder/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="bilder/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="bilder/favicon-16x16.png">
-  <link rel="manifest" href="bilder/manifest.json">
-  <meta name="msapplication-TileColor" content="#09FFFF">
-  <meta name="msapplication-TileImage" content="bilder/ms-icon-144x144.png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#09FFFF">
 
-  <title>Über GameCircl</title>
-  <link rel="stylesheet" href="CSS/style-start.css">
-  <link rel="stylesheet" href="CSS/style-ueber.css">
+  <link rel="apple-touch-icon" sizes="57x57" href="bilder/apple-icon-57x57.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="bilder/favicon-32x32.png">
+  <link rel="manifest" href="bilder/manifest.json">
+  <meta name="msapplication-TileColor" content="#09FFFF">
 
+  <title>Über GameCircl — Gesellschaftsspiele Online</title>
+  <link rel="stylesheet" href="CSS/style-start.css" />
+  <link rel="stylesheet" href="CSS/style-ueber.css" />
 </head>
 <body>
-<div class="app" id="app">
+  <div class="app" id="app">
 
-  <!-- Floating Hamburger (mobil) -->
-  <button id="sidebarToggle" class="floating-hamburger" aria-label="Menü öffnen">☰</button>
+    <button id="sidebarToggle" class="floating-hamburger">☰</button>
 
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="logo-row">
-        <div class="logo-mark">GC</div>
-        <div class="logo-text">GameCircl<small>Gesellschaftsspiele</small></div>
+        <div class="logo">
+          <div class="logo-mark">GC</div>
+          <div class="logo-text">GameCircl <small>Gesellschaftsspiele</small></div>
+        </div>
       </div>
 
       <nav class="nav">
@@ -49,7 +36,7 @@
       </nav>
 
       <div class="sidebar-bottom">
-        <div class="theme-row" id="themeRow">
+        <div class="theme-row">
           <div class="theme-points">
             <span data-mode="auto">Auto</span>
             <span data-mode="light">Hell</span>
@@ -57,118 +44,210 @@
             <div class="theme-marker" id="themeMarker"></div>
           </div>
         </div>
-        <div class="status-mini" id="miniStatus" title="Bereit zum Spielen">
-          <div class="avatar">G</div>
+        <div class="status-mini" id="miniStatus">
+          <div class="avatar" id="miniAvatar">G</div>
           <div class="status-text">
             <div class="name" id="miniName">GameCircl</div>
-            <div class="sub">Bereit zum Spielen!</div>
+            <div class="sub">Spielbereit!</div>
           </div>
-          <button class="settings-btn" id="openLogin" title="Login / Statistiken">⚙️</button>
+          <button class="settings-btn" id="openLogin">⚙️</button>
         </div>
       </div>
+    </aside>
 
-  </aside>
-
-    <!-- OVERLAY FÜR MOBILE SIDEBAR -->
     <div id="sidebarOverlay" class="overlay hidden"></div>
 
-  <!-- MAIN -->
-  <main class="main">
-    
-    <section class="hero">
-      <span class="badge">GameCircl</span>
-      <h1 class="title"><span class="gradient">Über uns</span></h1>
-      <p class="subtitle">Die digitale Plattform für gemeinsame Spielabende – egal wo ihr seid.</p>
-    </section>
+    <main class="main">
+      <section class="page">
+        <header class="hero">
+          <div class="hero-content">
+            <p class="badge">📖 Unsere Geschichte</p>
+            <h1 class="title"><span class="gradient">Über GameCircl</span></h1>
+            <p class="subtitle">Eine Leidenschaft für Gesellschaftsspiele, Lacher und unvergessliche Momente mit Freunden.</p>
+          </div>
+        </header>
 
-    <section class="about-section fade-in">
-      <h2>Unsere Vision</h2>
-      <p>
-        GameCircl wurde geschaffen, um Freundeskreise, Familien und Paare auf eine neue, spielerische Weise zu verbinden.
-        Ganz ohne App-Download, ganz ohne Aufwand – nur Spaß, Emotionen und echte Gespräche.
-      </p>
-    </section>
+        <!-- Mission Section -->
+        <section class="about-section fade-in">
+          <div class="section-header">
+            <h2>🎯 Unsere Mission</h2>
+          </div>
+          <div class="about-content">
+            <p>
+              GameCircl wurde mit einer einfachen Vision gegründet: <strong>Den perfekten digitalen Ort für Gesellschaftsspiele zu schaffen — schnell, lustig und vollständig privat.</strong>
+            </p>
+            <p>
+              Wir glauben, dass die besten Momente entstehen, wenn Menschen zusammenkommen, lachen und sich unterhalten. Unser Ziel ist es, diese Momente einfacher und zugänglicher zu machen — ohne Umschweife, ohne Tracking und ohne versteckte Gebühren.
+            </p>
+            <div class="highlight-box">
+              ✨ <strong>Eine einfache Idee:</strong> Alles, was du brauchst, um Spaß zu haben — sonst nichts.
+            </div>
+          </div>
+        </section>
 
-    <section class="mission-grid fade-in">
-      <div class="mission-card">
-        <div class="icon">🎮</div>
-        <h3>Digitale Partyklassiker</h3>
-        <p>Von „Wahrheit oder Pflicht“ bis „Ich hab noch nie“ – alles, was ihr von echten Abenden kennt, in moderner Form.</p>
-      </div>
-      <div class="mission-card">
-        <div class="icon">🌐</div>
-        <h3>Gemeinsam, überall</h3>
-        <p>Spielt über den gleichen Bildschirm oder teilt einfach den Link – GameCircl funktioniert überall.</p>
-      </div>
-      <div class="mission-card">
-        <div class="icon">💡</div>
-        <h3>Entwickelt mit Herz</h3>
-        <p>Jeder Modus, jede Animation, jede Kategorie wurde handverlesen – für authentische Spielmomente.</p>
-      </div>
-      <div class="mission-card">
-        <div class="icon">🧾</div>
-        <h3>Pools mit über 10.000 Elementen</h3>
-        <p>Alle Modi zusammen umfassen etwa einen Fragen-/ Aufgabenpool von insgesamt knapp 10.000 Elementen – damit keine Langeweile aufkommt.</p>
-      </div>
-    </section>
+        <!-- Team Section -->
+        <section class="team-section fade-in">
+          <div class="section-header">
+            <h2>👥 Das Team</h2>
+            <p>Kleine, aber leidenschaftliche Entwickler</p>
+          </div>
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="team-avatar">JK</div>
+              <h3>Julian Kaiser</h3>
+              <p class="role">Gründer & Entwickler</p>
+              <p class="bio">Full-Stack Developer mit Leidenschaft für intuitive UX und Gesellschaftsspiele. In seiner Freizeit entwickelt er GameCircl aus reiner Liebe zum Projekt.</p>
+              <div class="social-links">
+                <a href="mailto:pixelstorm-interactive.development@outlook.com" title="Email">📧</a>
+              </div>
+            </div>
+          </div>
+        </section>
 
-    <section class="about-team fade-in">
-      <h2>Die Entstehung</h2>
-      <p>
-        Was als kleines Experiment begann, wuchs schnell zu einer großen Vision.  
-        GameCircl habe ich eigentlich als Spaßprojekt für meine Freundesgruppe und mich entwickelt. Doch als die Webseite, der Code und die Datastores immer größer wurden,
-        weitete ich das Projekt aus, um eine größere Gruppe an Menschen an GameCircl teilhaben zu lassen.
-      </p>
-    </section>
+        <!-- Values Section -->
+        <section class="values-section fade-in">
+          <div class="section-header">
+            <h2>💎 Unsere Werte</h2>
+          </div>
+          <div class="values-grid">
+            <div class="value-card">
+              <div class="value-icon">🔒</div>
+              <h3>Privatsphäre</h3>
+              <p>Deine Daten gehören dir. Keine Server, keine Tracker, keine Datenverkäufe.</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">⚡</div>
+              <h3>Schnelligkeit</h3>
+              <p>Keine Komplizierung. Du öffnest GameCircl, wählst ein Spiel und spielst.</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">🎨</div>
+              <h3>Design</h3>
+              <p>Schöne, moderne Oberfläche die intuitiv ist und Spaß macht zu bedienen.</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">🤝</div>
+              <h3>Gemeinschaft</h3>
+              <p>Wir hören auf Feedback und entwickeln gemeinsam mit euch weiter.</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">🎲</div>
+              <h3>Vielfalt</h3>
+              <p>Für jede Gelegenheit das richtige Spiel — von klassisch bis verrückt.</p>
+            </div>
+            <div class="value-card">
+              <div class="value-icon">💰</div>
+              <h3>Kostenlos</h3>
+              <p>100% kostenlos, ohne In-App-Käufe, ohne Werbung, für immer.</p>
+            </div>
+          </div>
+        </section>
 
-    <div class="cta-area">
-      <a href="spiele.html" class="btn primary">Jetzt spielen</a>
-    </div>
+        <!-- Tech Stack -->
+        <section class="tech-section fade-in">
+          <div class="section-header">
+            <h2>⚙️ Technologie</h2>
+            <p>Gebaut mit modernen, bewährten Technologien</p>
+          </div>
+          <div class="tech-grid">
+            <div class="tech-item">
+              <h4>Frontend</h4>
+              <p>HTML5 • CSS3 • JavaScript (Vanilla)</p>
+            </div>
+            <div class="tech-item">
+              <h4>Storage</h4>
+              <p>LocalStorage • SessionStorage</p>
+            </div>
+            <div class="tech-item">
+              <h4>Design</h4>
+              <p>Responsive Design • Dark Mode</p>
+            </div>
+            <div class="tech-item">
+              <h4>Performance</h4>
+              <p>100% Offline • Schnell geladen</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Roadmap -->
+        <section class="roadmap-section fade-in">
+          <div class="section-header">
+            <h2>🗺️ Roadmap</h2>
+            <p>Was kommt als nächstes</p>
+          </div>
+          <div class="roadmap-items">
+            <div class="roadmap-item done">
+              <div class="status-badge done">✓ Fertig</div>
+              <h4>12 Grundspiele</h4>
+              <p>Mit anpassbaren Modi und Kategorien</p>
+            </div>
+            <div class="roadmap-item done">
+              <div class="status-badge done">✓ Fertig</div>
+              <h4>Offline-Modus</h4>
+              <p>Spiel überall, ohne Internet</p>
+            </div>
+            <div class="roadmap-item inprogress">
+              <div class="status-badge inprogress">⏳ In Arbeit</div>
+              <h4>Firebase Integration</h4>
+              <p>Cloud Synchronisierung & Login</p>
+            </div>
+            <div class="roadmap-item planned">
+              <div class="status-badge planned">📋 Geplant</div>
+              <h4>Multiplayer Online</h4>
+              <p>Mit Freunden online spielen</p>
+            </div>
+            <div class="roadmap-item planned">
+              <div class="status-badge planned">📋 Geplant</div>
+              <h4>Mobile App</h4>
+              <p>Native iOS & Android Apps</p>
+            </div>
+            <div class="roadmap-item planned">
+              <div class="status-badge planned">📋 Geplant</div>
+              <h4>Benutzerdefinierte Spiele</h4>
+              <p>Eigene Fragen & Aufgaben erstellen</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section fade-in">
+          <div class="cta-card">
+            <h2>Bereit zu spielen?</h2>
+            <p>Entdecke jetzt alle Spiele und verspreche dir selbst: Mehr Lacher, mehr Spaß, mehr unvergessliche Momente.</p>
+            <a href="spiele.html" class="btn primary large">Zu den Spielen →</a>
+          </div>
+        </section>
+
+      </section>
 
       <footer class="footer">
         <small>© <span id="year"></span> Pixelstorm Interactive Development Group — made with ❤️</small>
       </footer>
-  </main>
-</div>
+    </main>
+  </div>
 
-  <!-- LOGIN / STATISTICS MODAL -->
-  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
+  <!-- LOGIN MODAL -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-panel">
       <button class="modal-close" id="modalClose">✕</button>
-      <h3 id="modalTitle">Login & Statistiken</h3>
+      <h3>Login & Profil</h3>
       <br>
-
       <div id="loginArea">
-        <label>
-          Benutzername
-          <input type="text" id="username" placeholder="Dein Name" />
-        </label>
+        <label>Benutzername<input type="text" id="username" placeholder="Dein Name" /></label>
         <div class="login-actions">
           <button id="saveUser" class="btn primary">Speichern</button>
-          <button id="logoutBtn" class="btn secondary">Ausloggen (lokal)</button>
+          <button id="logoutBtn" class="btn secondary">Ausloggen</button>
         </div>
-        <br>
-        <br>
-        <p class="muted">Das ist eine einfache Demo — deine Daten bleiben lokal in diesem Browser.</p>
+        <p class="muted">Deine Daten bleiben lokal.</p>
       </div>
-
-      <hr />
-      <br>
-
+      <hr /><br>
       <div id="statsArea">
-        <h4>Deine Statistiken (Demo)</h4>
-        <div id="statsList">
-          <!-- dynamisch -->
-        </div>
-        <div class="stat-actions">
-          <button id="exportStats" class="btn">Export (JSON)</button>
-          <button id="importStats" class="btn">Import (JSON)</button>
-          <input id="importFile" type="file" accept="application/json" class="hidden" />
-        </div>
+        <h4>Statistiken</h4>
+        <div id="statsList"></div>
       </div>
     </div>
   </div>
 
-<script src="JS/script-ueber.js"></script>
+  <script src="JS/script-start.js"></script>
 </body>
 </html>

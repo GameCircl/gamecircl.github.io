@@ -25,7 +25,13 @@
   <title>Wahrheit oder Pflicht – GameCircl</title>
   <link rel="stylesheet" href="CSS/style-start.css" />
   <link rel="stylesheet" href="CSS/style-wop.css" />
-  
+  <link href='https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css' rel='stylesheet'>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+  <script src="JS/firebase-config.js"></script>
+  <script src="JS/script-auth.js"></script>
 </head>
 
 <body>
@@ -151,7 +157,7 @@
             </div>
 
             <div class="category-info">
-              <span id="selectedCategoryCount">0</span> / <span id="totalCategoryCount">11</span> Kategorien ausgewählt
+              <span id="selectedCategoryCount">0</span> / <span id="totalCategoryCount">6</span> Kategorien ausgewählt
             </div>
           </section>
 
@@ -221,6 +227,7 @@
                 <p class="question-text" id="questionText"></p>
                 <div class="question-actions">
                   <button id="nextQuestionBtn" class="btn primary">Nächster Spieler ➜</button>
+                  <button id="rerollBtn" class="btn secondary">🔄 Andere Frage</button>
                   <button id="penaltyBtn" class="btn" style="display:none;">🔥 Strafaufgabe</button>
                 </div>
               </div>
