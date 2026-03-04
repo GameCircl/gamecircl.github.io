@@ -1,6 +1,25 @@
 {
   "updates": [
     {
+      "id": "2026-03-04-1",
+      "title": "Premium Design Update 🎨✨ – FAQ Accordion & News Redesign",
+      "date": "2026-03-04",
+      "type": "feature; style; ux",
+      "summary": "Großes Design-Update mit funktionsfähigen FAQ-Akkordeons, kompletter News-Seite Redesign und Auto-Scroll Feature. Konsistenter Premium-Style auf allen Hauptseiten.",
+      "content": [
+        "FAQ-Karten auf der Startseite vollständig funktionell mit Accordion-Modus, glatten Animationen und rotierendem Icon",
+        "News-Seite komplett neugestaltet mit 3-Spalten Grid Layout und Premium Card-Design",
+        "Neue Animationen für News-Cards mit staggered entrance effects und beeindruckenden Hover-Effekten",
+        "Auto-Scroll Feature bei geöffneten News-Karten – Seite scrollt automatisch zur Karte wenn 'Mehr zeigen' geklickt wird",
+        "Tags in News-Karten sind jetzt direkt klickbar zum Filtern",
+        "Konsistenter Premium Hero-Section Design auf allen Seiten (news.html, impressum.html, ueber.html, spiele.html)",
+        "Verbesserte Filter und Such-UI mit schönerem Design und smootheren Animationen",
+        "Fully Responsive – alle neuen Features funktionieren perfekt auf Mobile (320px), Tablet (768px) und Desktop"
+      ],
+      "tags": ["Design", "Feature", "UX", "Animationen"],
+      "pinned": true
+    },
+    {
       "id": "2025-12-18-1",
       "title": "Design-Überarbeitung (Modernisierung) & Neue Funktionen für Spieleseite 🎨",
       "date": "2025-12-18",
@@ -13,7 +32,7 @@
         "Favoriten-Funktion für Spiele hinzugefügt, um Lieblingsspiele zu markieren und schnell darauf zuzugreifen"
       ],
       "tags": ["Feature", "Design", "Bugfixes"],
-      "pinned": true
+      "pinned": false
     },
     {
       "id": "2025-11-01-1",
