@@ -1,18 +1,17 @@
 /* script-news.js
-   Lädt news.json, rendert Cards, Filter, Suche, Sortierung.
-   Ready-to-use mit JSON-Datastores/news.json
+   Lädt news.json, rendert schöne Cards mit Animationen, Filter, Suche, Sortierung.
 */
 
 (function(){
-  // safe DOM refs (optional elements tolerated)
   const container = document.getElementById('newsList');
   const emptyEl = document.getElementById('newsEmpty');
   const tagFiltersEl = document.getElementById('tagFilters');
   const searchInput = document.getElementById('newsSearch');
   const sortSelect = document.getElementById('sortSelect');
+  const resetBtn = document.getElementById('resetFilters');
 
   if(!container) {
-    console.warn('newsList container nicht gefunden – Abbruch script-news.js');
+    console.warn('newsList container nicht gefunden');
     return;
   }
 
@@ -21,11 +20,11 @@
   let activeTag = null;
   let searchTerm = '';
 
-  // helpers
+  // HTML Escaping
   const escapeHtml = s => (s||'').toString()
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
-  // 💡 neue Datumsfunktion (unterstützt Strings und {from,to})
+  // Date Formatting
   const fmtDate = d => {
     if (!d) return '';
     try {
@@ -36,7 +35,7 @@
       if (typeof d === 'object' && d.from && d.to) {
         const from = new Date(d.from + 'T00:00:00');
         const to = new Date(d.to + 'T00:00:00');
-        return `${from.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' })} – ${to.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' })}`;
+        return `${from.toLocaleDateString('de-DE', { day:'2-digit', month:'short' })} – ${to.toLocaleDateString('de-DE', { day:'2-digit', month:'short', year:'numeric' })}`;
       }
       if (typeof d === 'object' && d.from) {
         const from = new Date(d.from + 'T00:00:00');
@@ -48,13 +47,14 @@
     }
   };
 
+  // Collect all tags
   const collectTags = list => {
     const s = new Set();
     (list || []).forEach(n => (n.tags || []).forEach(t => s.add(t)));
     return Array.from(s).sort((a,b) => a.localeCompare(b,'de'));
   };
 
-  // sort: pinned always on top, then by date
+  // Sort news
   function sortNews(list, mode = 'date-desc'){
     const copy = [...list];
     const getDateValue = d => {
@@ -69,12 +69,15 @@
 
     if(mode === 'date-asc'){
       copy.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || byDateAsc(a,b));
+    } else if(mode === 'pinned-first'){
+      copy.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || byDateDesc(a,b));
     } else {
       copy.sort((a,b) => (b.pinned?1:0) - (a.pinned?1:0) || byDateDesc(a,b));
     }
     return copy;
   }
 
+  // Filter matching
   function matchesFilter(n){
     if(activeTag && !(n.tags || []).includes(activeTag)) return false;
     if(searchTerm){
@@ -84,23 +87,26 @@
     return true;
   }
 
-  // create a card DOM node
+  // Create card DOM
   function createCard(n){
     const art = document.createElement('article');
     art.className = 'news-card' + (n.pinned ? ' pinned' : '');
-    art.style.opacity = 0;
-    art.style.transform = 'translateY(15px)';
-    art.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+    art.setAttribute('data-id', n.id || '');
 
     const tagsHtml = (n.tags || []).map(t => {
       const safeClass = 'tag-' + t.replace(/[^\w\-]/g,'');
-      return `<span class="tag-pill ${safeClass}">${escapeHtml(t)}</span>`;
-    }).join(' ');
+      return `<span class="tag-pill ${safeClass}" title="Nach '${escapeHtml(t)}' filtern">${escapeHtml(t)}</span>`;
+    }).join('');
+
+    const contentHtml = (n.content || []).map((line, idx) => {
+      return `<div style="animation-delay: ${idx * 0.05}s;">${escapeHtml(line)}</div>`;
+    }).join('');
 
     art.innerHTML = `
       ${n.pinned ? '<div class="pinned-badge">📌 NEU</div>' : ''}
+
       <div class="news-header">
-        <div style="min-width:0;flex:1;">
+        <div style="min-width: 0; flex: 1;">
           <h3 class="news-title">${escapeHtml(n.title)}</h3>
         </div>
         <div class="news-date">${fmtDate(n.date)}</div>
@@ -108,48 +114,72 @@
 
       <div class="news-summary">${escapeHtml(n.summary || '')}</div>
 
-      <div class="news-tags">
-        ${tagsHtml}
+      ${tagsHtml ? `<div class="news-tags">${tagsHtml}</div>` : ''}
+
+      <div class="news-details" aria-hidden="true">
+        ${contentHtml}
       </div>
 
       <div class="news-controls-row">
-        <button class="btn-more show-more">Mehr</button>
-      </div>
-
-      <div class="news-details" aria-hidden="true">
-        ${(n.content || []).map(line => `<div>${escapeHtml(line)}</div>`).join('')}
+        <button class="btn-more show-more" aria-expanded="false">
+          <span class="btn-text">Mehr zeigen</span>
+          <span class="btn-icon">↓</span>
+        </button>
       </div>
     `;
 
-    // sanftes Expand/Collapse Details
+    // Setup expand/collapse
     const btn = art.querySelector('.show-more');
     const details = art.querySelector('.news-details');
-    details.style.maxHeight = '0px';
-    details.style.overflow = 'hidden';
-    details.style.transition = 'max-height 0.3s ease';
+    const btnText = art.querySelector('.btn-text');
 
     btn.addEventListener('click', (e) => {
-      const open = details.classList.toggle('open');
-      details.setAttribute('aria-hidden', !open);
-      btn.textContent = open ? 'Weniger' : 'Mehr';
-      details.style.maxHeight = open ? details.scrollHeight + 'px' : '0px';
+      e.preventDefault();
       e.stopPropagation();
+
+      const isOpen = details.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen);
+      btnText.textContent = isOpen ? 'Weniger zeigen' : 'Mehr zeigen';
+      details.setAttribute('aria-hidden', !isOpen);
+
+      if(isOpen) {
+        details.style.maxHeight = (details.scrollHeight + 20) + 'px';
+        btn.style.transform = 'none';
+
+        // Auto-scroll zur Karte wenn aufgeklappt
+        setTimeout(() => {
+          art.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+        }, 150);
+      } else {
+        details.style.maxHeight = '0px';
+      }
     });
 
-    // Pop-In Animation
-    setTimeout(() => {
-      art.style.opacity = 1;
-      art.style.transform = 'translateY(0)';
-    }, 50);
+    // Make tags clickable for filtering
+    art.querySelectorAll('.tag-pill').forEach(tag => {
+      tag.style.cursor = 'pointer';
+      tag.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const tagName = tag.textContent;
+        activeTag = activeTag === tagName ? null : tagName;
+        setActiveFilterBtn();
+        render();
+        // Scroll to top of list for UX
+        document.querySelector('.news-container')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
 
     return art;
   }
 
-  // render list
+  // Render all cards
   function render(){
     container.innerHTML = '';
     if(!Array.isArray(allNews) || allNews.length === 0){
-      emptyEl.style.display = '';
+      emptyEl.style.display = 'block';
       emptyEl.textContent = 'Keine News vorhanden.';
       return;
     }
@@ -160,27 +190,31 @@
     const filtered = sorted.filter(matchesFilter);
 
     if(filtered.length === 0){
-      emptyEl.style.display = '';
-      emptyEl.textContent = 'Keine News gefunden.';
+      emptyEl.style.display = 'block';
+      emptyEl.textContent = searchTerm ? 'Keine News für diese Suche gefunden.' : 'Keine News für diesen Filter gefunden.';
       return;
     } else {
       emptyEl.style.display = 'none';
     }
 
-    filtered.forEach(n => container.appendChild(createCard(n)));
+    filtered.forEach(n => {
+      const card = createCard(n);
+      container.appendChild(card);
+    });
   }
 
-  // filter bar rendering
+  // Render filter buttons
   function renderFilters(tags){
     if(!tagFiltersEl) return;
     tagFiltersEl.innerHTML = '';
 
     const allBtn = document.createElement('button');
+    allBtn.type = 'button';
     allBtn.className = 'filter-btn active';
     allBtn.textContent = 'Alle';
     allBtn.dataset.tag = '';
     allBtn.addEventListener('click', () => {
-      setActiveTag(null);
+      activeTag = null;
       setActiveFilterBtn();
       render();
     });
@@ -188,6 +222,7 @@
 
     tags.forEach(t => {
       const btn = document.createElement('button');
+      btn.type = 'button';
       btn.className = 'filter-btn';
       btn.textContent = t;
       btn.dataset.tag = t;
@@ -202,24 +237,31 @@
     setActiveFilterBtn();
   }
 
+  // Update active filter button styling
   function setActiveFilterBtn(){
     if(!tagFiltersEl) return;
     tagFiltersEl.querySelectorAll('.filter-btn').forEach(b => {
       const t = b.dataset.tag;
-      if((!t && !activeTag) || (t && activeTag === t)) b.classList.add('active');
-      else b.classList.remove('active');
+      if((!t && !activeTag) || (t && activeTag === t)) {
+        b.classList.add('active');
+      } else {
+        b.classList.remove('active');
+      }
     });
   }
 
-  function setActiveTag(tag){
-    activeTag = tag || null;
-  }
-
-  // events
+  // Event listeners
   searchInput?.addEventListener('input', () => render());
   sortSelect?.addEventListener('change', () => render());
+  resetBtn?.addEventListener('click', () => {
+    activeTag = null;
+    if(searchInput) searchInput.value = '';
+    if(sortSelect) sortSelect.value = 'date-desc';
+    setActiveFilterBtn();
+    render();
+  });
 
-  // load
+  // Load news
   (async function load(){
     try {
       const res = await fetch(newsUrl, { cache: 'no-store' });
@@ -227,6 +269,7 @@
       const json = await res.json();
       allNews = json.updates || json.news || json || [];
 
+      // Ensure all news have dates
       allNews.forEach(n => { if(!n.date) n.date = '1970-01-01'; });
 
       const tags = collectTags(allNews);
@@ -235,8 +278,8 @@
     } catch(err){
       console.error('Fehler beim Laden der News:', err);
       if(emptyEl) {
-        emptyEl.style.display = '';
-        emptyEl.textContent = 'Fehler beim Laden der News.';
+        emptyEl.style.display = 'block';
+        emptyEl.innerHTML = '⚠️ Fehler beim Laden der News. Bitte versuche es später noch mal.';
       }
     }
   })();

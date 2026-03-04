@@ -226,27 +226,43 @@
     </main>
   </div>
 
-  <!-- LOGIN MODAL -->
-  <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+  <!-- LOGIN / STATISTICS MODAL
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-panel">
       <button class="modal-close" id="modalClose">✕</button>
-      <h3>Login & Profil</h3>
+      <h3 id="modalTitle">Login & Statistiken</h3>
       <br>
+
       <div id="loginArea">
-        <label>Benutzername<input type="text" id="username" placeholder="Dein Name" /></label>
+        <label>
+          Benutzername
+          <input type="text" id="username" placeholder="Dein Name" />
+        </label>
         <div class="login-actions">
           <button id="saveUser" class="btn primary">Speichern</button>
-          <button id="logoutBtn" class="btn secondary">Ausloggen</button>
+          <button id="logoutBtn" class="btn secondary">Ausloggen (lokal)</button>
         </div>
-        <p class="muted">Deine Daten bleiben lokal.</p>
+        <br>
+        <p class="muted">Das ist eine einfache Demo — deine Daten bleiben lokal in diesem Browser.</p>
       </div>
-      <hr /><br>
+
+      <hr />
+      <br>
+
       <div id="statsArea">
-        <h4>Statistiken</h4>
-        <div id="statsList"></div>
+        <h4>Deine Statistiken (Demo)</h4>
+        <div id="statsList">
+          <!-- dynamisch
+        </div>
+        <div class="stat-actions">
+          <button id="exportStats" class="btn">Export (JSON)</button>
+          <button id="importStats" class="btn">Import (JSON)</button>
+          <input id="importFile" type="file" accept="application/json" class="hidden" />
+        </div>
       </div>
     </div>
   </div>
+  -->
 
   <script src="JS/script-start.js"></script>
 </body>

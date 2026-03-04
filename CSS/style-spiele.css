@@ -575,7 +575,7 @@
 .modal-game-info p {
   line-height: 1.7;
   color: var(--text);
-  margin: 0 0 14px 0;
+  margin: 20px 0 14px 0;
   font-size: 14px;
 }
 

@@ -83,37 +83,43 @@
     <main class="main">
       <section id="page-news" class="page">
         <header class="hero">
-          <p class="badge">Updates & Ankündigungen</p>
-          <h1 class="title"><span class="gradient">News & Updates</span></h1>
-          <p class="subtitle">Alles Wichtige zu neuen Features, Fixes und geplanten Änderungen.</p>
+          <div class="hero-content">
+            <p class="badge">❗ Updates & Ankündigungen</p>
+            <h1 class="title"><span class="gradient">News & Updates</span></h1>
+            <p class="subtitle">Alles Wichtige zu neuen Features, Fixes und geplanten Änderungen.</p>
+          </div>
         </header>
 
     <!-- Filter- & Suchleiste -->
     <div id="controlsBar">
       <!-- obere Reihe: Suche + Sortierung -->
       <div class="controls-top">
-        <input id="newsSearch" type="search" placeholder="🔍 Suche News oder Stichwörter...">
-          <select id="sortSelect" aria-label="Sortierung">
-            <option value="date-desc">🕓 Neueste zuerst</option>
-            <option value="date-asc">📅 Älteste zuerst</option>
-            <option value="pinned-first">📌 Pinned zuerst</option>
-          </select>
+        <input
+          id="newsSearch"
+          type="search"
+          placeholder="🔍 Suche News oder Stichwörter..."
+          aria-label="News durchsuchen">
+        <select id="sortSelect" aria-label="Sortierung">
+          <option value="date-desc">🕓 Neueste zuerst</option>
+          <option value="date-asc">📅 Älteste zuerst</option>
+          <option value="pinned-first">📌 Wichtig zuerst</option>
+        </select>
       </div>
 
       <!-- untere Reihe: Tag-Filter + Reset -->
       <div class="controls-bottom">
-        <div id="tagFilters">
-        <!-- Diese Buttons werden von script-news.js dynamisch befüllt -->
+        <div id="tagFilters" role="group" aria-label="Filter nach Kategorie">
+          <!-- Dynamisch befüllt -->
         </div>
-      <button id="resetFilters">🔄 Alle zurücksetzen</button>
+        <button id="resetFilters" aria-label="Alle Filter und Suche zurücksetzen">🔄 Zurücksetzen</button>
       </div>
     </div>
 
-        <!-- Container für News -->
-        <main id="newsList" class="news-container"></main>
+    <!-- Container für News -->
+    <div id="newsList" class="news-container" role="region" aria-live="polite" aria-label="News-Liste"></div>
 
-        <!-- Leere-state -->
-        <div id="newsEmpty" style="display:none;text-align:center;color:var(--muted);padding:40px 18px;">Keine News gefunden.</div>
+    <!-- Leere-state -->
+    <div id="newsEmpty" style="display:none;" role="status">Keine News gefunden.</div>
 
       </section>
 

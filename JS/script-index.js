@@ -5,30 +5,31 @@
 /* ────────────── FAQ ACCORDION ────────────── */
 function initFAQ() {
   const faqToggles = document.querySelectorAll('.faq-toggle');
-  
+
   faqToggles.forEach(toggle => {
-    toggle.addEventListener('click', () => {
-      const answer = toggle.nextElementSibling;
-      const icon = toggle.querySelector('.faq-icon');
-      const isOpen = toggle.classList.contains('active');
-      
-      // Schließe alle anderen
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      const answer = this.nextElementSibling;
+      const isOpen = this.classList.contains('active');
+
+      // Schließe alle anderen FAQs (Accordion-Modus)
       faqToggles.forEach(t => {
-        if (t !== toggle && t.classList.contains('active')) {
+        if (t !== this && t.classList.contains('active')) {
           t.classList.remove('active');
-          t.nextElementSibling?.classList.remove('visible');
+          const otherAnswer = t.nextElementSibling;
+          otherAnswer?.classList.remove('visible');
         }
       });
-      
+
       // Toggle diese Antwort
-      toggle.classList.toggle('active');
+      this.classList.toggle('active');
       answer?.classList.toggle('visible');
-      
+
       // Smooth scroll zur Antwort, falls geöffnet
       if (!isOpen && answer) {
         setTimeout(() => {
           answer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 100);
+        }, 200);
       }
     });
   });
@@ -37,11 +38,11 @@ function initFAQ() {
 /* ────────────── COUNTER ANIMATION ────────────── */
 function animateCounters() {
   const counters = document.querySelectorAll('.stat-number');
-  
+
   const observerOptions = {
     threshold: 0.5
   };
-  
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting && !entry.target.dataset.animated) {
@@ -50,9 +51,9 @@ function animateCounters() {
         const duration = 2000; // 2 Sekunden
         const start = 0;
         const increment = target / (duration / 16);
-        
+
         let current = start;
-        
+
         const timer = setInterval(() => {
           current += increment;
           if (current >= target) {
@@ -66,55 +67,28 @@ function animateCounters() {
       }
     });
   }, observerOptions);
-  
+
   counters.forEach(counter => observer.observe(counter));
 }
 
-/* ────────────── PAGE LOAD ────────────── */
-document.addEventListener('DOMContentLoaded', () => {
-  initFAQ();
-  animateCounters();
-  
-  // Smooth scroll für CTA Button
-  const ctaStartBtn = document.getElementById('ctaStartBtn');
-  if (ctaStartBtn) {
-    ctaStartBtn.addEventListener('click', () => {
-      window.location.href = 'spiele.html';
-    });
-  }
-});
-
-/* ────────────── SCROLL REVEAL ────────────── */
-const revealElements = () => {
-  const elements = document.querySelectorAll('.fade-in');
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-      }
-    });
-  }, { threshold: 0.1 });
-  
-  elements.forEach(el => observer.observe(el));
-};
-
-document.addEventListener('DOMContentLoaded', revealElements);
-
-/* ====== FEATURED GAMES (Startseite) ====== */
-
-let allGames = [];
-
+/* ────────────── FEATURED GAMES LADEN ────────────── */
 async function loadFeaturedGames() {
   try {
-    const res = await fetch('JSON-Datastores/spiele.json', { cache: "no-store" });
-    if (!res.ok) throw new Error('Network error: ' + res.status);
+    const res = await fetch('JSON-Datastores/spiele.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('Fehler beim Laden des Spieleverzeichnisses');
     const data = await res.json();
-    allGames = data.spiele || data;
-    if (!Array.isArray(allGames)) throw new Error('Invalid data format');
-    renderFeaturedGames();
+    const allGames = data.spiele || data;
+
+    if (!Array.isArray(allGames)) throw new Error('Ungültiges Datenformat');
+
+    // Sortiere nach Popularität und nehme die Top 4
+    const featured = [...allGames]
+      .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+      .slice(0, 4);
+
+    renderFeaturedGames(featured);
   } catch (err) {
-    console.error('Fehler beim Laden der spiele.json', err);
+    console.error('Fehler beim Laden der Spiele:', err);
     const gameList = document.getElementById('game-list');
     if (gameList) {
       gameList.innerHTML = `
@@ -128,25 +102,21 @@ async function loadFeaturedGames() {
   }
 }
 
-function renderFeaturedGames() {
+function renderFeaturedGames(games) {
   const gameList = document.getElementById('game-list');
-  if (!gameList || !allGames.length) return;
-  
+  if (!gameList || !games.length) return;
+
   gameList.innerHTML = '';
-  
-  // Sortiere nach Popularität und nehme die Top 4
-  const featured = [...allGames]
-    .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
-    .slice(0, 4);
-  
-  featured.forEach((game, i) => {
+
+  games.forEach((game, index) => {
     const card = document.createElement('article');
     card.className = 'featured-card';
     card.style.setProperty('--card-color-1', game.color || '#00ffff');
     card.style.setProperty('--card-color-2', game.color2 || game.color || '#00cccc');
-    
+    card.style.animationDelay = `${index * 100}ms`;
+
     const stars = '★'.repeat(game.rating || 5) + '☆'.repeat(5 - (game.rating || 5));
-    
+
     card.innerHTML = `
       <div class="featured-card-top">
         <div class="featured-card-header">
@@ -157,24 +127,24 @@ function renderFeaturedGames() {
           </div>
         </div>
       </div>
-      
+
       <div class="featured-card-divider"></div>
-      
+
       <div class="featured-card-body">
         <p class="featured-card-desc">${game.desc}</p>
         <div class="featured-card-meta">
           <div class="featured-card-meta-item">👥 ${game.players}</div>
           <div class="featured-card-meta-item">⏱ ${game.time}</div>
-          <div class="featured-card-meta-item">⚙️ ${game.difficulty}</div>
+          ${game.difficulty ? `<div class="featured-card-meta-item">⚙️ ${game.difficulty}</div>` : ''}
         </div>
       </div>
-      
+
       <div class="featured-card-footer">
         <div class="featured-card-rating">${stars}</div>
-        <button class="featured-card-btn" data-link="${game.link || '#'}" data-title="${game.title}" title="Starte ${game.title}">▶ Spielen</button>
+        <button class="featured-card-btn" data-link="${game.link || '#'}" data-title="${game.title}" title="Spiel starten">▶ Spielen</button>
       </div>
     `;
-    
+
     card.querySelector('.featured-card-btn').addEventListener('click', () => {
       if (game.link) {
         window.location.href = game.link;
@@ -182,108 +152,61 @@ function renderFeaturedGames() {
         alert(`Spiel "${game.title}" wird bald verfügbar sein!`);
       }
     });
-    
+
     gameList.appendChild(card);
   });
 }
 
-/* ────────────── INDEX PAGE SPECIFIC ────────────── */
+/* ────────────── PAGE INTERACTIONS ────────────── */
+function setupPageInteractions() {
+  // CTA Start Button
+  const ctaStartBtn = document.getElementById('ctaStartBtn');
+  if (ctaStartBtn) {
+    ctaStartBtn.addEventListener('click', () => {
+      window.location.href = 'spiele.html';
+    });
+  }
 
-const qs = s => document.querySelector(s);
-const qsa = s => Array.from(document.querySelectorAll(s));
+  // Start Button im Hero
+  const startBtn = document.getElementById('startBtn');
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      window.location.href = 'spiele.html';
+    });
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-  /* ────────────── FEATURED GAMES LADEN ────────────── */
-  loadFeaturedGames();
-
-  /* ────────────── FAQ TOGGLE ────────────── */
-  setupFAQ();
-
-  /* ────────────── INTERSECTION OBSERVER FÜR FADE-IN ────────────── */
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+  // Learn More Button
+  const learnMoreBtn = document.getElementById('learnMore');
+  if (learnMoreBtn) {
+    learnMoreBtn.addEventListener('click', () => {
+      const whySection = document.querySelector('.why-section');
+      if (whySection) {
+        whySection.scrollIntoView({ behavior: 'smooth' });
       }
     });
-  }, { threshold: 0.15 });
-
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-});
-
-/* ────────────── FEATURED GAMES LADEN ────────────── */
-async function loadFeaturedGames() {
-  try {
-    const res = await fetch('JSON-Datastores/spiele.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error('Fehler beim Laden');
-    const data = await res.json();
-    const list = data.spiele || [];
-    
-    // Nimm die 4 populärsten Spiele
-    const featured = list
-      .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
-      .slice(0, 4);
-    
-    renderFeaturedGames(featured);
-  } catch (err) {
-    console.error('Fehler:', err);
   }
 }
 
-function renderFeaturedGames(games) {
-  const gameList = qs('#game-list');
-  if (!gameList) return;
-  
-  gameList.innerHTML = games.map((g, i) => `
-    <article class="featured-card" style="--card-color-1:${g.color}; --card-color-2:${g.color2}; animation-delay:${i * 100}ms">
-      <div class="featured-card-top">
-        <div class="featured-card-header">
-          <div class="featured-card-icon">${g.icon || '🎮'}</div>
-          <div class="featured-card-title-group">
-            <h3>${g.title}</h3>
-            <div class="short">${g.short || ''}</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="featured-card-divider"></div>
-      
-      <div class="featured-card-body">
-        <p class="featured-card-desc">${g.desc}</p>
-        <div class="featured-card-meta">
-          <div class="featured-card-meta-item">👥 ${g.players}</div>
-          <div class="featured-card-meta-item">⏱ ${g.time}</div>
-        </div>
-      </div>
-      
-      <div class="featured-card-footer">
-        <div class="featured-card-rating">${'⭐'.repeat(g.rating || 5)}</div>
-        <a href="${g.link}" class="featured-card-btn">Spielen →</a>
-      </div>
-    </article>
-  `).join('');
+/* ────────────── SCROLL REVEAL ────────────── */
+function revealElements() {
+  const elements = document.querySelectorAll('.fade-in');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  elements.forEach(el => observer.observe(el));
 }
 
-/* ────────────── FAQ TOGGLE ────────────── */
-function setupFAQ() {
-  const faqToggles = qsa('.faq-toggle');
-  
-  faqToggles.forEach(toggle => {
-    toggle.addEventListener('click', () => {
-      const item = toggle.closest('.faq-item');
-      const answer = item.querySelector('.faq-answer');
-      
-      // Toggle active class
-      toggle.classList.toggle('active');
-      answer.classList.toggle('visible');
-      
-      // Schließe andere offene FAQs (optional)
-      // faqToggles.forEach(t => {
-      //   if (t !== toggle) {
-      //     t.classList.remove('active');
-      //     t.closest('.faq-item').querySelector('.faq-answer').classList.remove('visible');
-      //   }
-      // });
-    });
-  });
-}
+/* ────────────── DOM CONTENT LOADED ────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  loadFeaturedGames();
+  initFAQ();
+  animateCounters();
+  setupPageInteractions();
+  revealElements();
+});
