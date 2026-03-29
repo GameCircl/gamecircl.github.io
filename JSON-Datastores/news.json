@@ -2,19 +2,19 @@
   "updates": [
     {
       "id": "2026-03-29-1",
-      "title": "Wahrheit oder Pflicht Upgrade 🎲✨ – neues UI & smarteres Gameplay",
+      "title": "Spielseiten-Upgrade: Wahrheit oder Pflicht + Ich hab noch nie 🎮✨",
       "date": "2026-03-29",
       "type": "feature; style; gameplay",
-      "summary": "Die WOP- und Ich-hab-noch-nie-Seiten wurden heute modernisiert: klareres Setup, bessere Frageanzeige, spektakuläre Strafanimationen und fokussiertes Spielverhalten.",
+      "summary": "Stand jetzt: Zwei Spieleseiten neu gestaltet mit Premium-UI, klarem Setup und smarter Spielmechanik.",
       "content": [
-        "Setup-Karte überarbeitet: Spieler, Kategorien und Runden jetzt übersichtlicher und moderner.",
-        "Wahrheit oder Pflicht Spiel-UI verbessert mit einer animierten Fragekarte und klarer Kategorieanzeige.",
-        "Strafmodus optisch verstärkt: spektakuläre Hintergrundfarbe, Animationen und separate Verhaltenserkennung.",
-        "Spielerstatistiken während des Spiels angezeigt, aber nicht mehr in den Setup-Spielerkarten.",
-        "Party-Modus-Einstellungen entfernt und Logik sauber bereinigt für ein fokussierteres Spiel.",
-        "Ich hab noch nie Seite erweitert mit einem neuen Team-Modus, intelligenten Settings und einem modernen Party-Flow."
+        "WOP-Upgrade: modernes Glas-/Neon-Design für Setup-Karten, Spielstatus und Frageboxen.",
+        "WOP-Verbesserung: stärkere Strafmodus-Animation, farbintensive Strafkarten und klare Kategorie-Tags.",
+        "WOP-Optimierung: Party-Modus-Einstellung entfernt, Setup übersichtlicher, Runden- und Kategorienwahl verbessert.",
+        "WOP-Aufräumarbeit: Spielerstatistiken sind jetzt nur noch im Spiel sichtbar, nicht mehr im Setup.",
+        "Ich hab noch nie: frischer Party-Flow mit Team-Modus, Kategorienfilter, Frageanzahl-Slider und sauberer, moderner Spielstruktur.",
+        "UI-Boost: Buttons, Cards und Auswahlfelder wirken jetzt dynamischer, hochwertiger und konkurrenzfähiger gegenüber anderen Spieleseiten."
       ],
-      "tags": ["Feature", "Design", "Gameplay"],
+      "tags": ["Feature", "Design", "Gameplay", "Update"],
       "pinned": true
     },
     {
