@@ -1,6 +1,23 @@
 {
   "updates": [
     {
+      "id": "2026-03-29-1",
+      "title": "Wahrheit oder Pflicht Upgrade 🎲✨ – neues UI & smarteres Gameplay",
+      "date": "2026-03-29",
+      "type": "feature; style; gameplay",
+      "summary": "Die WOP- und Ich-hab-noch-nie-Seiten wurden heute modernisiert: klareres Setup, bessere Frageanzeige, spektakuläre Strafanimationen und fokussiertes Spielverhalten.",
+      "content": [
+        "Setup-Karte überarbeitet: Spieler, Kategorien und Runden jetzt übersichtlicher und moderner.",
+        "Wahrheit oder Pflicht Spiel-UI verbessert mit einer animierten Fragekarte und klarer Kategorieanzeige.",
+        "Strafmodus optisch verstärkt: spektakuläre Hintergrundfarbe, Animationen und separate Verhaltenserkennung.",
+        "Spielerstatistiken während des Spiels angezeigt, aber nicht mehr in den Setup-Spielerkarten.",
+        "Party-Modus-Einstellungen entfernt und Logik sauber bereinigt für ein fokussierteres Spiel.",
+        "Ich hab noch nie Seite erweitert mit einem neuen Team-Modus, intelligenten Settings und einem modernen Party-Flow."
+      ],
+      "tags": ["Feature", "Design", "Gameplay"],
+      "pinned": true
+    },
+    {
       "id": "2026-03-04-1",
       "title": "Premium Design Update 🎨✨ – FAQ Accordion & News Redesign",
       "date": "2026-03-04",
