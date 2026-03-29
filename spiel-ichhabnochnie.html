@@ -61,36 +61,71 @@
 
         <div id="gameSetup" class="game-state">
           <section class="setup-section fade-in">
-            <h2>⚙️ Spiel einrichten</h2>
+            <h2>⚙️ Starte die Party</h2>
+            <p class="section-desc">Eine Frage für alle: Wer das schon gemacht hat, trinkt einen Shot. Kein Register, kein Wettbewerb – einfach schneller Party-Flow für die ganze Runde.</p>
 
-            <div class="player-input-group">
-              <input type="text" id="playerName" placeholder="Spieler hinzufügen..." />
-              <button id="addPlayerBtn" class="btn primary">➕ Hinzufügen</button>
+            <div class="setup-info">
+              <p>🎲 Wähle deine Runden</p>
+              <p>🍻 Kategorie-Filter für den perfekten Vibe</p>
+              <p>✨ Team-Edition mit optionalem Shot- oder Sip-Modus.</p>
             </div>
 
-            <div id="playersList" class="players-list"></div>
+            <div class="settings-grid">
+              <div class="settings-card">
+                <h3>🎚️ Anzahl der Fragen</h3>
+                <div class="slider-row">
+                  <input type="range" id="roundsRange" min="5" max="30" step="1" value="20" />
+                  <span id="roundsValue">20</span>
+                </div>
+              </div>
+
+              <div class="settings-card">
+                <h3>📦 Kategorien</h3>
+                <div class="categories-grid" id="categoriesGrid">
+                  <button type="button" class="category-btn active" data-category="funny">Locker & Lustig</button>
+                  <button type="button" class="category-btn active" data-category="spicy">Spicy</button>
+                  <button type="button" class="category-btn active" data-category="cringe">Cringe</button>
+                  <button type="button" class="category-btn active" data-category="personal">Persönlich</button>
+                  <button type="button" class="category-btn active" data-category="deep">Deep</button>
+                </div>
+              </div>
+
+              <div class="settings-card">
+                <h3>🍹 Trinkmodus</h3>
+                <div class="modes-row">
+                  <button type="button" class="mode-btn active" data-mode="shot">Shots</button>
+                  <button type="button" class="mode-btn" data-mode="sip">Sips</button>
+                </div>
+              </div>
+
+              <div class="settings-card">
+                <h3>⚡ Party-Boost</h3>
+                <p class="section-desc">Füge wilde Bonusfragen hinzu für extra Chaos.</p>
+                <button type="button" id="wildBoostBtn" class="mode-btn">Bonusfragen</button>
+              </div>
+            </div>
 
             <div class="setup-actions">
-              <button id="startGameBtn" class="btn primary large" disabled>🎮 Spiel starten</button>
+              <button id="startGameBtn" class="btn primary large">🎮 Spielen</button>
             </div>
           </section>
         </div>
 
         <div id="gamePlay" class="game-state hidden">
-          <div class="current-player-card">
-            <div class="player-avatar" id="playerAvatar"></div>
-            <h2 id="playerNameDisplay"></h2>
-            <p id="playerRound" class="round-info"></p>
+          <div class="game-status-card">
+            <h2>Alle zusammen</h2>
+            <p>Jetzt geht's los: Statement lesen, Augen auf, trinken wer's schon gemacht hat.</p>
+            <span class="status-pill">Team-Edition</span>
           </div>
 
           <div class="question-container">
-            <div class="question-card">
-              <div class="question-type">🍻 ICH HAB NOCH NIE...</div>
+            <div class="question-card" id="questionCard">
+              <div class="question-type">🍻 Ich hab noch nie...</div>
+              <div class="question-meta"><span id="questionCategory" class="meta-tag"></span></div>
               <p class="question-text" id="questionText"></p>
-              <p style="margin-top: 16px; font-size: 13px; color: var(--muted); text-align: center;">Alle, die das schon getan haben, zeigen ein Zeichen! 👆</p>
+              <p class="section-desc">Wer es schon gemacht hat, nimmt einen Shot. Wer nicht, bleibt stolz trocken.</p>
               <div class="question-actions">
-                <button id="nextQuestionBtn" class="btn primary">Nächster Spieler ➜</button>
-                <button id="rerollBtn" class="btn secondary">🔄 Andere Frage</button>
+                <button id="nextQuestionBtn" class="btn primary">Nächste Frage ➜</button>
               </div>
             </div>
           </div>
@@ -100,13 +135,14 @@
               <div id="progressFill" class="progress-fill"></div>
             </div>
             <p id="progressText" class="progress-text"></p>
+            <p id="roundTracker" class="progress-text"></p>
           </div>
         </div>
 
         <div id="gameFinished" class="game-state hidden">
           <div style="text-align: center; padding: 60px 20px;">
-            <h2 style="font-size: 2.5rem; margin-bottom: 16px;">🎉 Spiel vorbei!</h2>
-            <p style="color: var(--muted); margin-bottom: 32px;">Wow, was für Geheimnisse! 😄</p>
+            <h2 style="font-size: 2.5rem; margin-bottom: 16px;">🎉 Rundenende!</h2>
+            <p style="color: var(--muted); margin-bottom: 32px;">Die Team-Edition ist durch. Perfekt für eine schnelle, gemeinsame Trinkrunde.</p>
             <div id="resultsList"></div>
             <div class="finish-actions">
               <button id="playAgainBtn" class="btn primary large">🎮 Nochmal</button>

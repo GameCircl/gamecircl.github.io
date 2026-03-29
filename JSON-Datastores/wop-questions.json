@@ -1,8 +1,8 @@
 {
   "metadata": {
     "game": "Wahrheit oder Pflicht",
-    "version": "2.2",
-    "lastUpdated": "2025-01",
+    "version": "2.3",
+    "lastUpdated": "2025-03",
     "categories": [
       "Chill & Locker",
       "Party & Action",
@@ -13,6 +13,7 @@
       "Dirty / Versaut",
       "Kinky & Fetish",
       "Extrem Hardcore (18+)",
+      "Mutprobe",
       "Für Paare"
     ]
   },
@@ -62,10 +63,12 @@
       { "text": "Was war dein erstes Konzert oder deine erste große Party?", "genders": ["any"] },
       { "text": "Hast du eine Lieblingsstadt in Deutschland?", "genders": ["any"] },
       { "text": "Welches Essen würdest du nie ablehnen?", "genders": ["any"] },
-      { "text": "Was ist das Beste am Erwachsenwerden?", "genders": ["any"] }
+      { "text": "Was ist deiner Meinung nach das Beste am Erwachsenwerden?", "genders": ["any"] },
+      { "text": "Was ist das Schlimmste am Erwachsenwerden?", "genders": ["any"] },
+      { "text": "Hast du schon mal etwas total Verrücktes gemacht, das niemand erwartet?", "genders": ["any"] }
     ],
 
-    "Körper & Gesundheit": [
+    "Party & Action": [
       { "text": "Wie oft putzt du dir die Zähne pro Tag?", "genders": ["any"] },
       { "text": "Was ist deine größte körperliche Unsicherheit?", "genders": ["any"] },
       { "text": "Hattest du schon mal Liebeskummer, der deine Gesundheit beeinflusst hat?", "genders": ["any"] },
@@ -81,7 +84,7 @@
       { "text": "Was war dein größtes Fitness-Misserfolg?", "genders": ["any"] }
     ],
 
-    "Geheimnisse": [
+    "Peinlich & Cringe": [
       { "text": "Welches Geheimnis hast du noch niemandem erzählt?", "genders": ["any"] },
       { "text": "Hast du jemals etwas gestohlen?", "genders": ["any"] },
       { "text": "Hast du jemals gelogen, um einen Freund zu schützen?", "genders": ["any"] },
@@ -96,7 +99,7 @@
       { "text": "Welches Geheimnis hältst du für dich?", "genders": ["any"] },
       { "text": "Hast du jemals etwas geplant und dann bereut?", "genders": ["any"] }
     ],
-    "Abenteuer": [
+    "Persönlich & Deep": [
       { "text": "Was ist das Verrückteste, das du je getan hast?", "genders": ["any"] },
       { "text": "Wenn du eine Nacht frei hättest — was würdest du tun?", "genders": ["any"] },
       { "text": "Was ist dein Traumurlaub?", "genders": ["any"] },
@@ -111,7 +114,7 @@
       { "text": "Welche verrückte Sache möchtest du noch tun?", "genders": ["any"] },
       { "text": "Hast du jemals nachts raus ohne Erlaubnis?", "genders": ["any"] }
     ],
-    "Peinlich": [
+    "Flirty & Teasing": [
       { "text": "Was ist die peinlichste Sache, die dir je passiert ist?", "genders": ["any"] },
       { "text": "Hast du jemals in der Öffentlichkeit geweint?", "genders": ["any"] },
       { "text": "Was ist das Peinlichste, das dir in der Schule/Uni passiert ist?", "genders": ["any"] },
@@ -126,7 +129,7 @@
       { "text": "Hast du jemals etwas im falschen Ort vergessen?", "genders": ["any"] },
       { "text": "Was ist etwas Peinliches, das du täglich magst?", "genders": ["any"] }
     ],
-    "Mutprobe": [
+    "Spicy / Hot": [
       { "text": "Würdest du einen Test abschreiben, wenn die Chance besteht, nicht erwischt zu werden?", "genders": ["any"] },
       { "text": "Hast du jemals jemanden belogen, um aus einer Situation herauszukommen?", "genders": ["any"] },
       { "text": "Würdest du eine Beziehung sabotieren, um jemanden zu bekommen, den du willst?", "genders": ["any"] },

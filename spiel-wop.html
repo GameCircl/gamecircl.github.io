@@ -90,6 +90,12 @@
             </div>
           </header>
 
+          <div class="game-status-card">
+            <h2>Bereit für die Party?</h2>
+            <p>Wähle Spieler, Kategorien und Runden aus. Dann startet die Gruppe mit Fragen, Pflichtaufgaben und Strafaktionen.</p>
+            <span class="status-pill">Live Party</span>
+          </div>
+
           <!-- Player Setup Section -->
           <section class="setup-section">
             <h2>👥 Spieler hinzufügen</h2>
@@ -157,7 +163,7 @@
             </div>
 
             <div class="category-info">
-              <span id="selectedCategoryCount">0</span> / <span id="totalCategoryCount">6</span> Kategorien ausgewählt
+              <span id="selectedCategoryCount">0</span> / <span id="totalCategoryCount">11</span> Kategorien ausgewählt
             </div>
           </section>
 
@@ -197,6 +203,11 @@
             <a href="#" onclick="if(confirm('Spiel wirklich beenden?')) resetGame(); return false;" class="back-btn">⏹️ Spiel beenden</a>
             <h1>⚡ Wahrheit oder Pflicht</h1>
           </header>
+          <div class="game-status-card">
+            <h2>Jetzt wird's heiß</h2>
+            <p>Wahrheit oder Pflicht ist live. Wählt eure Herausforderung und lasst die Runde sprechen.</p>
+            <span class="status-pill">Party-Modus</span>
+          </div>
 
           <div class="game-container">
             <!-- Current Player Info -->
@@ -222,13 +233,13 @@
 
             <!-- Question Display -->
             <div id="questionContainer" class="question-container hidden">
-              <div class="question-card">
+              <div class="question-card" id="questionCard">
                 <div class="question-type" id="questionType"></div>
                 <p class="question-text" id="questionText"></p>
+                <div class="question-meta"><span id="questionCategory" class="meta-tag"></span></div>
                 <div class="question-actions">
                   <button id="nextQuestionBtn" class="btn primary">Nächster Spieler ➜</button>
-                  <button id="rerollBtn" class="btn secondary">🔄 Andere Frage</button>
-                  <button id="penaltyBtn" class="btn" style="display:none;">🔥 Strafaufgabe</button>
+                  <button id="penaltyBtn" class="btn penalty" style="display:none;">🔥 Strafaufgabe</button>
                 </div>
               </div>
             </div>

@@ -166,7 +166,10 @@ function addPlayer() {
   gameState.players.push({
     name,
     gender: currentGender,
-    id: 'player_' + Date.now() + Math.random()
+    id: 'player_' + Date.now() + Math.random(),
+    truthCount: 0,
+    dareCount: 0,
+    penaltyCount: 0
   });
 
   qs('#playerName').value = '';
@@ -192,7 +195,9 @@ function renderPlayersList() {
     const badge = document.createElement('span');
     badge.className = 'player-badge';
     badge.innerHTML = `
-      ${player.name} ${genderIcon}
+      <div class="player-badge-content">
+        <strong>${player.name}</strong> ${genderIcon}
+      </div>
       <span class="player-badge-remove" onclick="removePlayer(${i})">×</span>
     `;
     list.appendChild(badge);
@@ -226,7 +231,7 @@ function loadCategories() {
 
   categories.forEach(cat => {
     const btn = document.createElement('button');
-    btn.className = 'category-btn';
+    btn.className = 'category-btn active';
     btn.textContent = `${cat.emoji} ${cat.name}`;
     btn.dataset.id = cat.id;
     btn.addEventListener('click', function() {
@@ -238,11 +243,13 @@ function loadCategories() {
 
   gameState.selectedCategories = categories.map(c => c.id);
   updateCategoryCount();
+  updateStartButton();
 }
 
 function updateSelectedCategories() {
   gameState.selectedCategories = qsa('.category-btn.active').map(btn => btn.dataset.id);
   updateCategoryCount();
+  updateStartButton();
 }
 
 function updateCategoryCount() {
@@ -316,11 +323,24 @@ function selectChoice(type) {
   qs('.choice-buttons').classList.add('hidden');
   qs('#questionContainer').classList.remove('hidden');
   
+  const questionCard = qs('#questionCard');
+  if (questionCard) {
+    questionCard.classList.remove('penalty-active');
+  }
+  
   qs('#questionType').textContent = type === 'truth' ? '❓ WAHRHEIT' : '⚡ PFLICHT';
-  qs('#questionText').textContent = question;
+  qs('#questionText').textContent = question.text;
+  qs('#questionCategory').textContent = getCategoryLabel(question.category);
+
+  const player = gameState.players[gameState.currentPlayerIndex];
+  if (player) {
+    if (type === 'truth') player.truthCount = (player.truthCount || 0) + 1;
+    if (type === 'dare') player.dareCount = (player.dareCount || 0) + 1;
+  }
   
   qs('#questionContainer').dataset.type = type;
-  qs('#questionContainer').dataset.lastQuestion = question;
+  qs('#questionContainer').dataset.lastQuestion = question.text;
+  qs('#questionContainer').dataset.lastCategory = question.category;
   
   // Zeige/verstecke Penalty Button basierend auf Type
   const penaltyBtn = qs('#penaltyBtn');
@@ -332,11 +352,28 @@ function selectChoice(type) {
 }
 
 /* ────── GET RANDOM QUESTION (with gender filter) ────── */
+function getCategoryLabel(key) {
+  const category = [
+    { name: 'Chill & Locker', id: 'Chill & Locker' },
+    { name: 'Party & Action', id: 'Party & Action' },
+    { name: 'Peinlich & Cringe', id: 'Peinlich & Cringe' },
+    { name: 'Persönlich & Tief', id: 'Persönlich & Tief' },
+    { name: 'Flirty & Teasing', id: 'Flirty & Teasing' },
+    { name: 'Spicy & Hot', id: 'Spicy & Hot' },
+    { name: 'Dirty / Versaut', id: 'Dirty / Versaut' },
+    { name: 'Kinky & Fetish', id: 'Kinky & Fetish' },
+    { name: 'Extrem Hardcore (18+)', id: 'Extrem Hardcore' },
+    { name: 'Mutprobe', id: 'Mutprobe' },
+    { name: 'Für Paare', id: 'Für Paare' }
+  ].find(c => c.id === key);
+  return category ? category.name : (key === 'free' ? 'Freie Frage' : key || '');
+}
+
 function getRandomQuestion(type) {
   const categories = gameState.selectedCategories || [];
   
   if (categories.length === 0) {
-    return `Denke dir eine ${type === 'truth' ? 'Wahrheit' : 'Pflicht'} aus!`;
+    return { text: `Denke dir eine ${type === 'truth' ? 'Wahrheit' : 'Pflicht'} aus!`, category: 'free' };
   }
 
   let allQuestions = [];
@@ -349,24 +386,24 @@ function getRandomQuestion(type) {
       
       // Check if gender matches (for future implementation)
       if (genders.includes('any') || genders.includes(currentGender)) {
-        allQuestions.push(question);
+        allQuestions.push({ text: question, category: catId });
       }
     });
   });
 
   if (allQuestions.length === 0) {
-    return `Denke dir eine ${type === 'truth' ? 'Wahrheit' : 'Pflicht'} aus!`;
+    return { text: `Denke dir eine ${type === 'truth' ? 'Wahrheit' : 'Pflicht'} aus!`, category: 'free' };
   }
 
   let question = allQuestions[Math.floor(Math.random() * allQuestions.length)];
   
   let attempts = 0;
-  while (usedQuestions.has(question) && attempts < 5 && allQuestions.length > 10) {
+  while (usedQuestions.has(question.text) && attempts < 5 && allQuestions.length > 10) {
     question = allQuestions[Math.floor(Math.random() * allQuestions.length)];
     attempts++;
   }
 
-  usedQuestions.add(question);
+  usedQuestions.add(question.text);
   return question;
 }
 
@@ -383,9 +420,19 @@ function showPenalty() {
   
   const penalty = penaltyQuestions[Math.floor(Math.random() * penaltyQuestions.length)];
   
+  const player = gameState.players[gameState.currentPlayerIndex];
+  if (player) {
+    player.penaltyCount = (player.penaltyCount || 0) + 1;
+  }
+  
   qs('#questionText').textContent = penalty;
   qs('#questionType').textContent = type === 'truth' ? '🔥 STRAFAUFGABE' : '🔥 STRAFFRAGE';
   qs('#questionContainer').dataset.isPenalty = 'true';
+
+  const questionCard = qs('#questionCard');
+  if (questionCard) {
+    questionCard.classList.add('penalty-active');
+  }
   
   // Verstecke Penalty Button nach dem Klick
   const penaltyBtn = qs('#penaltyBtn');
@@ -425,7 +472,13 @@ function renderResults() {
   const resultsList = qs('#resultsList');
   resultsList.innerHTML = '';
 
-  gameState.players.forEach((p, i) => {
+  const sortedPlayers = [...gameState.players].sort((a, b) => {
+    const aScore = (a.truthCount || 0) + (a.dareCount || 0) + (a.penaltyCount || 0);
+    const bScore = (b.truthCount || 0) + (b.dareCount || 0) + (b.penaltyCount || 0);
+    return bScore - aScore;
+  });
+
+  sortedPlayers.forEach((p, i) => {
     const card = document.createElement('div');
     card.className = 'result-card';
     card.style.animationDelay = (i * 0.1) + 's';
@@ -434,14 +487,20 @@ function renderResults() {
     const roundText = gameState.roundsMode === 'unlimited' 
       ? `${gameState.questionsAsked} Fragen` 
       : `${gameState.maxRounds} Fragen`;
+    const totalScore = (p.truthCount || 0) + (p.dareCount || 0) + (p.penaltyCount || 0);
     
     card.innerHTML = `
       <div class="result-position">${medal}</div>
       <div class="result-info">
         <h3>${p.name}</h3>
         <div class="result-stats">
-          <div>👥 ${p.gender === 'any' ? 'Alle' : p.gender}</div>
+          <div>🧩 ${totalScore} Aktionen</div>
           <div>🎮 ${roundText}</div>
+        </div>
+        <div class="result-stats result-counts">
+          <span>❓ ${p.truthCount || 0}</span>
+          <span>⚡ ${p.dareCount || 0}</span>
+          <span>🔥 ${p.penaltyCount || 0}</span>
         </div>
       </div>
     `;
@@ -460,6 +519,7 @@ function updateGameStats(activeIndex) {
     stat.innerHTML = `
       <div class="stat-player-name">${p.name}</div>
       <div class="stat-player-info">Spieler ${i + 1}/${gameState.players.length}</div>
+      <div class="stat-player-counts">❓ ${p.truthCount || 0} · ⚡ ${p.dareCount || 0} · 🔥 ${p.penaltyCount || 0}</div>
     `;
     statsList.appendChild(stat);
   });
@@ -493,6 +553,11 @@ function resetGame() {
   qsa('.rounds-option').forEach((b, i) => {
     b.classList.toggle('active', i === 0);
   });
+  qsa('.region-option').forEach((b, i) => {
+    b.classList.toggle('active', i === 0);
+  });
+  qsa('.category-btn').forEach(btn => btn.classList.add('active'));
+  updateSelectedCategories();
   
   updateStartButton();
 }

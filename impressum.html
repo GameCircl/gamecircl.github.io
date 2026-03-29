@@ -78,11 +78,9 @@
     <main class="main">
       <section id="page-impressum" class="page">
         <header class="hero">
-          <div class="hero-content">
-            <p class="badge">📜 Rechtliches & Datenschutz</p>
-            <h1 class="title"><span class="gradient">Impressum & Datenschutz</span></h1>
-            <p class="subtitle">Transparenz und Sicherheit sind uns wichtig. Hier findest du alle relevanten Angaben zu GameCircl.</p>
-          </div>
+          <p class="badge">📜 Rechtliches & Datenschutz</p>
+          <h1 class="title"><span class="gradient">Impressum & Datenschutz</span></h1>
+          <p class="subtitle">Transparenz und Sicherheit sind uns wichtig. Hier findest du alle relevanten Angaben zu GameCircl.</p>
         </header>
 
         <!-- Quick Navigation -->
@@ -298,43 +296,18 @@
     </main>
   </div>
 
-  <!-- LOGIN / STATISTICS MODAL
+  <!-- LOGIN / STATISTICS MODAL (wie auf anderen Seiten) -->
   <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-panel">
       <button class="modal-close" id="modalClose">✕</button>
       <h3 id="modalTitle">Login & Statistiken</h3>
       <br>
-
-      <div id="loginArea">
-        <label>
-          Benutzername
-          <input type="text" id="username" placeholder="Dein Name" />
-        </label>
-        <div class="login-actions">
-          <button id="saveUser" class="btn primary">Speichern</button>
-          <button id="logoutBtn" class="btn secondary">Ausloggen (lokal)</button>
-        </div>
-        <br>
-        <p class="muted">Das ist eine einfache Demo — deine Daten bleiben lokal in diesem Browser.</p>
-      </div>
-
+      <div id="loginArea"></div>
       <hr />
       <br>
-
-      <div id="statsArea">
-        <h4>Deine Statistiken (Demo)</h4>
-        <div id="statsList">
-          <!-- dynamisch
-        </div>
-        <div class="stat-actions">
-          <button id="exportStats" class="btn">Export (JSON)</button>
-          <button id="importStats" class="btn">Import (JSON)</button>
-          <input id="importFile" type="file" accept="application/json" class="hidden" />
-        </div>
-      </div>
+      <div id="statsArea"></div>
     </div>
   </div>
-  -->
 
   <script src="JS/script-impressum.js"></script>
   <script src="JS/script-start.js"></script>
