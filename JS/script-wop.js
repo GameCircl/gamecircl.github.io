@@ -188,9 +188,9 @@ function renderPlayersList() {
     const genderIcon = {
       'male': '♂️',
       'female': '♀️',
-      'neutral': '⚪',
+      'neutral': '⚧',
       'any': '👥'
-    }[player.gender];
+    }[player.gender] || '⚧';
 
     const badge = document.createElement('span');
     badge.className = 'player-badge';
@@ -377,19 +377,30 @@ function getRandomQuestion(type) {
   }
 
   let allQuestions = [];
+  let generalQuestions = [];
+  const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+  const playerGender = currentPlayer ? currentPlayer.gender : null;
+
   categories.forEach(catId => {
     const catQuestions = questionsData[type]?.[catId] || [];
-    // Filter by gender preferences
+
     catQuestions.forEach(q => {
       const question = typeof q === 'string' ? q : q.text;
       const genders = (typeof q === 'object' && q.genders) ? q.genders : ['any'];
       
-      // Check if gender matches (for future implementation)
-      if (genders.includes('any') || genders.includes(currentGender)) {
+      if (genders.includes('any')) {
+        generalQuestions.push({ text: question, category: catId });
+      }
+
+      if (playerGender && genders.includes(playerGender)) {
         allQuestions.push({ text: question, category: catId });
       }
     });
   });
+
+  if (allQuestions.length === 0 && generalQuestions.length > 0) {
+    allQuestions = generalQuestions;
+  }
 
   if (allQuestions.length === 0) {
     return { text: `Denke dir eine ${type === 'truth' ? 'Wahrheit' : 'Pflicht'} aus!`, category: 'free' };
