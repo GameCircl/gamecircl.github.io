@@ -5,7 +5,7 @@
     "lastUpdated": "2026-03",
     "categories": [
       { "key": "chill", "label": "🟢 Chill & Locker" },
-      { "key": "party", "label": "🟡 Party & Chaos" },
+      { "key": "party", "label": "🎉 Party & Chaos" },
       { "key": "cringe", "label": "😬 Peinlich & Cringe" },
       { "key": "deep", "label": "🧠 Persönlich & Deep" },
       { "key": "friendship", "label": "🧑‍🤝‍🧑 Freundschaft" },
@@ -167,7 +167,16 @@
       { "text": "mich über Kleinigkeiten gefreut" },
       { "text": "einfach den Moment genossen" },
       { "text": "mich gefragt, was ich heute noch mache" },
-      { "text": "einfach mal alles locker gesehen" }
+      { "text": "einfach mal alles locker gesehen" },
+      { "text": "Ich hab noch nie… heimlich ein Getränk eines Mitspielers getrunken" },
+      { "text": "Ich hab noch nie… jemanden hier angelogen, um Ärger zu vermeiden" },
+      { "text": "Ich hab noch nie… heimlich etwas aus der Tasche eines Mitspielers genommen" },
+      { "text": "Ich hab noch nie… jemanden aus dieser Runde ausgelacht, obwohl er es ernst meinte" },
+      { "text": "Ich hab noch nie… etwas gemacht, wofür ich mich danach bei jemandem entschuldigen musste" },
+      { "text": "Ich hab noch nie… heimlich über jemanden aus der Runde gelacht, ohne dass er es merkte" },
+      { "text": "Ich hab noch nie… jemandem hier einen kleinen Streich gespielt" },
+      { "text": "Ich hab noch nie… ein Spiel manipuliert, um zu gewinnen" },
+      { "text": "Ich hab noch nie… jemanden absichtlich zum Stolpern gebracht (Spaß!)" }
     ],
 
     "party": [
@@ -283,11 +292,18 @@
       { "text": "jemanden aus der Runde zum Trinken animiert" },
       { "text": "jemanden hier aus Versehen in Chaos verwickelt" },
       { "text": "jemanden aus der Runde zu einem Spiel herausgefordert" },
-      { "text": "jemanden hier zu einem Tanz gezwungen" },
       { "text": "jemanden aus der Runde zu einem Mutprobe-Moment gebracht" },
       { "text": "jemanden hier zu einer peinlichen Aktion überredet" },
       { "text": "jemanden aus dieser Runde aufgezogen, bis er lachte" },
-      { "text": "jemanden hier zu etwas gebracht, was er bereut hat" }
+      { "text": "jemanden hier zu etwas gebracht, was er bereut hat" },
+      { "text": "jemanden hier auf eine Mutprobe mitgenommen" },
+      { "text": "jemanden aus dieser Runde zu einer wilden Aktion motiviert" },
+      { "text": "jemanden hier zum Lachen gebracht, als es peinlich war" },
+      { "text": "jemanden aus dieser Runde zum Mitmachen bei einem Spiel gezwungen" },
+      { "text": "jemanden hier in ein kleines Chaos verwickelt" },
+      { "text": "jemanden hier bei einem Streich überrascht" },
+      { "text": "jemanden aus dieser Runde überredet, etwas Verrücktes zu tun" },
+      { "text": "jemanden hier mitgezogen, obwohl er nicht wollte" }
     ],
 
     "cringe": [
@@ -406,11 +422,20 @@
       { "text": "jemanden aus dieser Runde beim Reden unterbrochen" },
       { "text": "jemanden hier versehentlich peinlich gemacht" },
       { "text": "jemanden aus dieser Runde vor allen anderen geärgert" },
-      { "text": "jemanden hier beim Singen bloßgestellt" },
       { "text": "jemanden aus dieser Runde in eine peinliche Situation gebracht" },
       { "text": "jemanden hier beim Tanzen ausgelacht" },
       { "text": "jemanden aus dieser Runde aufgezogen, bis er rot wurde" },
-      { "text": "jemanden hier versehentlich verletzt oder genervt" }
+      { "text": "jemanden hier versehentlich verletzt oder genervt" },
+      { "text": "jemanden hier absichtlich blamiert" },
+      { "text": "laut gefurzt, während jemand aus dieser Runde danebenstand" },
+      { "text": "jemanden beim Stolpern gefilmt oder nachgemacht" },
+      { "text": "jemanden hier beim Singen bloßgestellt" },
+      { "text": "jemanden aus der Runde aus Versehen beleidigt" },
+      { "text": "jemanden hier absichtlich rot werden lassen" },
+      { "text": "jemanden hier beim Tanzen nachgeäfft" },
+      { "text": "jemanden aus der Runde in peinliche Situationen gebracht" },
+      { "text": "jemanden hier mit einem peinlichen Kommentar überrascht" },
+      { "text": "jemanden hier beim Stolpern ausgelacht" }
     ],
 
     "deep": [
@@ -516,14 +541,18 @@
       { "text": "mich gefragt, ob ich manchmal zu hart zu mir selbst bin" },
       { "text": "jemandem aus dieser Runde etwas Wichtiges verschwiegen" },
       { "text": "jemandem hier vertraut, obwohl ich Zweifel hatte" },
-      { "text": "jemandem aus dieser Runde ein Geheimnis erzählt" },
+      { "text": "jemandem aus dieser Runde ein wichtiges Geheimnis anvertraut" },
       { "text": "jemandem hier bei einem Problem geholfen" },
       { "text": "jemandem aus der Runde ehrlich meine Meinung gesagt" },
       { "text": "jemandem hier zugehört, obwohl ich selbst Sorgen hatte" },
       { "text": "jemandem aus der Runde einen Rat gegeben" },
-      { "text": "jemandem hier geholfen, obwohl ich müde war" },
+      { "text": "jemandem hier geholfen, obwohl ich selbst Hilfe brauchte" },
       { "text": "jemandem aus dieser Runde Mut zugesprochen" },
-      { "text": "jemandem hier etwas zugetraut, obwohl ich unsicher war" }
+      { "text": "jemandem hier etwas zugetraut, obwohl ich unsicher war" },
+      { "text": "jemandem aus dieser Runde einen wichtigen Rat gegeben" },
+      { "text": "jemandem aus dieser Runde wirklich zugehört, ohne zu urteilen" },
+      { "text": "jemandem aus dieser Runde eine Wahrheit gesagt, die er nicht hören wollte" },
+      { "text": "jemandem aus dieser Runde etwas erzählt, das sonst niemand weiß" }
     ],
 
     "friendship": [
@@ -616,7 +645,8 @@
       { "text": "jemandem geholfen, obwohl ich selbst Zweifel hatte" },
       { "text": "jemanden in Ruhe gelassen, obwohl ich eingreifen wollte" },
       { "text": "jemanden verteidigt, obwohl er selbst schuld war" },
-      { "text": "jemanden zugehört, ohne zu unterbrechen" }
+      { "text": "jemanden zugehört, ohne zu unterbrechen" },
+      { "text": "jemanden aus dieser Runde unterstützt, ohne dass er es merkte" }
     ],
 
     "flirty": [
@@ -862,16 +892,21 @@
       { "text": "jemanden plötzlich interessant gefunden" },
       { "text": "mich gefragt, wie es wäre, mit jemandem mehr zu haben" },
       { "text": "mich gefragt, ob jemand dasselbe für mich empfindet" },
-      { "text": "jemanden aus dieser Runde nackt gesehen (im echten Leben oder beim Duschen etc.)" },
+      { "text": "jemanden aus dieser Runde nackt gesehen" },
       { "text": "mit jemandem aus der Runde geküsst" },
       { "text": "jemanden hier absichtlich berührt, um zu testen" },
       { "text": "jemanden aus dieser Runde sexy angesehen" },
       { "text": "jemanden hier beim Tanzen eng berührt" },
       { "text": "jemandem aus dieser Runde Komplimente über seinen Körper gemacht" },
-      { "text": "jemandem hier einen Blick zugeworfen, der eindeutig war" },
       { "text": "mit jemandem aus dieser Runde geflirtet, obwohl andere dabei waren" },
       { "text": "jemanden hier auf den Mund geküsst" },
-      { "text": "jemandem aus dieser Runde versucht, näher zu kommen" }
+      { "text": "jemandem aus dieser Runde versucht, näher zu kommen" },
+      { "text": "jemanden aus dieser Runde beim Duschen gesehen" },
+      { "text": "jemanden aus dieser Runde sexy gefunden" },
+      { "text": "jemanden aus dieser Runde beim Flirten absichtlich geärgert" },
+      { "text": "jemanden aus dieser Runde beim Spielen körperlich provoziert" },
+      { "text": "jemanden aus dieser Runde explizit angesehen" },
+      { "text": "jemanden aus dieser Runde mit sexy Kommentaren überrascht" }
     ],
 
     "wild": [
@@ -1011,13 +1046,22 @@
       { "text": "mit jemandem aus dieser Runde sexuelle Fantasien gehabt" },
       { "text": "jemanden hier heimlich angezogen sexy gefunden" },
       { "text": "mit jemandem aus dieser Runde geflirtet, obwohl es unangemessen war" },
-      { "text": "jemanden hier nackt gesehen und gedacht, wow" },
       { "text": "mit jemandem aus dieser Runde körperlich nähergekommen" },
       { "text": "jemandem hier etwas erzählt, das peinlich/privat war" },
       { "text": "mit jemandem aus dieser Runde geküsst, obwohl es kompliziert war" },
       { "text": "jemanden hier absichtlich provoziert, um Reaktion zu sehen" },
       { "text": "jemandem aus dieser Runde Gedanken zugeschrieben, die er nicht laut gesagt hat" },
-      { "text": "mit jemandem aus dieser Runde eine Grenze ausgelotet" }
+      { "text": "mit jemandem aus dieser Runde eine Grenze ausgelotet" },
+      { "text": "mit jemandem aus dieser Runde über intime Fantasien gesprochen" },
+      { "text": "jemanden aus dieser Runde sexuell attraktiv gefunden" },
+      { "text": "jemanden aus dieser Runde absichtlich provoziert (körperlich/verbal)" },
+      { "text": "jemanden aus dieser Runde nackt oder halbnackt gesehen und gedacht 'wow'" },
+      { "text": "mit jemandem aus dieser Runde Grenzen ausgelotet" },
+      { "text": "jemanden aus dieser Runde beim Flirten manipuliert" },
+      { "text": "jemanden aus dieser Runde in eine heikle Situation gebracht" },
+      { "text": "jemanden aus dieser Runde heimlich sexy angeschaut" },
+      { "text": "mit jemandem aus dieser Runde provokativ geflirtet" },
+      { "text": "jemanden aus dieser Runde kurz ins Schwitzen gebracht" }
     ],
 
     "explizit": [
@@ -1135,7 +1179,14 @@
       { "text": "jemanden hier beim Umziehen erwischt" },
       { "text": "mit jemandem aus dieser Runde geflirtet, obwohl andere dabei waren" },
       { "text": "jemanden hier geküsst, der es spannend fand" },
-      { "text": "mit jemandem aus dieser Runde intensive Blicke ausgetauscht" }
+      { "text": "mit jemandem aus dieser Runde intensive Blicke ausgetauscht" },
+      { "text": "jemanden aus dieser Runde körperlich provoziert" },
+      { "text": "über Sex mit jemandem aus dieser Runde gesprochen" },
+      { "text": "jemanden aus dieser Runde beim Umziehen erwischt" },
+      { "text": "intensive Blicke mit jemandem aus dieser Runde ausgetauscht" },
+      { "text": "jemanden aus dieser Runde absichtlich geküsst, riskant" },
+      { "text": "mit jemandem aus dieser Runde explizit geflirtet" },
+      { "text": "jemanden aus dieser Runde beim Masturbieren erwischt oder erwischt worden" }
     ]
   }
 }

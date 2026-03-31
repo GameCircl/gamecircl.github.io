@@ -13,7 +13,7 @@ let gameState = {
 
 const fallbackCategories = [
   { key: "chill", "label": "🟢 Chill & Locker" },
-  { key: "party", "label": "🟡 Party & Chaos" },
+  { key: "party", "label": "🎉 Party & Chaos" },
   { key: "cringe", "label": "😬 Peinlich & Cringe" },
   { key: "deep", "label": "🧠 Persönlich & Deep" },
   { key: "friendship", "label": "🧑‍🤝‍🧑 Freundschaft" },
