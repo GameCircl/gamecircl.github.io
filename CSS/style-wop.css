@@ -100,7 +100,7 @@
 }
 
 .section-desc {
-  color: var(--muted);
+  color: rgb(160, 160, 160);
   margin-bottom: 16px;
   font-size: 13px;
   line-height: 1.5;
@@ -903,6 +903,7 @@
 }
 
 .game-status-card h2 {
+  color: white;
   font-size: 1.8rem;
   margin-bottom: 8px;
 }
@@ -910,7 +911,7 @@
 .game-status-card p {
   margin: 0 auto 14px;
   max-width: 540px;
-  color: var(--muted);
+  color: rgb(160, 160, 160);
   font-size: 0.95rem;
 }
 
@@ -951,7 +952,7 @@
 .question-text {
   font-size: 1.5rem;
   font-weight: 800;
-  color: var(--text);
+  color: white;
   line-height: 1.5;
   margin: 0 0 28px 0;
 }

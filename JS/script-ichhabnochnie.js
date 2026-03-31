@@ -8,17 +8,18 @@ let gameState = {
   maxRounds: 20,
   selectedCategories: new Set(['funny', 'spicy', 'cringe', 'personal', 'deep']),
   drinkMode: 'shot',
-  wildMode: false,
   gameActive: false
 };
 
 const fallbackCategories = [
-  { key: 'funny', label: 'Locker & Lustig' },
-  { key: 'spicy', label: 'Spicy' },
-  { key: 'cringe', label: 'Cringe' },
-  { key: 'personal', label: 'Persönlich' },
-  { key: 'deep', label: 'Deep' },
-  { key: 'wild', label: 'Bonusfragen' }
+  { key: "chill", "label": "🟢 Chill & Locker" },
+  { key: "party", "label": "🟡 Party & Chaos" },
+  { key: "cringe", "label": "😬 Peinlich & Cringe" },
+  { key: "deep", "label": "🧠 Persönlich & Deep" },
+  { key: "flirty", "label": "😏 Flirty & Teasing" },
+  { key: "spicy", "label": "🔥 Spicy / Hot" },
+  { key: "wild", "label": "😈 Grenzen & Tabus" },
+  { key: "explizit", "label": "🛑 18+ / Explizit" }
 ];
 
 let questionData = { statements: {} };
@@ -77,14 +78,6 @@ function setupGameUI() {
       updateRuleText();
     });
   });
-
-  const wildBoostBtn = qs('#wildBoostBtn');
-  if (wildBoostBtn) {
-    wildBoostBtn.addEventListener('click', () => {
-      gameState.wildMode = !gameState.wildMode;
-      wildBoostBtn.classList.toggle('active', gameState.wildMode);
-    });
-  }
 }
 
 async function loadQuestions() {
@@ -109,7 +102,6 @@ function renderCategoryButtons() {
   const categoriesGrid = qs('#categoriesGrid');
   if (!categoriesGrid || !categories.length) return;
   categoriesGrid.innerHTML = categories
-    .filter(cat => cat.key !== 'wild')
     .map(cat => `
       <button type="button" class="category-btn ${gameState.selectedCategories.has(cat.key) ? 'active' : ''}" data-category="${cat.key}">${cat.label}</button>
     `)
@@ -144,8 +136,7 @@ function startGame() {
 }
 
 function getSelectedQuestions() {
-  const selected = gameState.selectedCategories.size ? Array.from(gameState.selectedCategories) : categories.map(c => c.key);
-  if (gameState.wildMode && !selected.includes('wild')) selected.push('wild');
+  const selected = gameState.selectedCategories.size ? Array.from(gameState.selectedCategories) : categories.filter(c => c.key !== 'wild').map(c => c.key);
 
   let selectedQuestions = [];
   selected.forEach(categoryKey => {
@@ -187,7 +178,7 @@ function displayCurrentQuestion(first = false) {
   const progress = gameState.questionsAsked + 1;
   const statement = gameState.questions[gameState.currentIndex];
 
-  qs('#questionText').textContent = `🍻 Ich hab noch nie ${statement.text}`;
+  qs('#questionText').textContent = `🍻 Ich hab noch nie... ${statement.text}`;
   const categoryLabel = qs('#questionCategory');
   if (categoryLabel) {
     const categoryObject = categories.find(c => c.key === statement.category);
@@ -284,7 +275,7 @@ function resetGame() {
   if (roundsValue) roundsValue.textContent = '20';
 
   qsa('.category-btn').forEach(btn => btn.classList.add('active'));
-  gameState.selectedCategories = new Set(categories.map(c => c.key));
+  gameState.selectedCategories = new Set(categories.filter(c => c.key !== 'wild').map(c => c.key));
 
   qsa('.mode-btn').forEach(btn => {
     if (btn.dataset.mode === 'shot') {
@@ -295,10 +286,6 @@ function resetGame() {
   });
   gameState.drinkMode = 'shot';
   updateRuleText();
-
-  const wildBoostBtn = qs('#wildBoostBtn');
-  if (wildBoostBtn) wildBoostBtn.classList.remove('active');
-  gameState.wildMode = false;
 }
 
 function shuffleArray(array) {
@@ -311,22 +298,31 @@ function shuffleArray(array) {
 }
 
 function setupTheme() {
-  const saved = localStorage.getItem('gc-theme') || 'auto';
   const themeMarker = qs('#themeMarker');
-  if (saved === 'auto') {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-  } else {
-    document.documentElement.setAttribute('data-theme', saved);
+  const themePoints = qs('.theme-points');
+
+  if (!themePoints) return;
+
+  function applyTheme(mode) {
+    if (mode === 'auto') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      if (themeMarker) themeMarker.style.transform = 'translateX(0)';
+    } else if (mode === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      if (themeMarker) themeMarker.style.transform = 'translateX(100%)';
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      if (themeMarker) themeMarker.style.transform = 'translateX(200%)';
+    }
+    localStorage.setItem('gc-theme', mode);
   }
-  if (themeMarker) {
-    themeMarker.style.transform = saved === 'auto' ? 'translateX(0)' : (saved === 'light' ? 'translateX(100%)' : 'translateX(200%)');
-  }
+
+  const saved = localStorage.getItem('gc-theme') || 'auto';
+  applyTheme(saved);
+
   qsa('.theme-points span').forEach(el => {
-    el.addEventListener('click', () => {
-      localStorage.setItem('gc-theme', el.dataset.mode);
-      location.reload();
-    });
+    el.addEventListener('click', () => applyTheme(el.dataset.mode));
   });
 }
 
