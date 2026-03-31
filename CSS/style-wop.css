@@ -912,7 +912,7 @@
   margin: 0 auto 14px;
   max-width: 540px;
   color: rgb(160, 160, 160);
-  font-size: 0.95rem;
+  font-size: 0.75rem;
 }
 
 .status-pill {
@@ -922,7 +922,7 @@
   background: linear-gradient(135deg, #00ffff, #00cccc);
   color: #000;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.7rem;
 }
 
 .status-pill.secondary {
@@ -1304,7 +1304,7 @@
   }
 
   .question-text {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     margin-bottom: 20px;
   }
 
