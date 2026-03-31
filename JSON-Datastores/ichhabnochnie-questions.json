@@ -1,14 +1,14 @@
 {
   "metadata": {
     "game": "Ich hab noch nie",
-    "version": "1.1",
+    "version": "1.2",
     "lastUpdated": "2026-03",
     "categories": [
       { "key": "chill", "label": "🟢 Chill & Locker" },
       { "key": "party", "label": "🟡 Party & Chaos" },
       { "key": "cringe", "label": "😬 Peinlich & Cringe" },
       { "key": "deep", "label": "🧠 Persönlich & Deep" },
-      { "key": "friendship", "label": "🧑‍🤝‍🧑 Freundschaft & Vertrauen" },
+      { "key": "friendship", "label": "🧑‍🤝‍🧑 Freundschaft" },
       { "key": "flirty", "label": "😏 Flirty & Teasing" },
       { "key": "spicy", "label": "🔥 Spicy / Hot" },
       { "key": "wild", "label": "😈 Grenzen & Tabus" },

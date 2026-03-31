@@ -16,6 +16,7 @@ const fallbackCategories = [
   { key: "party", "label": "🟡 Party & Chaos" },
   { key: "cringe", "label": "😬 Peinlich & Cringe" },
   { key: "deep", "label": "🧠 Persönlich & Deep" },
+  { key: "friendship", "label": "🧑‍🤝‍🧑 Freundschaft" },
   { key: "flirty", "label": "😏 Flirty & Teasing" },
   { key: "spicy", "label": "🔥 Spicy / Hot" },
   { key: "wild", "label": "😈 Grenzen & Tabus" },
