@@ -1,0 +1,63 @@
+{
+  "metadata": {
+    "game": "Ich hab noch nie",
+    "version": "1.1",
+    "lastUpdated": "2026-03",
+    "categories": [
+      { "key": "funny", "label": "Locker & Lustig" },
+      { "key": "spicy", "label": "Spicy" },
+      { "key": "cringe", "label": "Cringe" },
+      { "key": "personal", "label": "Persönlich" },
+      { "key": "deep", "label": "Deep" },
+      { "key": "wild", "label": "Bonusfragen" }
+    ],
+    "defaultCategories": ["funny", "spicy", "cringe", "personal", "deep"]
+  },
+
+  "statements": {
+    "funny": [
+      { "text": "...im Regen getanzt" },
+      { "text": "...ein Lied im Auto laut gesungen" },
+      { "text": "...einen Film 2x hintereinander geschaut" },
+      { "text": "...Sushi gegessen" },
+      { "text": "...heimlich gelacht" },
+      { "text": "...spontan eine Party geschmissen" },
+      { "text": "...jemanden nett überrascht" },
+      { "text": "...nachts spielen gegangen" },
+      { "text": "...in einem See gebadet" },
+      { "text": "...ein Konzert besucht" }
+    ],
+    "spicy": [
+      { "text": "...eine Lüge sagen musste" },
+      { "text": "...einen Fehler wiederholt" },
+      { "text": "...ein Geheimnis verraten" },
+      { "text": "...mich unsterblich verliebt" },
+      { "text": "...einen Preis gewonnen" }
+    ],
+    "cringe": [
+      { "text": "...einen Horrorfilm nicht zu Ende geschaut" },
+      { "text": "...mich verlaufen" },
+      { "text": "...Albträume gehabt" },
+      { "text": "...ein böses Wort gesagt" }
+    ],
+    "personal": [
+      { "text": "...einen Fehler gleich gestanden" },
+      { "text": "...jemanden um Verzeihung gebeten" },
+      { "text": "...jemanden vermisst" },
+      { "text": "...eine Überraschung bekommen" },
+      { "text": "...jemandem verzeihen" }
+    ],
+    "deep": [
+      { "text": "...nachts wach gelegen und über etwas nachgedacht" },
+      { "text": "...etwas bereut" },
+      { "text": "...einen Unfall gehabt" },
+      { "text": "...jemanden tief verletzt" },
+      { "text": "...etwas Mutiges getan" }
+    ],
+    "wild": [
+      { "text": "...ein Geheimnis ausgeplaudert, das nicht deins war" },
+      { "text": "...jemanden auf WhatsApp geschrieben, während du ihn im echten Leben siehst" },
+      { "text": "...beim Karaoke komplett aus dem Takt geraten" }
+    ]
+  }
+}

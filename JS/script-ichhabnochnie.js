@@ -12,54 +12,24 @@ let gameState = {
   gameActive: false
 };
 
-const categories = [
+const fallbackCategories = [
   { key: 'funny', label: 'Locker & Lustig' },
   { key: 'spicy', label: 'Spicy' },
   { key: 'cringe', label: 'Cringe' },
   { key: 'personal', label: 'Persönlich' },
-  { key: 'deep', label: 'Deep' }
+  { key: 'deep', label: 'Deep' },
+  { key: 'wild', label: 'Bonusfragen' }
 ];
 
-const statements = [
-  { text: "...im Regen getanzt", category: 'funny' },
-  { text: "...einen Horrorfilm nicht zu Ende geschaut", category: 'cringe' },
-  { text: "...ein Lied im Auto laut gesungen", category: 'funny' },
-  { text: "...mich verlaufen", category: 'cringe' },
-  { text: "...einen Film 2x hintereinander geschaut", category: 'funny' },
-  { text: "...Sushi gegessen", category: 'funny' },
-  { text: "...eine Lüge sagen musste", category: 'spicy' },
-  { text: "...einen Fehler gleich gestanden", category: 'personal' },
-  { text: "...nachts wach gelegen und über etwas nachgedacht", category: 'deep' },
-  { text: "...Albträume gehabt", category: 'cringe' },
-  { text: "...jemanden um Verzeihung gebeten", category: 'personal' },
-  { text: "...einen Fehler wiederholt", category: 'spicy' },
-  { text: "...etwas bereut", category: 'deep' },
-  { text: "...heimlich gelacht", category: 'funny' },
-  { text: "...jemanden vermisst", category: 'personal' },
-  { text: "...eine Überraschung bekommen", category: 'personal' },
-  { text: "...spontan eine Party geschmissen", category: 'funny' },
-  { text: "...einen Unfall gehabt", category: 'deep' },
-  { text: "...ein Geheimnis verraten", category: 'spicy' },
-  { text: "...jemanden nett überrascht", category: 'funny' },
-  { text: "...ein böses Wort gesagt", category: 'cringe' },
-  { text: "...nachts spielen gegangen", category: 'funny' },
-  { text: "...jemanden tief verletzt", category: 'deep' },
-  { text: "...jemandem verzeihen", category: 'personal' },
-  { text: "...etwas Mutiges getan", category: 'deep' },
-  { text: "...mich unsterblich verliebt", category: 'spicy' },
-  { text: "...in einem See gebadet", category: 'funny' },
-  { text: "...ein Konzert besucht", category: 'funny' },
-  { text: "...einen Preis gewonnen", category: 'spicy' },
-  { text: "...etwas bereut", category: 'deep' },
-  { text: "...ein Geheimnis ausgeplaudert, das nicht deins war", category: 'wild' },
-  { text: "...jemanden auf WhatsApp geschrieben, während du ihn im echten Leben siehst", category: 'wild' },
-  { text: "...beim Karaoke komplett aus dem Takt geraten", category: 'wild' }
-];
+let questionData = { statements: {} };
+let categories = [];
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('year').textContent = new Date().getFullYear();
   setupTheme();
   setupSidebar();
+  await loadQuestions();
+  renderCategoryButtons();
   setupGameUI();
 });
 
@@ -117,6 +87,35 @@ function setupGameUI() {
   }
 }
 
+async function loadQuestions() {
+  try {
+    const res = await fetch('JSON-Datastores/ichhabnochnie-questions.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('Fehler beim Laden der Fragen');
+    const data = await res.json();
+    questionData = { statements: data.statements || {} };
+    categories = Array.isArray(data.metadata?.categories) && data.metadata.categories.length ? data.metadata.categories : fallbackCategories;
+    const defaultCategories = Array.isArray(data.metadata?.defaultCategories) && data.metadata.defaultCategories.length
+      ? data.metadata.defaultCategories
+      : fallbackCategories.filter(c => c.key !== 'wild').map(c => c.key);
+    gameState.selectedCategories = new Set(defaultCategories);
+  } catch (error) {
+    console.error('Fehler beim Laden der Fragen:', error);
+    categories = fallbackCategories;
+    gameState.selectedCategories = new Set(fallbackCategories.filter(c => c.key !== 'wild').map(c => c.key));
+  }
+}
+
+function renderCategoryButtons() {
+  const categoriesGrid = qs('#categoriesGrid');
+  if (!categoriesGrid || !categories.length) return;
+  categoriesGrid.innerHTML = categories
+    .filter(cat => cat.key !== 'wild')
+    .map(cat => `
+      <button type="button" class="category-btn ${gameState.selectedCategories.has(cat.key) ? 'active' : ''}" data-category="${cat.key}">${cat.label}</button>
+    `)
+    .join('');
+}
+
 function startGame() {
   if (gameState.gameActive) return;
 
@@ -125,7 +124,8 @@ function startGame() {
 
   gameState.questions = getSelectedQuestions();
   if (gameState.questions.length === 0) {
-    gameState.questions = shuffleArray(statements);
+    alert('Keine Fragen geladen. Bitte lade die Seite neu.');
+    return;
   }
   if (gameState.questions.length < gameState.maxRounds) {
     gameState.maxRounds = gameState.questions.length;
@@ -145,8 +145,28 @@ function startGame() {
 
 function getSelectedQuestions() {
   const selected = gameState.selectedCategories.size ? Array.from(gameState.selectedCategories) : categories.map(c => c.key);
-  if (gameState.wildMode) selected.push('wild');
-  return shuffleArray(statements.filter(statement => selected.includes(statement.category)));
+  if (gameState.wildMode && !selected.includes('wild')) selected.push('wild');
+
+  let selectedQuestions = [];
+  selected.forEach(categoryKey => {
+    const statements = Array.isArray(questionData.statements[categoryKey]) ? questionData.statements[categoryKey] : [];
+    statements.forEach(item => {
+      const text = typeof item === 'string' ? item : item.text;
+      if (text) selectedQuestions.push({ text, category: categoryKey });
+    });
+  });
+
+  if (selectedQuestions.length === 0) {
+    categories.forEach(category => {
+      const statements = Array.isArray(questionData.statements[category.key]) ? questionData.statements[category.key] : [];
+      statements.forEach(item => {
+        const text = typeof item === 'string' ? item : item.text;
+        if (text) selectedQuestions.push({ text, category: category.key });
+      });
+    });
+  }
+
+  return shuffleArray(selectedQuestions);
 }
 
 function updateRoundsValue() {
